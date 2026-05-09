@@ -15,6 +15,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  // Google Search Console verification
+  verification: {
+    google: 'wGb7vmCpgA89cUMfTHBulXu_nWB72R7pQlRm0Hwoi5o',
+  },
+
   // Tab title — shows in Google search results
   title: {
     default: 'SUBIT | Creator & Meme Lord',
@@ -75,7 +80,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'SUBIT | Creator & Meme Lord',
     description: 'Memes, Art & Good Vibes Only. 17-year-old creator from Bangladesh.',
-    creator: '@subiTfuego',
+    creator: '@subi',
     images: ['/profile.jpg'],
   },
 }
