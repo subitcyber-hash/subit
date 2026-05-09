@@ -36,9 +36,21 @@ export function LoadingScreen() {
             animate={phase === "opening" ? { x: "-100%" } : { x: 0 }}
             transition={{ duration: 1.1, ease: [0.76, 0, 0.24, 1] }}
           >
+            {/* Film grain */}
+            <svg className="absolute inset-0 h-full w-full opacity-[0.15] pointer-events-none">
+              <filter id="grain-l">
+                <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+                <feColorMatrix type="saturate" values="0"/>
+              </filter>
+              <rect width="100%" height="100%" filter="url(#grain-l)"/>
+            </svg>
+
+            {/* Blur glow */}
+            <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 80% 50%, rgba(255,255,255,0.05) 0%, transparent 65%)" }} />
+
             {/* Grid texture */}
             <div
-              className="absolute inset-0 opacity-[0.04]"
+              className="absolute inset-0 opacity-[0.03]"
               style={{
                 backgroundImage: "linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)",
                 backgroundSize: "40px 40px",
@@ -76,9 +88,21 @@ export function LoadingScreen() {
             animate={phase === "opening" ? { x: "100%" } : { x: 0 }}
             transition={{ duration: 1.1, ease: [0.76, 0, 0.24, 1] }}
           >
+            {/* Film grain */}
+            <svg className="absolute inset-0 h-full w-full opacity-[0.15] pointer-events-none">
+              <filter id="grain-r">
+                <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+                <feColorMatrix type="saturate" values="0"/>
+              </filter>
+              <rect width="100%" height="100%" filter="url(#grain-r)"/>
+            </svg>
+
+            {/* Blur glow */}
+            <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 20% 50%, rgba(255,255,255,0.05) 0%, transparent 65%)" }} />
+
             {/* Grid texture */}
             <div
-              className="absolute inset-0 opacity-[0.04]"
+              className="absolute inset-0 opacity-[0.03]"
               style={{
                 backgroundImage: "linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)",
                 backgroundSize: "40px 40px",
@@ -101,7 +125,7 @@ export function LoadingScreen() {
             >
               <h1 className="text-5xl font-bold tracking-[0.2em] text-white sm:text-7xl"
                 style={{ fontFamily: "serif" }}>
-                BIT
+                BI
               </h1>
               <div className="h-px w-16 bg-white/30" />
             </motion.div>
