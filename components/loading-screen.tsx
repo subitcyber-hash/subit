@@ -4,167 +4,161 @@ import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
 export function LoadingScreen() {
-  const [loading, setLoading] = useState(true)
-  const [progress, setProgress] = useState(0)
-  const [phase, setPhase] = useState<"counting" | "reveal" | "done">("counting")
+  const [phase, setPhase] = useState<"enter" | "opening" | "done">("enter")
+  const [clicked, setClicked] = useState(false)
 
   useEffect(() => {
-    // Progress counter
-    const interval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval)
-          setPhase("reveal")
-          setTimeout(() => setLoading(false), 1200)
-          return 100
-        }
-        return prev + Math.random() * 8 + 2
-      })
-    }, 60)
-
-    return () => clearInterval(interval)
+    // Auto-open after 2.5s if user doesn't click
+    const timer = setTimeout(() => handleOpen(), 2500)
+    return () => clearTimeout(timer)
   }, [])
+
+  const handleOpen = () => {
+    if (clicked) return
+    setClicked(true)
+    setPhase("opening")
+    setTimeout(() => setPhase("done"), 1400)
+  }
 
   return (
     <AnimatePresence>
-      {loading && (
+      {phase !== "done" && (
         <motion.div
           key="loader"
-          className="fixed inset-0 z-[999] flex flex-col items-center justify-center bg-black overflow-hidden"
+          className="fixed inset-0 z-[999] flex cursor-pointer"
+          onClick={handleOpen}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: "easeInOut" }}
+          transition={{ duration: 0.3 }}
         >
-          {/* Background grid */}
-          <div
-            className="absolute inset-0 opacity-10"
-            style={{
-              backgroundImage: "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
-              backgroundSize: "60px 60px",
-            }}
-          />
-
-          {/* Radial glow */}
+          {/* LEFT DOOR */}
           <motion.div
-            className="absolute inset-0"
-            style={{ background: "radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, transparent 60%)" }}
-            animate={{ scale: [1, 1.2, 1] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          />
-
-          {/* Scan line */}
-          <motion.div
-            className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"
-            animate={{ top: ["0%", "100%"] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-          />
-
-          {/* Main content */}
-          <div className="relative z-10 flex flex-col items-center gap-8">
-
-            {/* Logo reveal */}
-            <motion.div
-              className="overflow-hidden"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              <motion.h1
-                className="text-6xl font-bold tracking-[0.3em] text-white sm:text-8xl"
-                style={{ fontFamily: "serif" }}
-                initial={{ y: 80, opacity: 0 }}
-                animate={phase === "reveal"
-                  ? { y: 0, opacity: 1, scale: [1, 1.05, 1], filter: ["blur(0px)", "blur(4px)", "blur(0px)"] }
-                  : { y: 0, opacity: 1 }
-                }
-                transition={{ duration: 0.6, ease: "easeOut" }}
-              >
-                SUBI
-              </motion.h1>
-            </motion.div>
-
-            {/* Tagline */}
-            <motion.p
-              className="text-xs uppercase tracking-[0.5em] text-white/40"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-            >
-              Creator · Artist · Meme Lord
-            </motion.p>
-
-            {/* Progress bar */}
-            <motion.div
-              className="flex flex-col items-center gap-3"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-            >
-              <div className="relative h-px w-48 bg-white/10 overflow-hidden sm:w-64">
-                <motion.div
-                  className="absolute left-0 top-0 h-full bg-white"
-                  style={{ width: `${Math.min(progress, 100)}%` }}
-                  transition={{ ease: "linear" }}
-                />
-                {/* Shimmer */}
-                <motion.div
-                  className="absolute top-0 h-full w-8 bg-gradient-to-r from-transparent via-white/60 to-transparent"
-                  animate={{ left: ["-10%", "110%"] }}
-                  transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-                />
-              </div>
-
-              {/* Counter */}
-              <span className="font-mono text-xs text-white/30">
-                {Math.min(Math.floor(progress), 100).toString().padStart(3, "0")}%
-              </span>
-            </motion.div>
-
-            {/* Glitch lines on reveal */}
-            <AnimatePresence>
-              {phase === "reveal" && (
-                <>
-                  {[...Array(3)].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      className="absolute left-0 right-0 bg-white/5"
-                      style={{ top: `${20 + i * 30}%`, height: Math.random() * 3 + 1 }}
-                      initial={{ scaleX: 0, opacity: 0 }}
-                      animate={{ scaleX: [0, 1, 0], opacity: [0, 1, 0] }}
-                      transition={{ duration: 0.3, delay: i * 0.1 }}
-                    />
-                  ))}
-                </>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* Corner decorations */}
-          {[
-            "top-6 left-6 border-t border-l",
-            "top-6 right-6 border-t border-r",
-            "bottom-6 left-6 border-b border-l",
-            "bottom-6 right-6 border-b border-r",
-          ].map((cls, i) => (
-            <motion.div
-              key={i}
-              className={`absolute h-6 w-6 border-white/20 ${cls}`}
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 + i * 0.1 }}
-            />
-          ))}
-
-          {/* Bottom status */}
-          <motion.div
-            className="absolute bottom-8 left-0 right-0 flex justify-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
+            className="relative flex h-full w-1/2 flex-col items-end justify-center overflow-hidden bg-black pr-12"
+            animate={phase === "opening" ? { x: "-100%" } : { x: 0 }}
+            transition={{ duration: 1.1, ease: [0.76, 0, 0.24, 1] }}
           >
-            <span className="font-mono text-[10px] uppercase tracking-widest text-white/20">
-              {phase === "reveal" ? "Welcome" : "Loading..."}
-            </span>
+            {/* Grid texture */}
+            <div
+              className="absolute inset-0 opacity-[0.04]"
+              style={{
+                backgroundImage: "linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)",
+                backgroundSize: "40px 40px",
+              }}
+            />
+
+            {/* Vertical line on right edge */}
+            <div className="absolute right-0 top-0 bottom-0 w-px bg-white/10" />
+
+            {/* Corner brackets */}
+            <div className="absolute top-8 right-8 h-8 w-8 border-t border-r border-white/20" />
+            <div className="absolute bottom-8 right-8 h-8 w-8 border-b border-r border-white/20" />
+
+            {/* Content */}
+            <motion.div
+              className="relative z-10 flex flex-col items-end gap-3"
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+            >
+              <h1 className="text-5xl font-bold tracking-[0.2em] text-white sm:text-7xl"
+                style={{ fontFamily: "serif" }}>
+                SU
+              </h1>
+              <div className="h-px w-16 bg-white/30" />
+            </motion.div>
+
+            {/* Glow */}
+            <div className="absolute right-0 top-1/2 h-64 w-64 -translate-y-1/2 translate-x-1/2 rounded-full bg-white/5 blur-3xl" />
           </motion.div>
+
+          {/* RIGHT DOOR */}
+          <motion.div
+            className="relative flex h-full w-1/2 flex-col items-start justify-center overflow-hidden bg-[#0a0a0a] pl-12"
+            animate={phase === "opening" ? { x: "100%" } : { x: 0 }}
+            transition={{ duration: 1.1, ease: [0.76, 0, 0.24, 1] }}
+          >
+            {/* Grid texture */}
+            <div
+              className="absolute inset-0 opacity-[0.04]"
+              style={{
+                backgroundImage: "linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)",
+                backgroundSize: "40px 40px",
+              }}
+            />
+
+            {/* Vertical line on left edge */}
+            <div className="absolute left-0 top-0 bottom-0 w-px bg-white/10" />
+
+            {/* Corner brackets */}
+            <div className="absolute top-8 left-8 h-8 w-8 border-t border-l border-white/20" />
+            <div className="absolute bottom-8 left-8 h-8 w-8 border-b border-l border-white/20" />
+
+            {/* Content */}
+            <motion.div
+              className="relative z-10 flex flex-col items-start gap-3"
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+            >
+              <h1 className="text-5xl font-bold tracking-[0.2em] text-white sm:text-7xl"
+                style={{ fontFamily: "serif" }}>
+                BIT
+              </h1>
+              <div className="h-px w-16 bg-white/30" />
+            </motion.div>
+
+            {/* Glow */}
+            <div className="absolute left-0 top-1/2 h-64 w-64 -translate-y-1/2 -translate-x-1/2 rounded-full bg-white/5 blur-3xl" />
+          </motion.div>
+
+          {/* Center seam line */}
+          <motion.div
+            className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 bg-white/20"
+            animate={phase === "opening" ? { scaleY: 0, opacity: 0 } : { scaleY: 1, opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          />
+
+          {/* Center click prompt */}
+          <AnimatePresence>
+            {phase === "enter" && (
+              <motion.div
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-3 pointer-events-none"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ delay: 0.8 }}
+              >
+                {/* Pulsing ring */}
+                <motion.div
+                  className="relative flex h-14 w-14 items-center justify-center rounded-full border border-white/30"
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <motion.div
+                    className="absolute inset-0 rounded-full border border-white/10"
+                    animate={{ scale: [1, 1.5], opacity: [0.5, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  />
+                  {/* Arrow right + left */}
+                  <div className="flex items-center gap-1">
+                    <svg width="8" height="12" viewBox="0 0 8 12" fill="white" opacity="0.6">
+                      <path d="M8 6L0 0v12z" />
+                    </svg>
+                    <svg width="8" height="12" viewBox="0 0 8 12" fill="white" opacity="0.6" style={{ transform: "scaleX(-1)" }}>
+                      <path d="M8 6L0 0v12z" />
+                    </svg>
+                  </div>
+                </motion.div>
+
+                <motion.span
+                  className="text-[10px] uppercase tracking-[0.4em] text-white/30"
+                  animate={{ opacity: [0.3, 0.7, 0.3] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  Enter
+                </motion.span>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
       )}
     </AnimatePresence>
