@@ -166,7 +166,7 @@ export function Hero() {
           className="mb-6 text-7xl font-bold tracking-tighter text-foreground sm:text-8xl md:text-9xl"
           style={{ textShadow: "0 0 80px rgba(255,255,255,0.3), 0 0 160px rgba(255,255,255,0.1)" }}
         >
-          SUBI
+          𝔖𝔘𝔅ℑ𝔗
         </motion.h1>
 
         {/* Subtitle */}
@@ -176,7 +176,7 @@ export function Hero() {
           transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
           className="mb-10 text-lg text-white/50 sm:text-xl md:text-2xl"
         >
-          One Piece • Vinland Saga • Death Note
+          Maybe in antoher life
         </motion.p>
 
         {/* Social CTAs */}

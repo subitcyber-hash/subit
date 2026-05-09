@@ -37,7 +37,6 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Lock body scroll when menu open
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : ""
     return () => { document.body.style.overflow = "" }
@@ -86,7 +85,7 @@ export function Navbar() {
               ))}
             </div>
 
-            {/* Hamburger button */}
+            {/* Hamburger */}
             <motion.button
               whileTap={{ scale: 0.85 }}
               className="relative z-50 flex h-10 w-10 items-center justify-center rounded-full text-foreground md:hidden glass-light"
@@ -121,11 +120,11 @@ export function Navbar() {
         </div>
       </motion.nav>
 
-      {/* Full-screen mobile menu */}
+      {/* Mobile menu */}
       <AnimatePresence>
         {isOpen && (
           <>
-            {/* Backdrop blur overlay */}
+            {/* Backdrop */}
             <motion.div
               key="backdrop"
               initial={{ opacity: 0 }}
@@ -136,20 +135,20 @@ export function Navbar() {
               onClick={closeMenu}
             />
 
-            {/* Slide-in panel */}
+            {/* Slide panel */}
             <motion.div
               key="panel"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="fixed right-0 top-0 bottom-0 z-40 w-3/4 max-w-xs bg-background/95 backdrop-blur-2xl border-l border-border md:hidden flex flex-col"
+              className="fixed right-0 top-0 z-40 h-full w-3/4 max-w-xs bg-background/95 backdrop-blur-2xl border-l border-border md:hidden flex flex-col"
             >
-              {/* Top spacer for navbar */}
-              <div className="h-20" />
+              {/* Spacer for navbar height */}
+              <div className="h-20 flex-shrink-0" />
 
-              {/* Nav links */}
-              <nav className="flex flex-col gap-2 px-8 py-6">
+              {/* Nav links — flex-1 so it fills space, overflow-y-auto for safety */}
+              <nav className="flex flex-col gap-1 px-6 py-4 flex-1 overflow-y-auto">
                 {navItems.map((item, index) => (
                   <motion.a
                     key={item.name}
@@ -159,13 +158,12 @@ export function Navbar() {
                     exit={{ opacity: 0, x: 40 }}
                     transition={{ delay: index * 0.07, type: "spring", stiffness: 300, damping: 25 }}
                     onClick={closeMenu}
-                    className={`group relative flex items-center gap-4 rounded-xl px-4 py-4 text-xl font-semibold transition-all ${
+                    className={`relative flex items-center rounded-xl px-4 py-4 text-xl font-semibold transition-all ${
                       activeSection === item.href.slice(1)
                         ? "text-foreground bg-foreground/8"
                         : "text-muted-foreground hover:text-foreground hover:bg-foreground/5"
                     }`}
                   >
-                    {/* Active indicator */}
                     {activeSection === item.href.slice(1) && (
                       <motion.div
                         layoutId="activeBar"
@@ -173,8 +171,6 @@ export function Navbar() {
                       />
                     )}
                     <span className="pl-3">{item.name}</span>
-
-                    {/* Index number */}
                     <span className="ml-auto text-xs text-muted-foreground/40 font-mono">
                       0{index + 1}
                     </span>
@@ -182,12 +178,12 @@ export function Navbar() {
                 ))}
               </nav>
 
-              {/* Bottom social hint */}
+              {/* Bottom tagline — flex-shrink-0 so it never gets pushed off */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4 }}
-                className="mt-auto px-8 py-8 border-t border-border"
+                className="flex-shrink-0 px-8 py-6 border-t border-border"
               >
                 <p className="text-xs text-muted-foreground/50 uppercase tracking-widest">
                   Creator · Artist · Meme Lord

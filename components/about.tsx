@@ -93,7 +93,7 @@ export function About() {
             >
               Memes, Art &
               <br />
-              <span className="text-glow">Good Vibes Only</span>
+              <span className="text-glow">Chill Guy</span>
             </motion.h2>
 
             <motion.p
