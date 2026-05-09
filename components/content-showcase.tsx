@@ -31,7 +31,7 @@ const BASE_ITEMS = [
 const CARD_WIDTH = 280
 const CARD_GAP = 16
 const CARD_STEP = CARD_WIDTH + CARD_GAP
-const AUTO_INTERVAL = 2500
+const AUTO_INTERVAL = 1500  // faster: was 2500
 const TOTAL = BASE_ITEMS.length
 
 const platformIcons: Record<string, React.ComponentType<{ size?: number }>> = {
@@ -57,8 +57,9 @@ export function ContentShowcase() {
     const target = -(index * CARD_STEP)
     animate(x, target, {
       type: "spring",
-      stiffness: 260,
-      damping: 28,
+      stiffness: 320,
+      damping: 32,
+      mass: 0.6,
       onComplete: () => {
         isAnimating.current = false
         if (index < TOTAL) {
@@ -219,7 +220,7 @@ export function ContentShowcase() {
                   y: isCenter ? -12 : 0,
                   zIndex: isCenter ? 10 : isAdjacent ? 5 : 1,
                 }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                transition={{ type: "spring", stiffness: 400, damping: 35, mass: 0.5 }}
               >
                 {/* Glow ring on active card */}
                 {isCenter && (
