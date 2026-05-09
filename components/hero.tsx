@@ -83,7 +83,7 @@ export function Hero() {
             className="h-full w-full object-cover"
             style={{ filter: "blur(3px) brightness(0.35)" }}
           >
-            <source src="/hero-bg.mp4" type="video/mp4" />
+            <source src=".mp4" type="video/mp4" />
           </video>
         </motion.div>
 
