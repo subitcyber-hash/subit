@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X } from "lucide-react"
 
 const navItems = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
+  { name: "Home",    href: "#home" },
+  { name: "About",   href: "#about" },
   { name: "Content", href: "#content" },
   { name: "Socials", href: "#socials" },
   { name: "Contact", href: "#contact" },
@@ -20,10 +20,8 @@ export function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50)
-
       const sections = navItems.map((item) => item.href.slice(1))
       const scrollPosition = window.scrollY + 100
-
       for (const section of sections) {
         const element = document.getElementById(section)
         if (element) {
@@ -35,93 +33,170 @@ export function Navbar() {
         }
       }
     }
-
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  // Lock body scroll when menu open
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : ""
+    return () => { document.body.style.overflow = "" }
+  }, [isOpen])
+
+  const closeMenu = () => setIsOpen(false)
+
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? "glass" : "bg-transparent"
-      }`}
-    >
-      <div className="mx-auto max-w-7xl px-6 py-4">
-        <div className="flex items-center justify-between">
-          <motion.a
-            href="#home"
-            className="text-2xl font-bold tracking-wider text-foreground"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            ѕυвιт
-          </motion.a>
+    <>
+      <motion.nav
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          scrolled || isOpen ? "glass backdrop-blur-xl" : "bg-transparent"
+        }`}
+      >
+        <div className="mx-auto max-w-7xl px-6 py-4">
+          <div className="flex items-center justify-between">
+            {/* Logo */}
+            <motion.a
+              href="#home"
+              onClick={closeMenu}
+              className="relative z-50 text-2xl font-bold tracking-wider text-foreground"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              ѕυвιт
+            </motion.a>
 
-          {/* Desktop Navigation */}
-          <div className="hidden items-center gap-8 md:flex">
-            {navItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="group relative py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-              >
-                {item.name}
-                <span
-                  className={`absolute bottom-0 left-0 h-[2px] bg-foreground transition-all duration-300 ${
-                    activeSection === item.href.slice(1) ? "w-full" : "w-0 group-hover:w-full"
-                  }`}
-                />
-              </a>
-            ))}
-          </div>
-
-          {/* Mobile Menu Button */}
-          <motion.button
-            whileTap={{ scale: 0.9 }}
-            className="text-foreground md:hidden"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </motion.button>
-        </div>
-      </div>
-
-      {/* Mobile Navigation */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="glass md:hidden"
-          >
-            <div className="flex flex-col gap-4 px-6 py-6">
-              {navItems.map((item, index) => (
-                <motion.a
+            {/* Desktop nav */}
+            <div className="hidden items-center gap-8 md:flex">
+              {navItems.map((item) => (
+                <a
                   key={item.name}
                   href={item.href}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className={`text-lg font-medium transition-colors ${
-                    activeSection === item.href.slice(1)
-                      ? "text-foreground"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                  onClick={() => setIsOpen(false)}
+                  className="group relative py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                 >
                   {item.name}
-                </motion.a>
+                  <span
+                    className={`absolute bottom-0 left-0 h-[2px] bg-foreground transition-all duration-300 ${
+                      activeSection === item.href.slice(1) ? "w-full" : "w-0 group-hover:w-full"
+                    }`}
+                  />
+                </a>
               ))}
             </div>
-          </motion.div>
+
+            {/* Hamburger button */}
+            <motion.button
+              whileTap={{ scale: 0.85 }}
+              className="relative z-50 flex h-10 w-10 items-center justify-center rounded-full text-foreground md:hidden glass-light"
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label="Toggle menu"
+            >
+              <AnimatePresence mode="wait">
+                {isOpen ? (
+                  <motion.span
+                    key="close"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <X size={20} />
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key="menu"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Menu size={20} />
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </motion.button>
+          </div>
+        </div>
+      </motion.nav>
+
+      {/* Full-screen mobile menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* Backdrop blur overlay */}
+            <motion.div
+              key="backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 z-40 bg-background/80 backdrop-blur-xl md:hidden"
+              onClick={closeMenu}
+            />
+
+            {/* Slide-in panel */}
+            <motion.div
+              key="panel"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="fixed right-0 top-0 bottom-0 z-40 w-3/4 max-w-xs bg-background/95 backdrop-blur-2xl border-l border-border md:hidden flex flex-col"
+            >
+              {/* Top spacer for navbar */}
+              <div className="h-20" />
+
+              {/* Nav links */}
+              <nav className="flex flex-col gap-2 px-8 py-6">
+                {navItems.map((item, index) => (
+                  <motion.a
+                    key={item.name}
+                    href={item.href}
+                    initial={{ opacity: 0, x: 40 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 40 }}
+                    transition={{ delay: index * 0.07, type: "spring", stiffness: 300, damping: 25 }}
+                    onClick={closeMenu}
+                    className={`group relative flex items-center gap-4 rounded-xl px-4 py-4 text-xl font-semibold transition-all ${
+                      activeSection === item.href.slice(1)
+                        ? "text-foreground bg-foreground/8"
+                        : "text-muted-foreground hover:text-foreground hover:bg-foreground/5"
+                    }`}
+                  >
+                    {/* Active indicator */}
+                    {activeSection === item.href.slice(1) && (
+                      <motion.div
+                        layoutId="activeBar"
+                        className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-full bg-foreground"
+                      />
+                    )}
+                    <span className="pl-3">{item.name}</span>
+
+                    {/* Index number */}
+                    <span className="ml-auto text-xs text-muted-foreground/40 font-mono">
+                      0{index + 1}
+                    </span>
+                  </motion.a>
+                ))}
+              </nav>
+
+              {/* Bottom social hint */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="mt-auto px-8 py-8 border-t border-border"
+              >
+                <p className="text-xs text-muted-foreground/50 uppercase tracking-widest">
+                  Creator · Artist · Meme Lord
+                </p>
+              </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </>
   )
 }
