@@ -8,6 +8,7 @@ import { ContentShowcase } from "@/components/content-showcase"
 import { Socials } from "@/components/socials"
 import { Contact } from "@/components/contact"
 import { Footer } from "@/components/footer"
+import { InstagramFeed } from "@/components/instagram-feed"
 
 export default function Home() {
   return (
@@ -17,6 +18,9 @@ export default function Home() {
       <FollowerStats />
       <About />
       <ContentShowcase />
+      <ContentShowcase />
+<InstagramFeed />
+<Socials />
       <Socials />
       <Contact />
       <Footer />
