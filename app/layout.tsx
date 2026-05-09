@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { MusicPlayer } from '@/components/music-player'
-import { LoadingScreen } from "@/components/loading-screen"
 
 const geist = Geist({ 
   subsets: ["latin"],
@@ -16,19 +15,68 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'SUBIT | Creator & Meme Lord',
-  description: 'Welcome to SUBIT\'s premium creator portfolio. Explore my content, connect on socials, and let\'s create something amazing together.',
-  keywords: ['creator', 'designer', 'digital builder', 'content creator', 'portfolio', 'SUBIT'],
-  authors: [{ name: 'SUBIT' }],
-  openGraph: {
-    title: 'SUBIT | Creator • Designer • Digital Builder',
-    description: 'Welcome to SUBIT\'s premium creator portfolio.',
-    type: 'website',
+  // Tab title — shows in Google search results
+  title: {
+    default: 'SUBIT | Creator & Meme Lord',
+    template: '%s | SUBIT',
   },
+
+  // Meta description — shown under title in Google
+  description: 'SUBIT is a 17-year-old meme creator and aspiring artist from Barishal, Bangladesh. Aesthetic, chill content on Instagram and TikTok. Memes, Art & Good Vibes Only.',
+
+  // Keywords (less important for Google now but still useful)
+  keywords: [
+    'SUBIT', 'subit', 'hexed.subit', 'meme creator', 'meme lord',
+    'aesthetic memes', 'anime memes', 'Bangladesh creator',
+    'content creator', 'artist', 'portfolio', 'TikTok', 'Instagram',
+  ],
+
+  // Author
+  authors: [{ name: 'SUBIT', url: 'https://subit-three.vercel.app' }],
+  creator: 'SUBIT',
+
+  // Canonical URL — tells Google your main URL
+  metadataBase: new URL('https://subit-three.vercel.app'),
+  alternates: {
+    canonical: '/',
+  },
+
+  // Robots — tell Google to index your site
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+    },
+  },
+
+  // Open Graph — how your site looks when shared on Facebook, Discord, WhatsApp
+  openGraph: {
+    title: 'SUBIT | Creator & Meme Lord',
+    description: 'Memes, Art & Good Vibes Only. 17-year-old creator from Bangladesh.',
+    url: 'https://subit-three.vercel.app',
+    siteName: 'SUBIT',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: '/profile.jpg',
+        width: 800,
+        height: 800,
+        alt: 'SUBIT - Creator & Meme Lord',
+      },
+    ],
+  },
+
+  // Twitter/X card — how your site looks when shared on Twitter
   twitter: {
     card: 'summary_large_image',
-    title: 'SUBIT | Creator • Designer • Digital Builder',
-    description: 'Welcome to SUBIT\'s premium creator portfolio.',
+    title: 'SUBIT | Creator & Meme Lord',
+    description: 'Memes, Art & Good Vibes Only. 17-year-old creator from Bangladesh.',
+    creator: '@subiTfuego',
+    images: ['/profile.jpg'],
   },
 }
 
@@ -46,7 +94,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geist.variable} ${geistMono.variable} bg-background`}>
       <body className="font-sans antialiased">
-        <LoadingScreen />
         {children}
         <MusicPlayer />
         {process.env.NODE_ENV === 'production' && <Analytics />}
