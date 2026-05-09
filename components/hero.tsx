@@ -15,7 +15,6 @@ function WhatsAppIcon({ size = 24 }: { size?: number }) {
 const socialLinks = [
   { icon: Instagram,    href: "https://instagram.com/hexed.subit", label: "Instagram" },
   { icon: WhatsAppIcon, href: "https://wa.me/your_number",         label: "WhatsApp" },
-  { icon: Facebook,     href: "https://facebook.com",              label: "Facebook" },
 ]
 
 const PARTICLES = [

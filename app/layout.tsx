@@ -14,19 +14,19 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'SUBI | Creator • Designer • Digital Builder',
-  description: 'Welcome to SUBI\'s premium creator portfolio. Explore my content, connect on socials, and let\'s create something amazing together.',
-  keywords: ['creator', 'designer', 'digital builder', 'content creator', 'portfolio', 'SUBI'],
-  authors: [{ name: 'SUBI' }],
+  title: 'SUBIT',
+  description: 'Welcome to SUBIT\'s premium creator portfolio. Explore my content, connect on socials, and let\'s create something amazing together.',
+  keywords: ['creator', 'designer', 'digital builder', 'content creator', 'portfolio', 'SUBIT'],
+  authors: [{ name: 'SUBIT' }],
   openGraph: {
-    title: 'SUBI | Creator • Designer • Digital Builder',
-    description: 'Welcome to SUBI\'s premium creator portfolio.',
+    title: 'SUBIT | Creator • Designer • Digital Builder',
+    description: 'Welcome to SUBIT\'s premium creator portfolio.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'SUBI | Creator • Designer • Digital Builder',
-    description: 'Welcome to SUBI\'s premium creator portfolio.',
+    title: 'SUBIT | Creator • Designer • Digital Builder',
+    description: 'Welcome to SUBIT\'s premium creator portfolio.',
   },
 }
 
