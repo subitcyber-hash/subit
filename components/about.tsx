@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Sparkles, Code, Palette, Zap } from "lucide-react"
+import { Gamepad2, Palette, Trophy, Shield } from "lucide-react"
 import Image from "next/image"
 
 const stats = [
@@ -12,10 +12,10 @@ const stats = [
 ]
 
 const skills = [
-  { icon: Sparkles, label: "Content Creation", description: "Crafting engaging digital experiences" },
-  { icon: Code, label: "Development", description: "Building modern web solutions" },
-  { icon: Palette, label: "Design", description: "Creating stunning visual identities" },
-  { icon: Zap, label: "Strategy", description: "Growing brands with data-driven insights" },
+  { icon: Gamepad2, label: "Favorite Games", description: "COD • Minecraft • Elden Ring" },
+  { icon: Palette, label: "Favorite Colors", description: "Black • White • Blue" },
+  { icon: Trophy, label: "Football Team", description: "Argentina" },
+  { icon: Shield, label: "Football Club", description: "Barcelona" },
 ]
 
 export function About() {
