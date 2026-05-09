@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'SUBIT',
+  title: 'SUBIT | Creator & Meme Lord',
   description: 'Welcome to SUBIT\'s premium creator portfolio. Explore my content, connect on socials, and let\'s create something amazing together.',
   keywords: ['creator', 'designer', 'digital builder', 'content creator', 'portfolio', 'SUBIT'],
   authors: [{ name: 'SUBIT' }],
