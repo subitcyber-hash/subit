@@ -15,9 +15,7 @@ export default function Home() {
     <main className="relative min-h-screen overflow-hidden">
       <Navbar />
       <Hero />
-      <FollowerStats />
       <About />
-      <ContentShowcase />
       <ContentShowcase />
 <InstagramFeed />
 <Socials />
