@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 
 const PHRASES = [
   "Creator · Artist · Meme Lord",
-  "One Piece · Vinland Saga · Death Note",
+  "Been on that peaceful shi",
   "Aesthetic · Chill · Good Vibes",
   "Based in Barishal, Bangladesh",
 ]
