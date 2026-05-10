@@ -3,13 +3,13 @@
 import { useEffect, useState } from "react"
 
 const PHRASES = [
-  "Creator · Artist · Meme Lord",
+  "#SWAG",
   "Been on that peaceful shi",
-  "Aesthetic · Chill · Good Vibes",
+  "Do it for yourself twin",
   "Based in Barishal, Bangladesh",
 ]
 
-export function useTypingAnimation(speed = 60, pause = 2000) {
+export function useTypingAnimation(speed = 100, pause = 2000) {
   const [text, setText] = useState("")
   const [phraseIndex, setPhraseIndex] = useState(0)
   const [charIndex, setCharIndex] = useState(0)

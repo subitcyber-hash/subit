@@ -175,7 +175,6 @@ export function Hero() {
         <p className="mb-10 text-lg text-white/50">
             {typedText}<span className="animate-pulse">|</span>
         </p>
-          Maybe in another life
           
         {/* Social CTAs */}
         <motion.div
