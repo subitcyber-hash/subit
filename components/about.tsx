@@ -3,9 +3,9 @@
 import { motion } from "framer-motion"
 import { Gamepad2, Palette, Trophy, Shield } from "lucide-react"
 import Image from "next/image"
+import { AgeCounter } from "@/components/age-counter"
 
 const stats = [
-  { label: "Age", value: "17" },
   { label: "Born", value: "2008" },
   { label: "Birthday", value: "May 27" },
   { label: "Class", value: "HSC" },
@@ -21,7 +21,6 @@ const skills = [
 export function About() {
   return (
     <section id="about" className="relative py-24">
-      {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-foreground/[0.02] to-transparent" />
 
       <div className="relative mx-auto max-w-7xl px-6">
@@ -44,19 +43,30 @@ export function About() {
                 style={{ mixBlendMode: "luminosity" }}
                 priority
               />
-              {/* Subtle inner gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
             </div>
 
             {/* Stats Grid */}
             <div className="grid grid-cols-2 gap-4">
+              {/* Real-time Age Counter */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="glass-light rounded-2xl p-4 text-center"
+              >
+                <AgeCounter />
+              </motion.div>
+
+              {/* Other stats */}
               {stats.map((stat, index) => (
                 <motion.div
                   key={stat.label}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  transition={{ duration: 0.5, delay: (index + 1) * 0.1 }}
                   className="glass-light rounded-2xl p-4 text-center"
                 >
                   <div className="text-2xl font-bold text-foreground">{stat.value}</div>
@@ -66,7 +76,7 @@ export function About() {
             </div>
           </motion.div>
 
-          {/* Right Column - Content */}
+          {/* Right Column */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
