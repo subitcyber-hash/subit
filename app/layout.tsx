@@ -4,6 +4,9 @@ import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { MusicPlayer } from '@/components/music-player'
 import { LoadingScreen } from "@/components/loading-screen"
+import { ScrollProgress } from "@/components/scroll-progress"
+import { CustomCursor } from "@/components/custom-cursor"
+import { VisitCounter } from "@/components/visit-counter"
 
 const geist = Geist({ 
   subsets: ["latin"],
@@ -100,9 +103,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geist.variable} ${geistMono.variable} bg-background`}>
       <body className="font-sans antialiased">
+        <ScrollProgress />
+        <CustomCursor />
         <LoadingScreen />
         {children}
         <MusicPlayer />
+        <VisitCounter />
+        <Analytics/>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

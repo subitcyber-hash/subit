@@ -149,7 +149,7 @@ export function Footer() {
           className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 md:flex-row"
         >
           <p className="text-sm text-muted-foreground">
-            © {currentYear} SUBI. All rights reserved.
+            © {currentYear} SUBIT. All rights reserved.
           </p>
           <p className="text-sm text-muted-foreground">
             Made by SUBIT

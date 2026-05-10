@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Instagram, Facebook, ChevronDown } from "lucide-react"
+import { useTypingAnimation } from "@/hooks/use-typing"
 
 function WhatsAppIcon({ size = 24 }: { size?: number }) {
   return (
@@ -14,7 +15,7 @@ function WhatsAppIcon({ size = 24 }: { size?: number }) {
 
 const socialLinks = [
   { icon: Instagram,    href: "https://instagram.com/hexed.subit", label: "Instagram" },
-  { icon: WhatsAppIcon, href: "https://wa.me/your_number",         label: "WhatsApp" },
+  { icon: WhatsAppIcon, href: "https://wa.me/8801712345678",         label: "WhatsApp" },
 ]
 
 const PARTICLES = [
@@ -47,6 +48,7 @@ const PARTICLES = [
 
 export function Hero() {
   const [mounted, setMounted] = useState(false)
+  const typedText = useTypingAnimation()
   useEffect(() => setMounted(true), [])
 
   return (
@@ -170,15 +172,11 @@ export function Hero() {
         </motion.h1>
 
         {/* Subtitle */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
-          className="mb-10 text-lg text-white/50 sm:text-xl md:text-2xl"
-        >
-          Maybe in antoher life
-        </motion.p>
-
+        <p className="mb-10 text-lg text-white/50">
+            {typedText}<span className="animate-pulse">|</span>
+        </p>
+          Maybe in another life
+          
         {/* Social CTAs */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
