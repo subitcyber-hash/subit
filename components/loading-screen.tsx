@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
-// Deterministic particles — no Math.random at render time
 const PARTICLES = [
   { x: 12, y: 78, s: 1.5, d: 5.2, delay: 0.2 },
   { x: 28, y: 45, s: 1.0, d: 7.1, delay: 1.1 },
@@ -19,8 +18,12 @@ const PARTICLES = [
   { x: 19, y: 15, s: 1.7, d: 6.1, delay: 2.3 },
 ]
 
+// Each letter of 𝔖𝔘𝔅ℑ𝔗 as individual spans for stagger
+const LOGO_LETTERS = ["𝔖", "𝔘", "𝔅", "ℑ", "𝔗"]
+
 export function LoadingScreen() {
   const [progress, setProgress] = useState(0)
+  const [phase, setPhase] = useState<"loading" | "reveal" | "exit">("loading")
   const [done, setDone] = useState(false)
 
   useEffect(() => {
@@ -30,7 +33,12 @@ export function LoadingScreen() {
       setProgress(Math.floor(cur))
       if (cur >= 100) {
         clearInterval(id)
-        setTimeout(() => setDone(true), 900)
+        // Phase 1: show reveal animation
+        setTimeout(() => setPhase("reveal"), 300)
+        // Phase 2: exit
+        setTimeout(() => setPhase("exit"), 1800)
+        // Phase 3: unmount
+        setTimeout(() => setDone(true), 2800)
       }
     }, 80)
     return () => clearInterval(id)
@@ -44,11 +52,11 @@ export function LoadingScreen() {
       {!done && (
         <motion.div
           key="loader"
-          className="fixed inset-0 z-[999] flex flex-col items-center justify-center bg-black"
+          className="fixed inset-0 z-[999] flex flex-col items-center justify-center bg-black overflow-hidden"
           exit={{ opacity: 0 }}
           transition={{ duration: 1, ease: "easeInOut" }}
         >
-          {/* Subtle grain */}
+          {/* Grain */}
           <svg className="absolute inset-0 h-full w-full opacity-[0.06] pointer-events-none">
             <filter id="g">
               <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
@@ -57,22 +65,26 @@ export function LoadingScreen() {
             <rect width="100%" height="100%" filter="url(#g)"/>
           </svg>
 
-          {/* Ambient center glow — breathes slowly */}
+          {/* Ambient glow */}
           <motion.div
-            className="absolute rounded-full"
+            className="absolute rounded-full pointer-events-none"
             style={{
-              width: 500,
-              height: 500,
-              background: "radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 65%)",
+              width: 600,
+              height: 600,
+              background: "radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 65%)",
               left: "50%",
               top: "50%",
               transform: "translate(-50%,-50%)",
             }}
-            animate={{ scale: [1, 1.15, 1], opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            animate={
+              phase === "reveal"
+                ? { scale: [1, 1.6, 1.2], opacity: [0.5, 1, 0.7] }
+                : { scale: [1, 1.15, 1], opacity: [0.5, 1, 0.5] }
+            }
+            transition={{ duration: phase === "reveal" ? 1.2 : 5, repeat: phase === "reveal" ? 0 : Infinity, ease: "easeInOut" }}
           />
 
-          {/* Floating particles */}
+          {/* Particles */}
           {PARTICLES.map((p, i) => (
             <motion.div
               key={i}
@@ -83,13 +95,96 @@ export function LoadingScreen() {
             />
           ))}
 
-          {/* Ring + content */}
+          {/* ── REVEAL PHASE: big gothic logo burst ── */}
+          <AnimatePresence>
+            {phase === "reveal" && (
+              <motion.div
+                className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-20"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4 }}
+              >
+                {/* Flash */}
+                <motion.div
+                  className="absolute inset-0 bg-white"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: [0, 0.06, 0] }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                />
+
+                {/* Big gothic letters stagger in */}
+                <div className="flex items-end gap-1 sm:gap-2">
+                  {LOGO_LETTERS.map((letter, i) => (
+                    <motion.span
+                      key={i}
+                      className="text-white select-none"
+                      style={{
+                        fontSize: "clamp(56px, 12vw, 110px)",
+                        fontFamily: "serif",
+                        lineHeight: 1,
+                        textShadow: "0 0 30px rgba(255,255,255,0.5), 0 0 80px rgba(255,255,255,0.15)",
+                      }}
+                      initial={{ opacity: 0, y: 40, scale: 0.7, filter: "blur(12px)" }}
+                      animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                      exit={{ opacity: 0, y: -20, scale: 1.1, filter: "blur(8px)" }}
+                      transition={{
+                        delay: i * 0.08,
+                        duration: 0.6,
+                        ease: [0.16, 1, 0.3, 1],
+                      }}
+                    >
+                      {letter}
+                    </motion.span>
+                  ))}
+                </div>
+
+                {/* Tagline fades under logo */}
+                <motion.p
+                  className="mt-4 text-white/40 uppercase tracking-[0.5em] text-xs font-light"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ delay: 0.5, duration: 0.6 }}
+                >
+                  Creator · Artist · Meme Lord
+                </motion.p>
+
+                {/* Horizontal lines sweep out from center */}
+                <motion.div
+                  className="absolute flex w-full items-center justify-center"
+                  style={{ top: "50%" }}
+                >
+                  <motion.div
+                    className="h-px bg-white/20"
+                    initial={{ width: 0 }}
+                    animate={{ width: "40vw" }}
+                    exit={{ width: 0 }}
+                    transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
+                  />
+                  <div className="mx-4 h-1 w-1 rounded-full bg-white/20" />
+                  <motion.div
+                    className="h-px bg-white/20"
+                    initial={{ width: 0 }}
+                    animate={{ width: "40vw" }}
+                    exit={{ width: 0 }}
+                    transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
+                  />
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* ── LOADING PHASE: ring + small SUBIT ── */}
           <motion.div
             className="relative flex items-center justify-center"
             style={{ width: 260, height: 260 }}
             initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            animate={{
+              opacity: phase === "loading" ? 1 : 0,
+              scale: phase === "loading" ? 1 : 0.6,
+            }}
+            transition={{ duration: phase === "loading" ? 1.2 : 0.4, ease: [0.16, 1, 0.3, 1] }}
           >
             <svg className="absolute inset-0" width="260" height="260" viewBox="0 0 260 260">
               <defs>
@@ -102,28 +197,11 @@ export function LoadingScreen() {
                     <feMergeNode in="SourceGraphic"/>
                   </feMerge>
                 </filter>
-                <filter id="sparkglow" x="-50%" y="-50%" width="200%" height="200%">
-                  <feGaussianBlur stdDeviation="2"/>
-                </filter>
               </defs>
 
-              {/* Outer faint static ring */}
-              <circle
-                cx="130" cy="130" r="120"
-                fill="none"
-                stroke="rgba(255,255,255,0.05)"
-                strokeWidth="1"
-              />
+              <circle cx="130" cy="130" r="120" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
+              <circle cx="130" cy="130" r="108" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>
 
-              {/* Track ring */}
-              <circle
-                cx="130" cy="130" r="108"
-                fill="none"
-                stroke="rgba(255,255,255,0.06)"
-                strokeWidth="1"
-              />
-
-              {/* Progress ring — clean arc */}
               <motion.circle
                 cx="130" cy="130" r="108"
                 fill="none"
@@ -136,7 +214,6 @@ export function LoadingScreen() {
                 transition={{ ease: "easeOut" }}
               />
 
-              {/* Slow rotating arc — elegant sweep */}
               <motion.circle
                 cx="130" cy="130" r="108"
                 fill="none"
@@ -149,7 +226,6 @@ export function LoadingScreen() {
                 style={{ transformOrigin: "130px 130px" }}
               />
 
-              {/* Bright spark — moves fast */}
               <motion.circle
                 cx="130" cy="130" r="108"
                 fill="none"
@@ -163,21 +239,11 @@ export function LoadingScreen() {
                 style={{ transformOrigin: "130px 130px" }}
               />
 
-              {/* Inner subtle ring */}
-              <circle
-                cx="130" cy="130" r="90"
-                fill="none"
-                stroke="rgba(255,255,255,0.03)"
-                strokeWidth="1"
-              />
+              <circle cx="130" cy="130" r="90" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1"/>
             </svg>
 
-            {/* Center content */}
             <div className="relative z-10 flex flex-col items-center gap-3">
-
-              {/* Minimal brackets + SUBIT */}
               <div className="relative flex flex-col items-center gap-1">
-                {/* Top bracket line */}
                 <motion.div
                   className="flex items-center gap-2"
                   initial={{ opacity: 0, y: -8 }}
@@ -189,14 +255,13 @@ export function LoadingScreen() {
                   <div className="h-px w-4 bg-white/25" />
                 </motion.div>
 
-                {/* SUBIT */}
                 <motion.h1
                   className="text-2xl font-light tracking-[0.5em] text-white"
                   style={{
                     textShadow: "0 0 20px rgba(255,255,255,0.4), 0 0 60px rgba(255,255,255,0.1)",
                     fontFamily: "var(--font-geist-sans), sans-serif",
                     letterSpacing: "0.5em",
-                    paddingLeft: "0.5em", // compensate for tracking
+                    paddingLeft: "0.5em",
                   }}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -205,7 +270,6 @@ export function LoadingScreen() {
                   SUBIT
                 </motion.h1>
 
-                {/* Bottom bracket line */}
                 <motion.div
                   className="flex items-center gap-2"
                   initial={{ opacity: 0, y: 8 }}
@@ -218,7 +282,6 @@ export function LoadingScreen() {
                 </motion.div>
               </div>
 
-              {/* Progress counter */}
               <motion.span
                 className="font-light text-white/30 tabular-nums"
                 style={{ fontSize: 11, letterSpacing: "0.2em", fontFamily: "monospace" }}
@@ -231,14 +294,13 @@ export function LoadingScreen() {
             </div>
           </motion.div>
 
-          {/* Bottom minimal line */}
+          {/* Bottom bar */}
           <motion.div
             className="absolute bottom-12 flex flex-col items-center gap-3"
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2 }}
+            animate={{ opacity: phase === "loading" ? 1 : 0 }}
+            transition={{ delay: phase === "loading" ? 1.2 : 0, duration: 0.4 }}
           >
-            {/* Thin progress bar */}
             <div className="h-px w-32 overflow-hidden bg-white/5 rounded-full">
               <motion.div
                 className="h-full bg-white/40 rounded-full"

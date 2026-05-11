@@ -31,7 +31,7 @@ const BASE_ITEMS = [
 const CARD_WIDTH = 280
 const CARD_GAP = 16
 const CARD_STEP = CARD_WIDTH + CARD_GAP
-const AUTO_INTERVAL = 1500  // faster: was 2500
+const AUTO_INTERVAL = 1500
 const TOTAL = BASE_ITEMS.length
 
 const platformIcons: Record<string, React.ComponentType<{ size?: number }>> = {
@@ -109,7 +109,6 @@ export function ContentShowcase() {
     return () => stopAuto()
   }, [startAuto, stopAuto])
 
-  // Mouse drag
   const onMouseDown = (e: React.MouseEvent) => {
     isDragging.current = true
     dragStartX.current = e.clientX
@@ -129,7 +128,6 @@ export function ContentShowcase() {
     startAuto()
   }
 
-  // Touch drag
   const onTouchStart = (e: React.TouchEvent) => {
     isDragging.current = true
     dragStartX.current = e.touches[0].clientX
@@ -206,6 +204,8 @@ export function ContentShowcase() {
             const distance = i - centerIndex
             const isCenter = distance === 0
             const isAdjacent = Math.abs(distance) === 1
+            // Only eagerly load center + adjacent cards; lazy load everything else
+            const isNearby = Math.abs(distance) <= 2
             const PlatformIcon = platformIcons[item.platform]
 
             return (
@@ -239,6 +239,10 @@ export function ContentShowcase() {
                     fill
                     className="object-cover"
                     draggable={false}
+                    // Only eagerly load nearby cards; lazy load far-away ones
+                    loading={isNearby ? "eager" : "lazy"}
+                    // First 3 cards get priority (preloaded in <head>)
+                    priority={i < 3}
                   />
                   <div className="absolute left-3 top-3 rounded-full bg-background/80 p-2 backdrop-blur-sm">
                     <PlatformIcon size={14} />
