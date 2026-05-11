@@ -21,7 +21,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   // Google Search Console verification
   verification: {
-    google: 'wGb7vmCpgA89cUMfTHBulXu_nWB72R7pQlRm0Hwoi5o',
+    google: 'O3mzK2B28rXTv3XH1bqDHQntQ2bhQsdFJ_hR7xYjciE',
   },
 
   // Tab title — shows in Google search results
@@ -41,11 +41,11 @@ export const metadata: Metadata = {
   ],
 
   // Author
-  authors: [{ name: 'SUBIT', url: 'https://subit-three.vercel.app' }],
+  authors: [{ name: 'SUBIT', url: 'https://subit.site' }],
   creator: 'SUBIT',
 
   // Canonical URL — tells Google your main URL
-  metadataBase: new URL('https://subit-three.vercel.app'),
+  metadataBase: new URL('https://subit.site'),
   alternates: {
     canonical: '/',
   },
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'SUBIT | Creator & Meme Lord',
     description: 'Memes, Art & Good Vibes Only. 17-year-old creator from Bangladesh.',
-    url: 'https://subit-three.vercel.app',
+    url: 'https://subit.site',
     siteName: 'SUBIT',
     locale: 'en_US',
     type: 'website',
