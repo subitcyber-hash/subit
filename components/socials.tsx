@@ -122,15 +122,27 @@ export function Socials() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               whileHover={{ scale: 1.02, y: -5 }}
-              className="glass-light card-glow group relative flex items-center gap-4 overflow-hidden rounded-2xl p-6 transition-all duration-300"
+              className="group relative flex items-center gap-4 overflow-hidden rounded-2xl p-6 transition-all duration-300"
+              style={{
+                background: "rgba(255, 255, 255, 0.04)",
+                backdropFilter: "blur(16px)",
+                WebkitBackdropFilter: "blur(16px)",
+                border: "1px solid rgba(255, 255, 255, 0.08)",
+                boxShadow: "0 4px 24px rgba(0, 0, 0, 0.2)",
+              }}
             >
               {/* Gradient glow on hover */}
-              <div className={`absolute inset-0 bg-gradient-to-r ${social.color} opacity-0 transition-opacity duration-300 group-hover:opacity-10`} />
+              <div className={`absolute inset-0 bg-gradient-to-r ${social.color} opacity-0 transition-opacity duration-300 group-hover:opacity-10 rounded-2xl`} />
 
-              {/* Icon */}
-              <div className={`relative z-10 flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${social.color} p-0.5`}>
-                <div className="flex h-full w-full items-center justify-center rounded-[10px] bg-background">
-                  <social.icon size={24} className="text-foreground" />
+              {/* Glassy shimmer border on hover */}
+              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{ border: "1px solid rgba(255,255,255,0.15)" }}
+              />
+
+              {/* Circle Icon */}
+              <div className={`relative z-10 flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${social.color} p-0.5`}>
+                <div className="flex h-full w-full items-center justify-center rounded-full bg-background/90">
+                  <social.icon size={22} className="text-foreground" />
                 </div>
               </div>
 
