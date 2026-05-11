@@ -63,7 +63,7 @@ export function Hero() {
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: "url('/hero-bg.jpg')",
+            backgroundImage: "url('/hero-bg.webp')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             filter: "blur(4px) brightness(0.35)",
