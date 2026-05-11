@@ -34,8 +34,24 @@ export function MusicPlayer() {
   const [expanded, setExpanded] = useState(false)
   const [showPlaylist, setShowPlaylist] = useState(false)
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const playerRef = useRef<HTMLDivElement>(null)
 
   const current = PLAYLIST[currentIndex]
+
+  // Click outside to close
+  useEffect(() => {
+    if (!expanded) return
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (playerRef.current && !playerRef.current.contains(e.target as Node)) {
+        setExpanded(false)
+        setShowPlaylist(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [expanded])
 
   useEffect(() => {
     const audio = new Audio(current.src)
@@ -84,6 +100,7 @@ export function MusicPlayer() {
 
   return (
     <motion.div
+      ref={playerRef}
       className="fixed bottom-6 right-6 z-50"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -102,7 +119,6 @@ export function MusicPlayer() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            {/* Animated bars */}
             <div className="flex items-end gap-0.5 h-4">
               {[1, 2, 3, 4].map(i => (
                 <motion.div
@@ -145,7 +161,7 @@ export function MusicPlayer() {
                 />
               </button>
               <button
-                onClick={() => setExpanded(false)}
+                onClick={() => { setExpanded(false); setShowPlaylist(false) }}
                 className="rounded-full p-1 text-muted-foreground hover:text-foreground transition-colors"
               >
                 <X size={14} />
@@ -255,7 +271,7 @@ export function MusicPlayer() {
                 </motion.button>
               </div>
 
-              <div className="w-8" /> {/* spacer */}
+              <div className="w-8" />
             </div>
           </motion.div>
         )}
