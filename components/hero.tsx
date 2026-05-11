@@ -189,12 +189,12 @@ export function Hero() {
               href={social.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="glass-light flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white/80 backdrop-blur-md transition-all hover:bg-white/10 hover:text-white"
+              className="glass-light flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white/80 backdrop-blur-md transition-colors duration-100 hover:bg-white/10 hover:text-white"
               whileHover={{ scale: 1.08, y: -3, boxShadow: "0 8px 30px rgba(255,255,255,0.1)" }}
               whileTap={{ scale: 0.95 }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 + i * 0.1 }}
+              transition={{ delay: 0.8 + i * 0.1, type: "spring", stiffness: 400, damping: 20 }}
             >
               <social.icon size={18} />
               {social.label}
