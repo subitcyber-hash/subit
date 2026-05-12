@@ -60,7 +60,7 @@ export function Navbar() {
               : "0 4px 16px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.06)",
           }}
           transition={{ duration: 0.3 }}
-          className="flex items-center justify-between gap-6 rounded-full px-4 py-2.5 md:px-6"
+          className="flex items-center justify-between gap-6 rounded-full px-4 py-2.5 md:px-6 mx-auto"
           style={{
             background: "rgba(20,20,20,0.7)",
             backdropFilter: "blur(40px)",
