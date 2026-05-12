@@ -84,7 +84,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'SUBIT | Creator & Meme Lord',
     description: 'Memes, Art & Good Vibes Only. 17-year-old creator from Bangladesh.',
-    creator: '@@Fuegoweb3',
+    creator: '@Fuegoweb3',
     images: ['/profile.jpg'],
   },
 }
