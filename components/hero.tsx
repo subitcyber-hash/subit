@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { Instagram, Facebook, ChevronDown } from "lucide-react"
+import { Instagram, ChevronDown } from "lucide-react"
 import { useTypingAnimation } from "@/hooks/use-typing"
 
 function WhatsAppIcon({ size = 24 }: { size?: number }) {
@@ -15,35 +15,23 @@ function WhatsAppIcon({ size = 24 }: { size?: number }) {
 
 const socialLinks = [
   { icon: Instagram,    href: "https://instagram.com/hexed.subit", label: "Instagram" },
-  { icon: WhatsAppIcon, href: "https://wa.me/8801732875763",         label: "WhatsApp" },
+  { icon: WhatsAppIcon, href: "https://wa.me/8801732875763",        label: "WhatsApp" },
 ]
 
+// Reduced from 25 → 12 particles for better performance
 const PARTICLES = [
-  { x: 120,  y: 340, drift: -80,  duration: 6.2,  size: 2, opacity: 0.4 },
-  { x: 340,  y: 120, drift: -140, duration: 8.1,  size: 1, opacity: 0.3 },
-  { x: 560,  y: 480, drift: -60,  duration: 5.4,  size: 3, opacity: 0.5 },
-  { x: 780,  y: 200, drift: -180, duration: 9.0,  size: 1, opacity: 0.2 },
-  { x: 200,  y: 600, drift: -100, duration: 7.3,  size: 2, opacity: 0.4 },
-  { x: 900,  y: 350, drift: -120, duration: 6.8,  size: 1, opacity: 0.3 },
-  { x: 450,  y: 720, drift: -90,  duration: 8.5,  size: 2, opacity: 0.5 },
-  { x: 670,  y: 150, drift: -160, duration: 5.9,  size: 3, opacity: 0.3 },
-  { x: 310,  y: 420, drift: -70,  duration: 7.1,  size: 1, opacity: 0.4 },
-  { x: 1050, y: 550, drift: -110, duration: 6.4,  size: 2, opacity: 0.3 },
-  { x: 180,  y: 260, drift: -130, duration: 9.2,  size: 1, opacity: 0.5 },
-  { x: 820,  y: 430, drift: -85,  duration: 5.7,  size: 3, opacity: 0.2 },
-  { x: 500,  y: 310, drift: -150, duration: 8.8,  size: 2, opacity: 0.4 },
-  { x: 740,  y: 640, drift: -65,  duration: 6.0,  size: 1, opacity: 0.3 },
-  { x: 90,   y: 510, drift: -195, duration: 7.6,  size: 2, opacity: 0.5 },
-  { x: 1100, y: 220, drift: -75,  duration: 5.3,  size: 1, opacity: 0.3 },
-  { x: 620,  y: 580, drift: -105, duration: 8.3,  size: 3, opacity: 0.4 },
-  { x: 260,  y: 170, drift: -145, duration: 9.5,  size: 1, opacity: 0.2 },
-  { x: 970,  y: 680, drift: -55,  duration: 6.7,  size: 2, opacity: 0.4 },
-  { x: 420,  y: 390, drift: -125, duration: 7.9,  size: 1, opacity: 0.3 },
-  { x: 150,  y: 450, drift: -95,  duration: 8.0,  size: 2, opacity: 0.5 },
-  { x: 850,  y: 280, drift: -170, duration: 7.4,  size: 1, opacity: 0.3 },
-  { x: 380,  y: 550, drift: -85,  duration: 6.1,  size: 3, opacity: 0.4 },
-  { x: 700,  y: 400, drift: -115, duration: 9.3,  size: 1, opacity: 0.2 },
-  { x: 1000, y: 150, drift: -135, duration: 5.8,  size: 2, opacity: 0.4 },
+  { x: 120,  y: 340, drift: -80,  duration: 6.2, size: 2, opacity: 0.4 },
+  { x: 340,  y: 120, drift: -140, duration: 8.1, size: 1, opacity: 0.3 },
+  { x: 560,  y: 480, drift: -60,  duration: 5.4, size: 3, opacity: 0.5 },
+  { x: 780,  y: 200, drift: -180, duration: 9.0, size: 1, opacity: 0.2 },
+  { x: 200,  y: 600, drift: -100, duration: 7.3, size: 2, opacity: 0.4 },
+  { x: 900,  y: 350, drift: -120, duration: 6.8, size: 1, opacity: 0.3 },
+  { x: 450,  y: 720, drift: -90,  duration: 8.5, size: 2, opacity: 0.5 },
+  { x: 670,  y: 150, drift: -160, duration: 5.9, size: 3, opacity: 0.3 },
+  { x: 310,  y: 420, drift: -70,  duration: 7.1, size: 1, opacity: 0.4 },
+  { x: 1050, y: 550, drift: -110, duration: 6.4, size: 2, opacity: 0.3 },
+  { x: 180,  y: 260, drift: -130, duration: 9.2, size: 1, opacity: 0.5 },
+  { x: 820,  y: 430, drift: -85,  duration: 5.7, size: 3, opacity: 0.2 },
 ]
 
 export function Hero() {
@@ -59,7 +47,7 @@ export function Hero() {
       {/* ── Background Layer ── */}
       <div className="absolute inset-0">
 
-        {/* Image fallback (mobile) */}
+        {/* Static image fallback (always shown, mobile-first) */}
         <div
           className="absolute inset-0"
           style={{
@@ -71,7 +59,7 @@ export function Hero() {
           }}
         />
 
-        {/* Video with slow drift movement */}
+        {/* Video — desktop only, preload="none" so it doesn't block page load */}
         <motion.div
           className="absolute inset-0 hidden sm:block"
           animate={{ scale: [1.05, 1.12, 1.05], x: [0, 10, 0], y: [0, -8, 0] }}
@@ -82,51 +70,56 @@ export function Hero() {
             loop
             muted
             playsInline
+            preload="none"
             className="h-full w-full object-cover"
             style={{ filter: "blur(3px) brightness(0.35)" }}
           >
-            <source src=".mp4" type="video/mp4" />
+            <source src="/hero-bg.mp4" type="video/mp4" />
           </video>
         </motion.div>
 
-        {/* Base dark overlay */}
+        {/* Dark overlays */}
         <div className="absolute inset-0 bg-black/50" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80" />
 
-        {/* ── Animated Glow Orbs ── */}
+        {/* ── Glow Orbs ── */}
         <motion.div
           className="absolute -left-60 -top-60 h-[500px] w-[500px] rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 70%)" }}
+          style={{ background: "radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 70%)", willChange: "transform" }}
           animate={{ scale: [1, 1.3, 1], x: [0, 40, 0], y: [0, 30, 0], opacity: [0.6, 1, 0.6] }}
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
           className="absolute -bottom-60 -right-60 h-[600px] w-[600px] rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%)" }}
+          style={{ background: "radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%)", willChange: "transform" }}
           animate={{ scale: [1.2, 1, 1.2], x: [0, -30, 0], y: [0, -20, 0], opacity: [0.5, 0.9, 0.5] }}
           transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
         />
-        {/* Center pulse glow behind title */}
         <motion.div
           className="absolute left-1/2 top-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 70%)" }}
+          style={{ background: "radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 70%)", willChange: "transform" }}
           animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0.8, 0.3] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         />
-        {/* Top-right warm glow */}
         <motion.div
           className="absolute -right-40 top-20 h-[400px] w-[400px] rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(251,191,36,0.08) 0%, transparent 70%)" }}
+          style={{ background: "radial-gradient(circle, rgba(251,191,36,0.08) 0%, transparent 70%)", willChange: "transform" }}
           animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.7, 0.3] }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
         />
 
-        {/* ── Floating Particles ── */}
+        {/* ── Particles (only after mount, GPU-accelerated) ── */}
         {mounted && PARTICLES.map((p, i) => (
           <motion.div
             key={i}
             className="absolute rounded-full bg-white"
-            style={{ width: p.size, height: p.size, left: p.x, top: p.y }}
+            style={{
+              width: p.size,
+              height: p.size,
+              left: p.x,
+              top: p.y,
+              willChange: "transform, opacity",
+            }}
             animate={{
               y: [p.y, p.y + p.drift, p.y],
               x: [p.x, p.x + (i % 2 === 0 ? 20 : -20), p.x],
@@ -136,13 +129,6 @@ export function Hero() {
             transition={{ duration: p.duration, repeat: Infinity, ease: "easeInOut", delay: i * 0.15 }}
           />
         ))}
-
-        {/* Cinematic scan line */}
-        <motion.div
-          className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"
-          animate={{ top: ["0%", "100%"] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-        />
       </div>
 
       {/* ── Main Content ── */}
@@ -171,11 +157,11 @@ export function Hero() {
           𝔖𝔘𝔅ℑ𝔗
         </motion.h1>
 
-        {/* Subtitle */}
+        {/* Typing subtitle */}
         <p className="mb-10 text-lg text-white/50">
-            {typedText}<span className="animate-pulse">|</span>
+          {typedText}<span className="animate-pulse">|</span>
         </p>
-          
+
         {/* Social CTAs */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

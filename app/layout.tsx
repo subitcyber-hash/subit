@@ -110,7 +110,6 @@ export default function RootLayout({
         <MusicPlayer />
         <VisitCounter />
         <Analytics/>
-        {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
   )
