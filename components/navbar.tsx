@@ -51,7 +51,7 @@ export function Navbar() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="fixed top-4 left-0 right-0 z-50 px-4"
+        className="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-4 w-[calc(100vw-32px)] max-w-[900px]"
       >
         <motion.div
           animate={{
@@ -60,7 +60,7 @@ export function Navbar() {
               : "0 4px 16px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.06)",
           }}
           transition={{ duration: 0.3 }}
-          className="flex items-center justify-between gap-6 rounded-full px-4 py-2.5 md:px-6 mx-auto"
+          className="flex items-center justify-between gap-6 rounded-full px-4 py-2.5 md:px-6 w-full"
           style={{
             background: "rgba(20,20,20,0.7)",
             backdropFilter: "blur(40px)",
