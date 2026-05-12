@@ -269,8 +269,8 @@ export function About() {
                   <span className="relative inline-flex h-3 w-3 rounded-full bg-green-400" />
                 </div>
                 <div>
-                  <p className="font-semibold text-foreground text-sm">Available for collabs</p>
-                  <p className="text-xs text-muted-foreground">DM me on Instagram</p>
+                  <p className="font-semibold text-foreground text-sm">Looking For Bf</p>
+                  <p className="text-xs text-muted-foreground">Slide into my DMs</p>
                 </div>
               </div>
               <Instagram size={18} className="text-muted-foreground shrink-0" />
