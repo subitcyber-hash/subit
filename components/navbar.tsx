@@ -62,14 +62,12 @@ export function Navbar() {
           transition={{ duration: 0.3 }}
           className="flex items-center justify-between gap-6 rounded-full px-4 py-2.5 md:px-6"
           style={{
-            background: scrolled
-              ? "rgba(10,10,10,0.85)"
-              : "rgba(10,10,10,0.6)",
-            backdropFilter: "blur(20px)",
-            WebkitBackdropFilter: "blur(20px)",
-            border: "1px solid rgba(255,255,255,0.08)",
-            width: "fit-content",
-            maxWidth: "calc(100vw - 32px)",
+            background: "rgba(20,20,20,0.7)",
+            backdropFilter: "blur(40px)",
+            WebkitBackdropFilter: "blur(40px)",
+            border: "1px solid rgba(255,255,255,0.12)",
+            width: "calc(100vw - 32px)",
+            maxWidth: "900px",
           }}
         >
           {/* Logo */}
