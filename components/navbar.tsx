@@ -56,21 +56,19 @@ export function Navbar() {
         <motion.div
           animate={{
             boxShadow: scrolled
-              ? "0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.08)"
+              ? "0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1)"
               : "0 4px 16px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.06)",
           }}
           transition={{ duration: 0.3 }}
-          className="flex items-center justify-between gap-6 rounded-full px-4 py-2.5 md:px-6 w-full"
+          className="grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-full px-5 py-2.5"
           style={{
-            background: "rgba(20,20,20,0.7)",
+            background: "rgba(20,20,20,0.75)",
             backdropFilter: "blur(40px)",
             WebkitBackdropFilter: "blur(40px)",
             border: "1px solid rgba(255,255,255,0.12)",
-            width: "calc(100vw - 32px)",
-            maxWidth: "900px",
           }}
         >
-          {/* Logo */}
+          {/* Left — Logo */}
           <motion.a
             href="#home"
             onClick={closeMenu}
@@ -81,19 +79,18 @@ export function Navbar() {
             ѕυвιт
           </motion.a>
 
-          {/* Desktop nav items */}
-          <div className="hidden items-center gap-1 md:flex">
+          {/* Center — Desktop nav */}
+          <div className="hidden md:flex items-center justify-center gap-1">
             {navItems.map((item) => (
               <a
                 key={item.name}
                 href={item.href}
-                className={`relative rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200 ${
+                className={`relative rounded-full px-4 py-1.5 text-sm font-medium transition-colors duration-150 ${
                   activeSection === item.href.slice(1)
                     ? "text-foreground"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                {/* Active pill background */}
                 {activeSection === item.href.slice(1) && (
                   <motion.div
                     layoutId="activePill"
@@ -106,38 +103,40 @@ export function Navbar() {
             ))}
           </div>
 
-          {/* Hamburger (mobile) */}
-          <motion.button
-            whileTap={{ scale: 0.85 }}
-            className="flex h-8 w-8 items-center justify-center rounded-full text-foreground md:hidden"
-            style={{ background: "rgba(255,255,255,0.08)" }}
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
-          >
-            <AnimatePresence mode="wait">
-              {isOpen ? (
-                <motion.span
-                  key="close"
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <X size={16} />
-                </motion.span>
-              ) : (
-                <motion.span
-                  key="menu"
-                  initial={{ rotate: 90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: -90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <Menu size={16} />
-                </motion.span>
-              )}
-            </AnimatePresence>
-          </motion.button>
+          {/* Right — Hamburger (mobile) / empty spacer (desktop) */}
+          <div className="flex justify-end">
+            <motion.button
+              whileTap={{ scale: 0.85 }}
+              className="flex h-8 w-8 items-center justify-center rounded-full text-foreground md:hidden"
+              style={{ background: "rgba(255,255,255,0.08)" }}
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label="Toggle menu"
+            >
+              <AnimatePresence mode="wait">
+                {isOpen ? (
+                  <motion.span
+                    key="close"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <X size={16} />
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key="menu"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Menu size={16} />
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </motion.button>
+          </div>
         </motion.div>
       </motion.nav>
 
@@ -145,7 +144,6 @@ export function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <>
-            {/* Backdrop */}
             <motion.div
               key="backdrop"
               initial={{ opacity: 0 }}
@@ -156,7 +154,6 @@ export function Navbar() {
               onClick={closeMenu}
             />
 
-            {/* Slide panel */}
             <motion.div
               key="panel"
               initial={{ x: "100%" }}
