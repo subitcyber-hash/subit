@@ -251,7 +251,7 @@ export function About() {
 
             {/* Available for collabs button */}
             <motion.a
-              href="https://instagram.com/hexed.subit"
+              href="https://ig.me/m/hexed.subit"
               target="_blank"
               rel="noopener noreferrer"
               initial={{ opacity: 0, y: 20 }}
