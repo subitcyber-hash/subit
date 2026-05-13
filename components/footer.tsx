@@ -50,7 +50,7 @@ const socialLinks = [
   { icon: Twitter,     href: "https://twitter.com/Fuegoweb3",                label: "Twitter" },
   { icon: PinterestIcon, href: "https://pinterest.com/subitfuego",            label: "Pinterest" },
   { icon: TelegramIcon,  href: "https://t.me/SubitFuego",                     label: "Telegram" },
-  { icon: DiscordIcon,   href: "https://discord.gg/jFNuS6uusB",         label: "Discord" },
+  { icon: DiscordIcon,   href: "https://discord.gg/uF8aD85Zks",         label: "Discord" },
   { icon: WhatsAppIcon,  href: "https://wa.me/8801732875763",           label: "WhatsApp" },
 ]
 

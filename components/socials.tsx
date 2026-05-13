@@ -78,9 +78,9 @@ const socials = [
   },
   {
     name: "Discord",
-    handle: "Oil Up",
+    handle: "echo",
     icon: DiscordIcon,
-    href: "https://discord.gg/jFNuS6uusB",
+    href: "https://discord.gg/uF8aD85Zks",
     color: "from-indigo-500 to-purple-500",
     description: "Join the community chat",
   },
