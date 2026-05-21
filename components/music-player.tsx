@@ -27,12 +27,13 @@ function formatTime(s: number) {
 export function MusicPlayer() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [isMuted, setIsMuted] = useState(false)
+  const [isMuted, setIsMuted] = useState(true) // start muted
   const [progress, setProgress] = useState(0)
   const [duration, setDuration] = useState(0)
   const [currentTime, setCurrentTime] = useState(0)
   const [expanded, setExpanded] = useState(false)
   const [showPlaylist, setShowPlaylist] = useState(false)
+  const [showUnmuteHint, setShowUnmuteHint] = useState(true) // show hint on load
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const playerRef = useRef<HTMLDivElement>(null)
 
@@ -41,18 +42,17 @@ export function MusicPlayer() {
   // Click outside to close
   useEffect(() => {
     if (!expanded) return
-
     const handleClickOutside = (e: MouseEvent) => {
       if (playerRef.current && !playerRef.current.contains(e.target as Node)) {
         setExpanded(false)
         setShowPlaylist(false)
       }
     }
-
     document.addEventListener("mousedown", handleClickOutside)
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [expanded])
 
+  // Setup audio on track change
   useEffect(() => {
     const audio = new Audio(current.src)
     audio.volume = isMuted ? 0 : 0.7
@@ -65,7 +65,12 @@ export function MusicPlayer() {
     })
     audio.addEventListener("ended", () => nextTrack())
 
-    if (isPlaying) audio.play().catch(() => {})
+    // Autoplay muted on first load
+    audio.play().then(() => {
+      setIsPlaying(true)
+    }).catch(() => {
+      // Browser blocked autoplay — that's fine, user can click play
+    })
 
     return () => {
       audio.pause()
@@ -83,6 +88,12 @@ export function MusicPlayer() {
     if (audioRef.current) audioRef.current.volume = isMuted ? 0 : 0.7
   }, [isMuted])
 
+  // Hide unmute hint after 5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => setShowUnmuteHint(false), 5000)
+    return () => clearTimeout(timer)
+  }, [])
+
   const nextTrack = useCallback(() => {
     setCurrentIndex(i => (i + 1) % PLAYLIST.length)
   }, [])
@@ -98,6 +109,11 @@ export function MusicPlayer() {
     audioRef.current.currentTime = pct * duration
   }
 
+  const handleUnmute = () => {
+    setIsMuted(false)
+    setShowUnmuteHint(false)
+  }
+
   return (
     <motion.div
       ref={playerRef}
@@ -106,6 +122,35 @@ export function MusicPlayer() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 1.5 }}
     >
+      {/* Unmute hint tooltip — shows on load for 5 seconds */}
+      <AnimatePresence>
+        {showUnmuteHint && isMuted && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.9 }}
+            transition={{ duration: 0.3 }}
+            className="absolute bottom-full right-0 mb-3 flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium text-white whitespace-nowrap"
+            style={{
+              background: "rgba(20,20,20,0.9)",
+              backdropFilter: "blur(12px)",
+              border: "1px solid rgba(255,255,255,0.12)",
+            }}
+          >
+            <VolumeX size={12} className="text-white/60" />
+            Music playing — tap to unmute
+            <motion.button
+              onClick={handleUnmute}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="ml-1 rounded-full bg-white/15 px-2 py-0.5 text-white hover:bg-white/25 transition-colors"
+            >
+              Unmute
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <AnimatePresence mode="wait">
         {!expanded ? (
           /* ── Collapsed pill ── */
@@ -124,7 +169,7 @@ export function MusicPlayer() {
                 <motion.div
                   key={i}
                   className="w-1 rounded-full bg-foreground"
-                  animate={isPlaying
+                  animate={isPlaying && !isMuted
                     ? { height: ["4px", "16px", "8px", "14px", "4px"] }
                     : { height: "4px" }
                   }
@@ -136,7 +181,11 @@ export function MusicPlayer() {
               <p className="text-xs font-semibold text-foreground truncate">{current.title}</p>
               <p className="text-[10px] text-muted-foreground truncate">{current.artist}</p>
             </div>
-            <Music size={14} className="text-muted-foreground" />
+            {/* Show muted indicator on pill */}
+            {isMuted
+              ? <VolumeX size={14} className="text-muted-foreground" />
+              : <Music size={14} className="text-muted-foreground" />
+            }
           </motion.button>
         ) : (
           /* ── Expanded player ── */
@@ -168,6 +217,33 @@ export function MusicPlayer() {
               </button>
             </div>
 
+            {/* Muted banner inside player */}
+            <AnimatePresence>
+              {isMuted && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="overflow-hidden mb-3"
+                >
+                  <div className="flex items-center justify-between rounded-xl bg-foreground/5 px-3 py-2">
+                    <div className="flex items-center gap-2">
+                      <VolumeX size={13} className="text-muted-foreground" />
+                      <span className="text-xs text-muted-foreground">Muted</span>
+                    </div>
+                    <motion.button
+                      onClick={handleUnmute}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="rounded-full bg-foreground px-3 py-1 text-[10px] font-semibold text-background"
+                    >
+                      Unmute
+                    </motion.button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             {/* Playlist */}
             <AnimatePresence>
               {showPlaylist && (
@@ -197,13 +273,13 @@ export function MusicPlayer() {
               )}
             </AnimatePresence>
 
-            {/* Animated bars visual */}
+            {/* Animated bars */}
             <div className="mb-4 flex items-end justify-center gap-1 h-8">
               {[1,2,3,4,5,6,7,8].map(i => (
                 <motion.div
                   key={i}
                   className="w-1.5 rounded-full bg-foreground/60"
-                  animate={isPlaying
+                  animate={isPlaying && !isMuted
                     ? { height: [`${4 + (i%3)*6}px`, `${16 + (i%4)*8}px`, `${4 + (i%3)*6}px`] }
                     : { height: "4px" }
                   }
