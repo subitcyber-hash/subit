@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Music, X, ChevronUp } from "lucide-react"
+import { id } from "date-fns/locale"
 
 const PLAYLIST = [
   { id: 1,  title: "Iris",                    artist: "Pastel Ghost",              src: "/music/01-iris.m4a" },
@@ -15,6 +16,10 @@ const PLAYLIST = [
   { id: 8,  title: "Nope You're Too Late",    artist: "i already died",            src: "/music/08-nope.m4a" },
   { id: 9,  title: "The Less I Know Better",  artist: "Tame Impala",               src: "/music/09-less-i-know.m4a" },
   { id: 10, title: "Tesla",                   artist: "Eyedress & zzzahara",       src: "/music/10-tesla.m4a" },
+  { id: 11, title: "shedon tluvyou",          artist: "jdmfessh",                  src: "/music/11-shedon'tluvyou.m4a" },
+  { id: 12, title: "Tek It (Sped Up)",        artist: "Cafuné",                    src: "/music/12-Tek It.m4a" },
+  { id: 13, title: "Doubt",                   artist: "twenty one pilots",         src: "/music/13-doubt.m4a" },
+  { id: 14, title: "Obsessed (Remix)",        artist: "Mariah Carey",              src: "/music/14-obsessed.m4a" },
 ]
 
 function formatTime(s: number) {
