@@ -3,23 +3,22 @@
 import { useState, useRef, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Music, X, ChevronUp } from "lucide-react"
-import { id } from "date-fns/locale"
 
 const PLAYLIST = [
-  { id: 1,  title: "Iris",                    artist: "Pastel Ghost",              src: "/music/01-iris.m4a" },
-  { id: 2,  title: "Fever (Slowed & Reverb)", artist: "Buckshot & Fakemink",       src: "/music/02-fever.m4a" },
-  { id: 3,  title: "Agora Hills",             artist: "Doja Cat",                  src: "/music/03-agora-hills.m4a" },
-  { id: 4,  title: "Faded (Slowed Remix)",    artist: "Alan Walker",               src: "/music/04-faded.m4a" },
-  { id: 5,  title: "Impostor Syndrome",       artist: "Sidney Gish",               src: "/music/05-impostor.m4a" },
-  { id: 6,  title: "Nuts (feat. Rainy Bear)", artist: "Lil Peep",                  src: "/music/06-nuts.m4a" },
-  { id: 7,  title: "Welcome and Goodbye",     artist: "Dream Ivory",               src: "/music/07-welcome.m4a" },
-  { id: 8,  title: "Nope You're Too Late",    artist: "i already died",            src: "/music/08-nope.m4a" },
-  { id: 9,  title: "The Less I Know Better",  artist: "Tame Impala",               src: "/music/09-less-i-know.m4a" },
-  { id: 10, title: "Tesla",                   artist: "Eyedress & zzzahara",       src: "/music/10-tesla.m4a" },
-  { id: 11, title: "shedon tluvyou",          artist: "jdmfessh",                  src: "/music/11-shedon'tluvyou.m4a" },
-  { id: 12, title: "Tek It (Sped Up)",        artist: "Cafuné",                    src: "/music/12-Tek It.m4a" },
-  { id: 13, title: "Doubt",                   artist: "twenty one pilots",         src: "/music/13-doubt.m4a" },
-  { id: 14, title: "Obsessed (Remix)",        artist: "Mariah Carey",              src: "/music/14-obsessed.m4a" },
+  { id: 1,  title: "Iris",                    artist: "Pastel Ghost",        src: "/music/01-iris.m4a" },
+  { id: 2,  title: "Fever (Slowed & Reverb)", artist: "Buckshot & Fakemink", src: "/music/02-fever.m4a" },
+  { id: 3,  title: "Agora Hills",             artist: "Doja Cat",            src: "/music/03-agora-hills.m4a" },
+  { id: 4,  title: "Faded (Slowed Remix)",    artist: "Alan Walker",         src: "/music/04-faded.m4a" },
+  { id: 5,  title: "Impostor Syndrome",       artist: "Sidney Gish",         src: "/music/05-impostor.m4a" },
+  { id: 6,  title: "Nuts (feat. Rainy Bear)", artist: "Lil Peep",            src: "/music/06-nuts.m4a" },
+  { id: 7,  title: "Welcome and Goodbye",     artist: "Dream Ivory",         src: "/music/07-welcome.m4a" },
+  { id: 8,  title: "Nope You're Too Late",    artist: "i already died",      src: "/music/08-nope.m4a" },
+  { id: 9,  title: "The Less I Know Better",  artist: "Tame Impala",         src: "/music/09-less-i-know.m4a" },
+  { id: 10, title: "Tesla",                   artist: "Eyedress & zzzahara", src: "/music/10-tesla.m4a" },
+  { id: 11, title: "shedon tluvyou",          artist: "jdmfessh",            src: "/music/11-shedon'tluvyou.m4a" },
+  { id: 12, title: "Tek It (Sped Up)",        artist: "Cafuné",              src: "/music/12-Tek It.m4a" },
+  { id: 13, title: "Doubt",                   artist: "twenty one pilots",   src: "/music/13-doubt.m4a" },
+  { id: 14, title: "Obsessed (Remix)",        artist: "Mariah Carey",        src: "/music/14-obsessed.m4a" },
 ]
 
 function formatTime(s: number) {
@@ -32,13 +31,13 @@ function formatTime(s: number) {
 export function MusicPlayer() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [isMuted, setIsMuted] = useState(true) // start muted
+  const [isMuted, setIsMuted] = useState(true)
   const [progress, setProgress] = useState(0)
   const [duration, setDuration] = useState(0)
   const [currentTime, setCurrentTime] = useState(0)
   const [expanded, setExpanded] = useState(false)
   const [showPlaylist, setShowPlaylist] = useState(false)
-  const [showUnmuteHint, setShowUnmuteHint] = useState(true) // show hint on load
+  const [showUnmuteHint, setShowUnmuteHint] = useState(true)
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const playerRef = useRef<HTMLDivElement>(null)
 
@@ -70,12 +69,9 @@ export function MusicPlayer() {
     })
     audio.addEventListener("ended", () => nextTrack())
 
-    // Autoplay muted on first load
     audio.play().then(() => {
       setIsPlaying(true)
-    }).catch(() => {
-      // Browser blocked autoplay — that's fine, user can click play
-    })
+    }).catch(() => {})
 
     return () => {
       audio.pause()
@@ -127,7 +123,7 @@ export function MusicPlayer() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 1.5 }}
     >
-      {/* Unmute hint tooltip — shows on load for 5 seconds */}
+      {/* Unmute hint tooltip */}
       <AnimatePresence>
         {showUnmuteHint && isMuted && (
           <motion.div
@@ -186,7 +182,6 @@ export function MusicPlayer() {
               <p className="text-xs font-semibold text-foreground truncate">{current.title}</p>
               <p className="text-[10px] text-muted-foreground truncate">{current.artist}</p>
             </div>
-            {/* Show muted indicator on pill */}
             {isMuted
               ? <VolumeX size={14} className="text-muted-foreground" />
               : <Music size={14} className="text-muted-foreground" />
@@ -222,7 +217,7 @@ export function MusicPlayer() {
               </button>
             </div>
 
-            {/* Muted banner inside player */}
+            {/* Muted banner */}
             <AnimatePresence>
               {isMuted && (
                 <motion.div
