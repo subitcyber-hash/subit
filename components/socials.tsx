@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Instagram, Youtube, Facebook, Twitter, ExternalLink } from "lucide-react"
+import { Facebook, Twitter, ExternalLink } from "lucide-react"
 
 function TikTokIcon({ size = 24 }: { size?: number }) {
   return (
@@ -96,7 +96,7 @@ export function Socials() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6 }}
           className="mb-12 text-center"
         >
           <span className="mb-2 block text-sm font-medium uppercase tracking-widest text-muted-foreground">
@@ -117,27 +117,22 @@ export function Socials() {
               href={social.href}
               target="_blank"
               rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ scale: 1.02, y: -5 }}
-              className="group relative flex items-center gap-4 overflow-hidden rounded-2xl p-6 transition-all duration-300"
+              // Removed stagger delay — all cards animate at same time
+              transition={{ duration: 0.4 }}
+              whileHover={{ scale: 1.02, y: -4 }}
+              className="group relative flex items-center gap-4 overflow-hidden rounded-2xl p-6 transition-colors duration-200"
               style={{
-                background: "rgba(255, 255, 255, 0.04)",
-                backdropFilter: "blur(16px)",
-                WebkitBackdropFilter: "blur(16px)",
+                // Removed backdropFilter blur — biggest perf fix
+                background: "rgba(255, 255, 255, 0.05)",
                 border: "1px solid rgba(255, 255, 255, 0.08)",
-                boxShadow: "0 4px 24px rgba(0, 0, 0, 0.2)",
+                willChange: "transform",
               }}
             >
-              {/* Gradient glow on hover */}
-              <div className={`absolute inset-0 bg-gradient-to-r ${social.color} opacity-0 transition-opacity duration-300 group-hover:opacity-10 rounded-2xl`} />
-
-              {/* Glassy shimmer border on hover */}
-              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                style={{ border: "1px solid rgba(255,255,255,0.15)" }}
-              />
+              {/* Hover gradient — CSS only */}
+              <div className={`absolute inset-0 bg-gradient-to-r ${social.color} opacity-0 transition-opacity duration-200 group-hover:opacity-8 rounded-2xl`} />
 
               {/* Circle Icon */}
               <div className={`relative z-10 flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${social.color} p-0.5`}>
