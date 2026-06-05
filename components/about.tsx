@@ -63,7 +63,7 @@ function FlipCard() {
           style={{ backfaceVisibility: "hidden" }}
         >
           <Image
-            src="/profile.jpg"
+            src="/profile 1.webp"
             alt="SUBIT"
             fill
             className="object-cover object-top"
@@ -83,7 +83,7 @@ function FlipCard() {
           style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
         >
           <Image
-            src="/profile2.jpg"
+            src="/profile 2.webp"
             alt="SUBIT 2"
             fill
             className="object-cover object-top"
