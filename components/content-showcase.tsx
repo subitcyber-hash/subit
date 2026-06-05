@@ -31,7 +31,7 @@ const BASE_ITEMS = [
 const CARD_WIDTH = 280
 const CARD_GAP = 16
 const CARD_STEP = CARD_WIDTH + CARD_GAP
-const AUTO_INTERVAL = 1500
+const AUTO_INTERVAL = 2500 // slower — was 1500
 const TOTAL = BASE_ITEMS.length
 
 const platformIcons: Record<string, React.ComponentType<{ size?: number }>> = {
@@ -74,72 +74,35 @@ function Lightbox({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.25 }}
+      transition={{ duration: 0.2 }}
     >
-      {/* Backdrop — click to close */}
-      <motion.div
-        className="absolute inset-0 bg-black/90 backdrop-blur-md"
-        onClick={onClose}
-      />
-
-      {/* Close */}
-      <button
-        onClick={onClose}
-        className="absolute top-6 right-6 z-10 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 transition-colors"
-      >
+      <motion.div className="absolute inset-0 bg-black/90 backdrop-blur-md" onClick={onClose} />
+      <button onClick={onClose} className="absolute top-6 right-6 z-10 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 transition-colors">
         <X size={20} />
       </button>
-
-      {/* Prev */}
-      <button
-        onClick={onPrev}
-        className="absolute left-4 sm:left-8 z-10 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 transition-colors"
-      >
+      <button onClick={onPrev} className="absolute left-4 sm:left-8 z-10 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 transition-colors">
         <ChevronLeft size={24} />
       </button>
-
-      {/* Next */}
-      <button
-        onClick={onNext}
-        className="absolute right-4 sm:right-8 z-10 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 transition-colors"
-      >
+      <button onClick={onNext} className="absolute right-4 sm:right-8 z-10 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 transition-colors">
         <ChevronRight size={24} />
       </button>
 
-      {/* Image card */}
       <motion.div
         key={item.id}
         className="relative z-10 mx-20 flex flex-col items-center gap-4"
-        initial={{ scale: 0.85, opacity: 0, y: 20 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.85, opacity: 0, y: 20 }}
-        transition={{ type: "spring", stiffness: 320, damping: 28 }}
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        transition={{ duration: 0.2 }}
       >
-        <div
-          className="relative overflow-hidden rounded-2xl shadow-2xl"
-          style={{
-            width: "min(85vw, 520px)",
-            aspectRatio: "1 / 1",
-          }}
-        >
-          <Image
-            src={item.image}
-            alt={`meme ${item.id}`}
-            fill
-            className="object-cover"
-            priority
-          />
-          {/* Platform badge */}
+        <div className="relative overflow-hidden rounded-2xl shadow-2xl" style={{ width: "min(85vw, 520px)", aspectRatio: "1 / 1" }}>
+          <Image src={item.image} alt={`meme ${item.id}`} fill className="object-cover" priority />
           <div className="absolute left-3 top-3 flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 backdrop-blur-sm">
             <PlatformIcon size={12} />
             <span className="text-xs text-white capitalize">{item.platform}</span>
           </div>
         </div>
-
-        {/* Counter */}
-        <p className="text-sm text-white/40 tabular-nums">
-          {item.id} / {BASE_ITEMS.length}
-        </p>
+        <p className="text-sm text-white/40 tabular-nums">{item.id} / {BASE_ITEMS.length}</p>
       </motion.div>
     </motion.div>
   )
@@ -166,9 +129,9 @@ export function ContentShowcase() {
     const target = -(index * CARD_STEP)
     animate(x, target, {
       type: "spring",
-      stiffness: 320,
-      damping: 32,
-      mass: 0.6,
+      stiffness: 260, // softer spring = less CPU
+      damping: 30,
+      mass: 0.8,
       onComplete: () => {
         isAnimating.current = false
         if (index < TOTAL) {
@@ -210,7 +173,6 @@ export function ContentShowcase() {
     return () => stopAuto()
   }, [startAuto, stopAuto])
 
-  // Pause carousel while lightbox is open
   useEffect(() => {
     if (lightboxIndex !== null) stopAuto()
     else startAuto()
@@ -262,10 +224,8 @@ export function ContentShowcase() {
 
   const realIndex = ((centerIndex % TOTAL) + TOTAL) % TOTAL
 
-  const lightboxPrev = () =>
-    setLightboxIndex(i => i === null ? 0 : (i - 1 + TOTAL) % TOTAL)
-  const lightboxNext = () =>
-    setLightboxIndex(i => i === null ? 0 : (i + 1) % TOTAL)
+  const lightboxPrev = () => setLightboxIndex(i => i === null ? 0 : (i - 1 + TOTAL) % TOTAL)
+  const lightboxNext = () => setLightboxIndex(i => i === null ? 0 : (i + 1) % TOTAL)
 
   return (
     <>
@@ -275,28 +235,18 @@ export function ContentShowcase() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6 }}
             className="mb-12 flex items-end justify-between"
           >
             <div>
-              <span className="mb-2 block text-sm font-medium uppercase tracking-widest text-muted-foreground">
-                Featured
-              </span>
-              <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-                Content Showcase
-              </h2>
+              <span className="mb-2 block text-sm font-medium uppercase tracking-widest text-muted-foreground">Featured</span>
+              <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Content Showcase</h2>
             </div>
             <div className="flex gap-2">
-              <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
-                onClick={() => { stopAuto(); prev(); startAuto() }}
-                className="glass-light rounded-full p-3 text-foreground hover:bg-foreground/10"
-              >
+              <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => { stopAuto(); prev(); startAuto() }} className="glass-light rounded-full p-3 text-foreground hover:bg-foreground/10">
                 <ChevronLeft size={20} />
               </motion.button>
-              <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
-                onClick={() => { stopAuto(); next(); startAuto() }}
-                className="glass-light rounded-full p-3 text-foreground hover:bg-foreground/10"
-              >
+              <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => { stopAuto(); next(); startAuto() }} className="glass-light rounded-full p-3 text-foreground hover:bg-foreground/10">
                 <ChevronRight size={20} />
               </motion.button>
             </div>
@@ -315,46 +265,55 @@ export function ContentShowcase() {
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
         >
-          <motion.div
-            className="absolute flex gap-4"
-            style={{ x, left: "50%", marginLeft: -(CARD_WIDTH / 2) }}
-          >
+          <motion.div className="absolute flex gap-4" style={{ x, left: "50%", marginLeft: -(CARD_WIDTH / 2) }}>
             {items.map((item, i) => {
               const distance = i - centerIndex
               const isCenter = distance === 0
               const isAdjacent = Math.abs(distance) === 1
+              const isVisible = Math.abs(distance) <= 3
               const isNearby = Math.abs(distance) <= 2
               const PlatformIcon = platformIcons[item.platform]
+
+              // Only render cards that are visible — skip far ones
+              if (!isVisible) {
+                return (
+                  <div
+                    key={`${item.id}-${i}`}
+                    className="relative flex-shrink-0 rounded-2xl bg-transparent"
+                    style={{ width: CARD_WIDTH, height: CARD_WIDTH, opacity: 0 }}
+                  />
+                )
+              }
 
               return (
                 <motion.div
                   key={`${item.id}-${i}`}
                   className="relative flex-shrink-0 overflow-hidden rounded-2xl"
-                  style={{ width: CARD_WIDTH }}
+                  style={{
+                    width: CARD_WIDTH,
+                    willChange: "transform, opacity",
+                  }}
                   animate={{
-                    scale: isCenter ? 1 : isAdjacent ? 0.88 : 0.75,
-                    opacity: isCenter ? 1 : isAdjacent ? 0.6 : 0.3,
-                    filter: isCenter ? "blur(0px)" : isAdjacent ? "blur(1px)" : "blur(2.5px)",
+                    scale: isCenter ? 1 : isAdjacent ? 0.88 : 0.78,
+                    opacity: isCenter ? 1 : isAdjacent ? 0.55 : 0.25,
+                    // Removed blur entirely — major performance gain
                     y: isCenter ? -12 : 0,
                     zIndex: isCenter ? 10 : isAdjacent ? 5 : 1,
                   }}
-                  transition={{ type: "spring", stiffness: 400, damping: 35, mass: 0.5 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30, mass: 0.6 }}
                 >
+                  {/* Glow ring — CSS only, no repeat animation */}
                   {isCenter && (
-                    <motion.div
+                    <div
                       className="absolute inset-0 z-10 rounded-2xl pointer-events-none"
-                      style={{ boxShadow: "0 0 0 1.5px rgba(255,255,255,0.15), 0 0 40px 6px rgba(255,255,255,0.08)" }}
-                      animate={{ opacity: [0.6, 1, 0.6] }}
-                      transition={{ duration: 2, repeat: Infinity }}
+                      style={{ boxShadow: "0 0 0 1.5px rgba(255,255,255,0.15), 0 0 30px 4px rgba(255,255,255,0.06)" }}
                     />
                   )}
 
                   <div
                     className={`relative aspect-square bg-foreground/5 ${isCenter ? "cursor-zoom-in" : ""}`}
                     onClick={() => {
-                      if (isCenter && !didDrag.current) {
-                        setLightboxIndex(item.id - 1)
-                      }
+                      if (isCenter && !didDrag.current) setLightboxIndex(item.id - 1)
                     }}
                   >
                     <Image
@@ -387,15 +346,14 @@ export function ContentShowcase() {
           </motion.div>
         </div>
 
-        {/* Dot indicators */}
+        {/* Dot indicators — CSS transition instead of spring */}
         <div className="mt-8 flex justify-center gap-2">
           {BASE_ITEMS.map((_, i) => (
-            <motion.button
+            <button
               key={i}
               onClick={() => { const idx = TOTAL + i; setCenterIndex(idx); goTo(idx); stopAuto(); startAuto() }}
-              animate={{ width: realIndex === i ? 24 : 8, opacity: realIndex === i ? 1 : 0.3 }}
-              transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              className="h-2 rounded-full bg-foreground"
+              className="h-2 rounded-full bg-foreground transition-all duration-300"
+              style={{ width: realIndex === i ? 24 : 8, opacity: realIndex === i ? 1 : 0.3 }}
             />
           ))}
         </div>
