@@ -10,15 +10,10 @@ export function LoadingScreen() {
   const [videoOpacity, setVideoOpacity] = useState(1)
 
   useEffect(() => {
-    // Fade video at 2.2s
     const t1 = setTimeout(() => setVideoOpacity(0), 2200)
-    // Gothic reveal at 2.9s
     const t2 = setTimeout(() => setStage("reveal"), 2900)
-    // Start exit at 4.8s
     const t3 = setTimeout(() => setStage("exit"), 4800)
-    // Unmount at 6s
-    const t4 = setTimeout(() => setStage("done"), 6000)
-
+    const t4 = setTimeout(() => setStage("done"), 5800)
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4) }
   }, [])
 
@@ -48,9 +43,9 @@ export function LoadingScreen() {
             className="absolute inset-0 z-20 flex flex-col items-center justify-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 0.3 }}
           >
-            {/* Letters */}
+            {/* Letters — NO blur, just y + opacity + scale */}
             <div className="flex items-end gap-1 sm:gap-2">
               {LOGO_LETTERS.map((letter, i) => (
                 <motion.span
@@ -61,16 +56,16 @@ export function LoadingScreen() {
                     fontFamily: "serif",
                     lineHeight: 1,
                     willChange: "transform, opacity",
-                    textShadow: "0 0 40px rgba(255,255,255,0.5), 0 0 80px rgba(255,255,255,0.15)",
+                    textShadow: "0 0 40px rgba(255,255,255,0.4)",
                   }}
-                  initial={{ opacity: 0, y: 40, filter: "blur(12px)" }}
+                  initial={{ opacity: 0, y: 40 }}
                   animate={stage === "exit"
-                    ? { opacity: 0, scale: 1.4, filter: "blur(20px)", y: -30 }
-                    : { opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }
+                    ? { opacity: 0, scale: 1.3, y: -20 }
+                    : { opacity: 1, y: 0, scale: 1 }
                   }
                   transition={stage === "exit"
-                    ? { delay: i * 0.05, duration: 0.7, ease: "easeIn" }
-                    : { delay: i * 0.08, duration: 0.6, ease: [0.16, 1, 0.3, 1] }
+                    ? { delay: i * 0.04, duration: 0.5, ease: "easeIn" }
+                    : { delay: i * 0.07, duration: 0.5, ease: [0.16, 1, 0.3, 1] }
                   }
                 >
                   {letter}
@@ -81,35 +76,32 @@ export function LoadingScreen() {
             {/* Tagline */}
             <motion.p
               className="mt-4 text-white/40 uppercase tracking-[0.5em] text-xs font-light"
-              initial={{ opacity: 0, y: 10 }}
-              animate={stage === "exit" ? { opacity: 0, y: -10 } : { opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 8 }}
+              animate={stage === "exit" ? { opacity: 0 } : { opacity: 1, y: 0 }}
               transition={stage === "exit"
-                ? { duration: 0.5, ease: "easeIn" }
-                : { delay: 0.5, duration: 0.6 }
+                ? { duration: 0.3 }
+                : { delay: 0.4, duration: 0.5 }
               }
             >
               Creator · Artist · Meme Lord
             </motion.p>
 
             {/* Sweep lines */}
-            <motion.div
-              className="absolute flex w-full items-center justify-center"
-              style={{ top: "50%" }}
-            >
+            <div className="absolute flex w-full items-center justify-center" style={{ top: "50%" }}>
               <motion.div
                 className="h-px bg-white/15"
                 initial={{ width: 0 }}
-                animate={stage === "exit" ? { width: 0, opacity: 0 } : { width: "35vw" }}
-                transition={{ delay: stage === "exit" ? 0 : 0.3, duration: 0.7, ease: "easeOut" }}
+                animate={stage === "exit" ? { width: 0 } : { width: "35vw" }}
+                transition={{ delay: stage === "exit" ? 0 : 0.25, duration: 0.6, ease: "easeOut" }}
               />
               <div className="mx-4 h-1 w-1 rounded-full bg-white/20" />
               <motion.div
                 className="h-px bg-white/15"
                 initial={{ width: 0 }}
-                animate={stage === "exit" ? { width: 0, opacity: 0 } : { width: "35vw" }}
-                transition={{ delay: stage === "exit" ? 0 : 0.3, duration: 0.7, ease: "easeOut" }}
+                animate={stage === "exit" ? { width: 0 } : { width: "35vw" }}
+                transition={{ delay: stage === "exit" ? 0 : 0.25, duration: 0.6, ease: "easeOut" }}
               />
-            </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -121,7 +113,7 @@ export function LoadingScreen() {
             className="absolute inset-0 z-30 bg-black pointer-events-none"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1.0, ease: "easeInOut", delay: 0.4 }}
+            transition={{ duration: 0.9, ease: "easeInOut", delay: 0.3 }}
           />
         )}
       </AnimatePresence>
