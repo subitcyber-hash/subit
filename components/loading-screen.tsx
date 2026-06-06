@@ -86,22 +86,7 @@ export function LoadingScreen() {
               Creator · Artist · Meme Lord
             </motion.p>
 
-            {/* Sweep lines */}
-            <div className="absolute flex w-full items-center justify-center" style={{ top: "50%" }}>
-              <motion.div
-                className="h-px bg-white/15"
-                initial={{ width: 0 }}
-                animate={stage === "exit" ? { width: 0 } : { width: "35vw" }}
-                transition={{ delay: stage === "exit" ? 0 : 0.25, duration: 0.6, ease: "easeOut" }}
-              />
-              <div className="mx-4 h-1 w-1 rounded-full bg-white/20" />
-              <motion.div
-                className="h-px bg-white/15"
-                initial={{ width: 0 }}
-                animate={stage === "exit" ? { width: 0 } : { width: "35vw" }}
-                transition={{ delay: stage === "exit" ? 0 : 0.25, duration: 0.6, ease: "easeOut" }}
-              />
-            </div>
+           
           </motion.div>
         )}
       </AnimatePresence>
