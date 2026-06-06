@@ -14,33 +14,18 @@ function WhatsAppIcon({ size = 24 }: { size?: number }) {
 }
 
 const igAccounts = [
-  {
-    handle: "@hexed.subit",
-    label: "Main",
-    desc: "Memes · Art · Vibes",
-    href: "https://instagram.com/hexed.subit",
-  },
-  {
-    handle: "@w0xxi3",
-    label: "2nd",
-    desc: "Content · TikTok crosspost",
-    href: "https://instagram.com/w0xxi3",
-  },
+  { handle: "@hexed.subit", label: "Main", desc: "Memes · Art · Vibes", href: "https://instagram.com/hexed.subit" },
+  { handle: "@w0xxi3", label: "2nd", desc: "Content · TikTok crosspost", href: "https://instagram.com/w0xxi3" },
 ]
 
+// Reduced to 6 particles
 const PARTICLES = [
-  { x: 120,  y: 340, drift: -80,  duration: 6.2, size: 2, opacity: 0.4 },
-  { x: 340,  y: 120, drift: -140, duration: 8.1, size: 1, opacity: 0.3 },
-  { x: 560,  y: 480, drift: -60,  duration: 5.4, size: 3, opacity: 0.5 },
-  { x: 780,  y: 200, drift: -180, duration: 9.0, size: 1, opacity: 0.2 },
-  { x: 200,  y: 600, drift: -100, duration: 7.3, size: 2, opacity: 0.4 },
-  { x: 900,  y: 350, drift: -120, duration: 6.8, size: 1, opacity: 0.3 },
-  { x: 450,  y: 720, drift: -90,  duration: 8.5, size: 2, opacity: 0.5 },
-  { x: 670,  y: 150, drift: -160, duration: 5.9, size: 3, opacity: 0.3 },
-  { x: 310,  y: 420, drift: -70,  duration: 7.1, size: 1, opacity: 0.4 },
-  { x: 1050, y: 550, drift: -110, duration: 6.4, size: 2, opacity: 0.3 },
-  { x: 180,  y: 260, drift: -130, duration: 9.2, size: 1, opacity: 0.5 },
-  { x: 820,  y: 430, drift: -85,  duration: 5.7, size: 3, opacity: 0.2 },
+  { x: 120, y: 340, drift: -80,  duration: 6.2, size: 2, opacity: 0.4 },
+  { x: 560, y: 480, drift: -60,  duration: 5.4, size: 3, opacity: 0.5 },
+  { x: 200, y: 600, drift: -100, duration: 7.3, size: 2, opacity: 0.4 },
+  { x: 670, y: 150, drift: -160, duration: 5.9, size: 3, opacity: 0.3 },
+  { x: 180, y: 260, drift: -130, duration: 9.2, size: 1, opacity: 0.5 },
+  { x: 820, y: 430, drift: -85,  duration: 5.7, size: 3, opacity: 0.2 },
 ]
 
 export function Hero() {
@@ -51,34 +36,28 @@ export function Hero() {
 
   useEffect(() => setMounted(true), [])
 
-  // Close popup on click outside
   useEffect(() => {
     if (!showIgPopup) return
     const handler = (e: MouseEvent) => {
-      if (popupRef.current && !popupRef.current.contains(e.target as Node)) {
-        setShowIgPopup(false)
-      }
+      if (popupRef.current && !popupRef.current.contains(e.target as Node)) setShowIgPopup(false)
     }
     document.addEventListener("mousedown", handler)
     return () => document.removeEventListener("mousedown", handler)
   }, [showIgPopup])
 
-  // Close on Escape
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setShowIgPopup(false)
-    }
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setShowIgPopup(false) }
     window.addEventListener("keydown", handler)
     return () => window.removeEventListener("keydown", handler)
   }, [])
 
   return (
-    <section
-      id="home"
-      className="relative flex min-h-screen items-center justify-center overflow-hidden"
-    >
-      {/* ── Background Layer ── */}
+    <section id="home" className="relative flex min-h-screen items-center justify-center overflow-hidden">
+
+      {/* ── Background ── */}
       <div className="absolute inset-0">
+
+        {/* Static image — always shown */}
         <div
           className="absolute inset-0"
           style={{
@@ -89,86 +68,103 @@ export function Hero() {
             transform: "scale(1.08)",
           }}
         />
-        <motion.div
-          className="absolute inset-0 hidden sm:block"
-          animate={{ scale: [1.05, 1.12, 1.05], x: [0, 10, 0], y: [0, -8, 0] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <video autoPlay loop muted playsInline preload="none" className="h-full w-full object-cover" style={{ filter: "blur(3px) brightness(0.35)" }}>
+
+        {/* Video — no drift animation, just static */}
+        <div className="absolute inset-0 hidden sm:block">
+          <video
+            autoPlay loop muted playsInline preload="none"
+            className="h-full w-full object-cover"
+            style={{ filter: "blur(3px) brightness(0.35)" }}
+          >
             <source src="/hero-bg.mp4" type="video/mp4" />
           </video>
-        </motion.div>
+        </div>
+
         <div className="absolute inset-0 bg-black/50" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80" />
 
-        {/* Glow Orbs */}
-        <motion.div className="absolute -left-60 -top-60 h-[500px] w-[500px] rounded-full" style={{ background: "radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 70%)", willChange: "transform" }} animate={{ scale: [1, 1.3, 1], x: [0, 40, 0], y: [0, 30, 0], opacity: [0.6, 1, 0.6] }} transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }} />
-        <motion.div className="absolute -bottom-60 -right-60 h-[600px] w-[600px] rounded-full" style={{ background: "radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%)", willChange: "transform" }} animate={{ scale: [1.2, 1, 1.2], x: [0, -30, 0], y: [0, -20, 0], opacity: [0.5, 0.9, 0.5] }} transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }} />
-        <motion.div className="absolute left-1/2 top-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 70%)", willChange: "transform" }} animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0.8, 0.3] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} />
-        <motion.div className="absolute -right-40 top-20 h-[400px] w-[400px] rounded-full" style={{ background: "radial-gradient(circle, rgba(251,191,36,0.08) 0%, transparent 70%)", willChange: "transform" }} animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.7, 0.3] }} transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }} />
+        {/* 2 static glow orbs instead of 4 animated — massive perf win */}
+        <div
+          className="absolute -left-60 -top-60 h-[500px] w-[500px] rounded-full pointer-events-none"
+          style={{ background: "radial-gradient(circle, rgba(139,92,246,0.12) 0%, transparent 70%)" }}
+        />
+        <div
+          className="absolute -bottom-60 -right-60 h-[600px] w-[600px] rounded-full pointer-events-none"
+          style={{ background: "radial-gradient(circle, rgba(59,130,246,0.10) 0%, transparent 70%)" }}
+        />
+        {/* One subtle center pulse — only 1 animated orb */}
+        <motion.div
+          className="absolute left-1/2 top-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
+          style={{ background: "radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%)", willChange: "transform, opacity" }}
+          animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.7, 0.3] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
 
-        {/* Particles */}
+        {/* 6 particles only after mount */}
         {mounted && PARTICLES.map((p, i) => (
-          <motion.div key={i} className="absolute rounded-full bg-white" style={{ width: p.size, height: p.size, left: p.x, top: p.y, willChange: "transform, opacity" }} animate={{ y: [p.y, p.y + p.drift, p.y], x: [p.x, p.x + (i % 2 === 0 ? 20 : -20), p.x], opacity: [0, p.opacity, 0], scale: [0.5, 1.5, 0.5] }} transition={{ duration: p.duration, repeat: Infinity, ease: "easeInOut", delay: i * 0.15 }} />
+          <motion.div
+            key={i}
+            className="absolute rounded-full bg-white pointer-events-none"
+            style={{ width: p.size, height: p.size, left: p.x, top: p.y, willChange: "transform, opacity" }}
+            animate={{ y: [p.y, p.y + p.drift, p.y], opacity: [0, p.opacity, 0] }}
+            transition={{ duration: p.duration, repeat: Infinity, ease: "easeInOut", delay: i * 0.2 }}
+          />
         ))}
       </div>
 
       {/* ── Main Content ── */}
       <div className="relative z-10 mx-auto max-w-7xl px-6 text-center">
 
-        {/* Eyebrow tag */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="mb-6 flex justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mb-6 flex justify-center"
+        >
           <span className="glass-light rounded-full px-4 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-white/60">
             Creator · Artist · Meme Lord
           </span>
         </motion.div>
 
-        {/* Main Title */}
         <motion.h1
-          initial={{ opacity: 0, y: 50, scale: 0.9 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
           className="mb-6 text-7xl font-bold tracking-tighter text-foreground sm:text-8xl md:text-9xl"
-          style={{ textShadow: "0 0 80px rgba(255,255,255,0.3), 0 0 160px rgba(255,255,255,0.1)" }}
+          style={{ textShadow: "0 0 60px rgba(255,255,255,0.25)" }}
         >
           𝔖𝔘𝔅ℑ𝔗
         </motion.h1>
 
-        {/* Typing subtitle */}
         <p className="mb-10 text-lg text-white/50">
           {typedText}<span className="animate-pulse">|</span>
         </p>
 
-        {/* Social CTAs */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.7, ease: "easeOut" }}
+          transition={{ duration: 0.8, delay: 0.6 }}
           className="flex flex-wrap items-center justify-center gap-4"
         >
-          {/* Instagram button — opens popup */}
+          {/* Instagram popup */}
           <div className="relative" ref={popupRef}>
             <motion.button
               onClick={() => setShowIgPopup(p => !p)}
               className="glass-light flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white/80 backdrop-blur-md transition-colors duration-100 hover:bg-white/10 hover:text-white"
-              whileHover={{ scale: 1.08, y: -3, boxShadow: "0 8px 30px rgba(255,255,255,0.1)" }}
+              whileHover={{ scale: 1.06, y: -2 }}
               whileTap={{ scale: 0.95 }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, type: "spring", stiffness: 400, damping: 20 }}
             >
               <Instagram size={18} />
               Instagram
             </motion.button>
 
-            {/* Instagram account popup */}
             <AnimatePresence>
               {showIgPopup && (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9, y: 10 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.9, y: 10 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                  transition={{ duration: 0.2 }}
                   className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-64 rounded-2xl p-3 z-50"
                   style={{
                     background: "rgba(15,15,15,0.95)",
@@ -177,29 +173,23 @@ export function Hero() {
                     boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
                   }}
                 >
-                  {/* Header */}
                   <div className="flex items-center justify-between mb-3 px-1">
                     <p className="text-[10px] uppercase tracking-widest text-white/40">Choose account</p>
                     <button onClick={() => setShowIgPopup(false)} className="text-white/40 hover:text-white/70 transition-colors">
                       <X size={12} />
                     </button>
                   </div>
-
-                  {/* Accounts */}
                   <div className="flex flex-col gap-2">
                     {igAccounts.map((acc) => (
-                      <motion.a
+                      <a
                         key={acc.handle}
                         href={acc.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.08)" }}
-                        whileTap={{ scale: 0.98 }}
-                        className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors"
+                        className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-white/8"
                         style={{ background: "rgba(255,255,255,0.04)" }}
                         onClick={() => setShowIgPopup(false)}
                       >
-                        {/* Instagram gradient icon */}
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full" style={{ background: "linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)" }}>
                           <Instagram size={16} className="text-white" />
                         </div>
@@ -210,7 +200,7 @@ export function Hero() {
                         <span className="text-[10px] font-medium text-white/30 shrink-0 rounded-full border border-white/10 px-2 py-0.5">
                           {acc.label}
                         </span>
-                      </motion.a>
+                      </a>
                     ))}
                   </div>
                 </motion.div>
@@ -218,17 +208,14 @@ export function Hero() {
             </AnimatePresence>
           </div>
 
-          {/* WhatsApp button */}
+          {/* WhatsApp */}
           <motion.a
             href="https://wa.me/8801732875763"
             target="_blank"
             rel="noopener noreferrer"
             className="glass-light flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white/80 backdrop-blur-md transition-colors duration-100 hover:bg-white/10 hover:text-white"
-            whileHover={{ scale: 1.08, y: -3, boxShadow: "0 8px 30px rgba(255,255,255,0.1)" }}
+            whileHover={{ scale: 1.06, y: -2 }}
             whileTap={{ scale: 0.95 }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, type: "spring", stiffness: 400, damping: 20 }}
           >
             <WhatsAppIcon size={18} />
             WhatsApp
@@ -236,9 +223,19 @@ export function Hero() {
         </motion.div>
       </div>
 
-      {/* Scroll Indicator */}
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2, duration: 1 }} className="absolute bottom-10 left-1/2 -translate-x-1/2">
-        <motion.a href="#about" className="flex flex-col items-center gap-2 text-white/40 transition-colors hover:text-white/70" animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}>
+      {/* Scroll */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2, duration: 1 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2"
+      >
+        <motion.a
+          href="#about"
+          className="flex flex-col items-center gap-2 text-white/40 transition-colors hover:text-white/70"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        >
           <span className="text-xs uppercase tracking-widest">Scroll</span>
           <ChevronDown size={20} />
         </motion.a>
