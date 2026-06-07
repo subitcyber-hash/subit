@@ -1,16 +1,18 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { motion } from "framer-motion"
+import { useEffect, useRef } from "react"
 
 export function ScrollProgress() {
-  const [progress, setProgress] = useState(0)
+  const barRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const update = () => {
       const { scrollTop, scrollHeight, clientHeight } = document.documentElement
       const total = scrollHeight - clientHeight
-      setProgress(total > 0 ? (scrollTop / total) * 100 : 0)
+      const progress = total > 0 ? (scrollTop / total) * 100 : 0
+      if (barRef.current) {
+        barRef.current.style.width = `${progress}%`
+      }
     }
     window.addEventListener("scroll", update, { passive: true })
     return () => window.removeEventListener("scroll", update)
@@ -18,14 +20,15 @@ export function ScrollProgress() {
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[100] h-[2px] bg-white/5">
-      <motion.div
-        className="h-full origin-left"
+      <div
+        ref={barRef}
         style={{
-          width: `${progress}%`,
+          height: "100%",
+          width: "0%",
           background: "linear-gradient(to right, rgba(255,255,255,0.4), rgba(255,255,255,0.9))",
           boxShadow: "0 0 8px rgba(255,255,255,0.4)",
+          willChange: "width",
         }}
-        transition={{ ease: "linear" }}
       />
     </div>
   )
