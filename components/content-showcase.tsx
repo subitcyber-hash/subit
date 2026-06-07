@@ -76,7 +76,7 @@ function Lightbox({
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
     >
-      <motion.div className="absolute inset-0 bg-black/90 backdrop-blur-md" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/90" onClick={onClose} />
       <button onClick={onClose} className="absolute top-6 right-6 z-10 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 transition-colors">
         <X size={20} />
       </button>
@@ -97,7 +97,7 @@ function Lightbox({
       >
         <div className="relative overflow-hidden rounded-2xl shadow-2xl" style={{ width: "min(85vw, 520px)", aspectRatio: "1 / 1" }}>
           <Image src={item.image} alt={`meme ${item.id}`} fill className="object-cover" priority />
-          <div className="absolute left-3 top-3 flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 backdrop-blur-sm">
+          <div className="absolute left-3 top-3 flex items-center gap-1.5 rounded-full bg-black/80 px-3 py-1.5">
             <PlatformIcon size={12} />
             <span className="text-xs text-white capitalize">{item.platform}</span>
           </div>
