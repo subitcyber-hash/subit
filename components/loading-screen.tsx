@@ -28,7 +28,7 @@ export function LoadingScreen() {
         style={{ opacity: videoOpacity, transition: "opacity 0.7s ease-in-out" }}
       >
         <video
-          src="/lock.webm"
+          src="/lock.mp4"
           autoPlay
           muted
           playsInline
