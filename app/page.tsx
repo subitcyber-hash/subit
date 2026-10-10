@@ -3,7 +3,7 @@
 import { Navbar } from "@/components/navbar"
 import { Hero } from "@/components/hero"
 import { About } from "@/components/about"
-import { ContentShowcase } from "@/components/content-showcase"
+import { Projects } from "@/components/projects"
 import { Socials } from "@/components/socials"
 import { Contact } from "@/components/contact"
 import { Footer } from "@/components/footer"
@@ -15,7 +15,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <About />
-      <ContentShowcase />
+      <Projects />
       <InstagramFeed />
       <Socials />
       <Contact />

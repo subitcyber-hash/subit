@@ -164,7 +164,7 @@ export default function NotFound() {
             </motion.div>
           </Link>
 
-          <Link href="/#content">
+          <Link href="/#projects">
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -175,7 +175,7 @@ export default function NotFound() {
               }}
             >
               <ArrowLeft size={16} />
-              see the memes
+              see my projects
             </motion.div>
           </Link>
         </motion.div>
