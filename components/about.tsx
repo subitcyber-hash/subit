@@ -35,8 +35,8 @@ const FLIP_FACES = [
 
 function FlipHint() {
   return (
-    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full border border-white/15 bg-black/40 px-3.5 py-1.5 backdrop-blur-md">
-      <span className="text-[10px] uppercase tracking-widest text-white/80">Tap to flip</span>
+    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full border border-[#C9D6E3] bg-white/70 px-3.5 py-1.5 backdrop-blur-md">
+      <span className="text-[10px] uppercase tracking-widest text-foreground">Tap to flip</span>
     </div>
   )
 }
@@ -53,8 +53,8 @@ function FlipCard() {
       whileHover={{ y: -4 }}
       whileTap={{ scale: 0.98 }}
       transition={{ type: "spring", stiffness: 300, damping: 24 }}
-      className="relative block aspect-square w-full cursor-pointer rounded-3xl outline-none focus-visible:ring-2 focus-visible:ring-white/40"
-      style={{ perspective: "1200px", boxShadow: "0 24px 60px -20px rgba(0,0,0,0.7)" }}
+      className="relative block aspect-square w-full cursor-pointer rounded-3xl outline-none focus-visible:ring-2 focus-visible:ring-[#8CBDE8]"
+      style={{ perspective: "1200px", boxShadow: "0 24px 60px -20px rgba(38,56,73,0.35)" }}
     >
       <motion.div
         className="relative h-full w-full"
@@ -65,7 +65,7 @@ function FlipCard() {
         {FLIP_FACES.map((face, i) => (
           <div
             key={face.src}
-            className="absolute inset-0 overflow-hidden rounded-3xl border border-white/10"
+            className="absolute inset-0 overflow-hidden rounded-3xl border border-[#C9D6E3]"
             style={{
               backfaceVisibility: "hidden",
               WebkitBackfaceVisibility: "hidden",
@@ -81,7 +81,7 @@ function FlipCard() {
               priority
               draggable={false}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#263849]/25 via-transparent to-transparent" />
             <FlipHint />
           </div>
         ))}

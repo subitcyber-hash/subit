@@ -123,7 +123,7 @@ export function Contact() {
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mb-6 flex items-center gap-3 rounded-xl bg-green-500/10 border border-green-500/20 px-4 py-3 text-green-400"
+                  className="mb-6 flex items-center gap-3 rounded-xl bg-[#8CBDE8]/20 border border-[#8CBDE8]/50 px-4 py-3 text-foreground"
                 >
                   <CheckCircle size={18} />
                   <span className="text-sm font-medium">Message sent! I'll get back to you soon.</span>
@@ -135,7 +135,7 @@ export function Contact() {
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mb-6 rounded-xl bg-red-500/10 border border-red-500/20 px-4 py-3 text-red-400 text-sm"
+                  className="mb-6 rounded-xl bg-red-500/10 border border-red-500/30 px-4 py-3 text-red-700 text-sm"
                 >
                   {error}
                 </motion.div>
@@ -215,7 +215,7 @@ export function Contact() {
                 disabled={isSubmitting || isSubmitted}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="group relative w-full overflow-hidden rounded-xl bg-foreground py-4 font-semibold text-background transition-all hover:shadow-lg hover:shadow-foreground/20 disabled:cursor-not-allowed disabled:opacity-50"
+                className="group relative w-full overflow-hidden rounded-xl bg-[#8CBDE8] py-4 font-semibold text-foreground transition-all hover:shadow-lg hover:shadow-[#8CBDE8]/40 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <span className="relative z-10 flex items-center justify-center gap-2">
                   {isSubmitting ? (

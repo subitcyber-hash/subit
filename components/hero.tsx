@@ -84,7 +84,7 @@ export function Hero() {
             backgroundImage: "url('/hero-bg.webp')",
             backgroundSize: "cover",
             backgroundPosition: "center",
-            filter: "blur(4px) brightness(0.35)",
+            filter: "blur(4px) brightness(1)",
             transform: "scale(1.08)",
           }}
         />
@@ -94,28 +94,28 @@ export function Hero() {
           <video
             autoPlay loop muted playsInline preload="none"
             className="h-full w-full object-cover"
-            style={{ filter: "blur(3px) brightness(0.35)" }}
+            style={{ filter: "blur(3px) brightness(1)" }}
           >
             <source src="/hero-bg.mp4" type="video/mp4" />
           </video>
         </div>
 
-        <div className="absolute inset-0 bg-black/50" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80" />
+        <div className="absolute inset-0 bg-background/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-transparent to-background/90" />
 
         {/* 2 static glow orbs instead of 4 animated — massive perf win */}
         <div
           className="absolute -left-60 -top-60 h-[500px] w-[500px] rounded-full pointer-events-none"
-          style={{ background: "radial-gradient(circle, rgba(139,92,246,0.12) 0%, transparent 70%)" }}
+          style={{ background: "radial-gradient(circle, rgba(140,189,232,0.25) 0%, transparent 70%)" }}
         />
         <div
           className="absolute -bottom-60 -right-60 h-[600px] w-[600px] rounded-full pointer-events-none"
-          style={{ background: "radial-gradient(circle, rgba(59,130,246,0.10) 0%, transparent 70%)" }}
+          style={{ background: "radial-gradient(circle, rgba(201,214,227,0.5) 0%, transparent 70%)" }}
         />
         {/* One subtle center pulse — only 1 animated orb */}
         <motion.div
           className="absolute left-1/2 top-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
-          style={{ background: "radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%)", willChange: "transform, opacity" }}
+          style={{ background: "radial-gradient(circle, rgba(255,255,255,0.6) 0%, transparent 70%)", willChange: "transform, opacity" }}
           animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.7, 0.3] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
@@ -124,7 +124,7 @@ export function Hero() {
         {mounted && PARTICLES.map((p, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full bg-white pointer-events-none"
+            className="absolute rounded-full bg-[#8CBDE8] pointer-events-none"
             style={{ width: p.size, height: p.size, left: p.x, top: p.y, willChange: "transform, opacity" }}
             animate={{ y: [p.y, p.y + p.drift, p.y], opacity: [0, p.opacity, 0] }}
             transition={{ duration: p.duration, repeat: Infinity, ease: "easeInOut", delay: i * 0.2 }}
@@ -146,7 +146,7 @@ export function Hero() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mb-6 flex justify-center"
         >
-          <span className="glass-light rounded-full px-4 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-white/60">
+          <span className="glass-light rounded-full px-4 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
             Creator · Artist · Meme Lord
           </span>
         </motion.div>
@@ -156,12 +156,12 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
           className="mb-6 text-7xl font-bold tracking-tighter text-foreground sm:text-8xl md:text-9xl"
-          style={{ textShadow: "0 0 60px rgba(255,255,255,0.25)" }}
+          style={{ textShadow: "0 0 60px rgba(140,189,232,0.55)" }}
         >
           𝔖𝔘𝔅ℑ𝔗
         </motion.h1>
 
-        <p className="mb-10 text-lg text-white/50">
+        <p className="mb-10 text-lg text-muted-foreground">
           {typedText}<span className="animate-pulse">|</span>
         </p>
 
@@ -175,7 +175,7 @@ export function Hero() {
           <div className="relative" ref={popupRef}>
             <motion.button
               onClick={() => setShowIgPopup(p => !p)}
-              className="glass-light flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white/80 backdrop-blur-md transition-colors duration-100 hover:bg-white/10 hover:text-white"
+              className="glass-light flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-foreground/80 backdrop-blur-md transition-colors duration-100 hover:bg-[#8CBDE8]/25 hover:text-foreground"
               whileHover={{ scale: 1.06, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -196,16 +196,16 @@ export function Hero() {
                     width: popupPos.width,
                     transformOrigin: "bottom center",
                     // Apple "liquid glass": nearly clear, strong blur + saturation, bright specular edge
-                    background: "rgba(255,255,255,0.07)",
-                    backdropFilter: "blur(32px) saturate(220%) brightness(1.15)",
-                    WebkitBackdropFilter: "blur(32px) saturate(220%) brightness(1.15)",
+                    background: "rgba(255,255,255,0.45)",
+                    backdropFilter: "blur(32px) saturate(220%) brightness(1.05)",
+                    WebkitBackdropFilter: "blur(32px) saturate(220%) brightness(1.05)",
                     boxShadow:
-                      "0 24px 48px -12px rgba(0,0,0,0.45), 0 0 0 0.5px rgba(255,255,255,0.28), inset 0 1.5px 1px rgba(255,255,255,0.55), inset 0 -1px 1px rgba(255,255,255,0.12), inset 1px 0 1px rgba(255,255,255,0.18), inset -1px 0 1px rgba(255,255,255,0.18)",
+                      "0 24px 48px -12px rgba(38,56,73,0.25), 0 0 0 0.5px rgba(201,214,227,0.9), inset 0 1.5px 1px rgba(255,255,255,0.95), inset 0 -1px 1px rgba(255,255,255,0.5), inset 1px 0 1px rgba(255,255,255,0.6), inset -1px 0 1px rgba(255,255,255,0.6)",
                   }}
                 >
                   <div className="flex items-center justify-between mb-3 px-1">
-                    <p className="text-[10px] uppercase tracking-widest text-white/70">Choose account</p>
-                    <button onClick={() => setShowIgPopup(false)} className="text-white/40 hover:text-white/70 transition-colors">
+                    <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Choose account</p>
+                    <button onClick={() => setShowIgPopup(false)} className="text-muted-foreground hover:text-foreground transition-colors">
                       <X size={12} />
                     </button>
                   </div>
@@ -216,20 +216,20 @@ export function Hero() {
                         href={acc.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-3 rounded-2xl px-3 py-2.5 transition-all duration-200 hover:bg-white/20 active:scale-[0.98]"
+                        className="flex items-center gap-3 rounded-2xl px-3 py-2.5 transition-all duration-200 hover:bg-white/90 active:scale-[0.98]"
                         style={{
-                          background: "rgba(255,255,255,0.10)",
-                          boxShadow: "inset 0 1px 0.5px rgba(255,255,255,0.35), inset 0 -0.5px 0.5px rgba(255,255,255,0.08)",
+                          background: "rgba(255,255,255,0.65)",
+                          boxShadow: "inset 0 1px 0.5px rgba(255,255,255,0.95), 0 1px 2px rgba(38,56,73,0.08)",
                         }}
                         onClick={() => setShowIgPopup(false)}
                       >
-                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full" style={{ background: "linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)" }}>
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full" style={{ background: "linear-gradient(135deg, #8CBDE8, #61788D)" }}>
                           <Instagram size={16} className="text-white" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold text-white truncate">{acc.handle}</p>
+                          <p className="text-sm font-semibold text-foreground truncate">{acc.handle}</p>
                         </div>
-                        <span className="text-[10px] font-medium text-white/70 shrink-0 rounded-full bg-white/10 px-2 py-0.5">
+                        <span className="text-[10px] font-medium text-muted-foreground shrink-0 rounded-full bg-[#8CBDE8]/25 px-2 py-0.5">
                           {acc.label}
                         </span>
                       </a>
@@ -245,7 +245,7 @@ export function Hero() {
             href="https://wa.me/8801732875763"
             target="_blank"
             rel="noopener noreferrer"
-            className="glass-light flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white/80 backdrop-blur-md transition-colors duration-100 hover:bg-white/10 hover:text-white"
+            className="glass-light flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-foreground/80 backdrop-blur-md transition-colors duration-100 hover:bg-[#8CBDE8]/25 hover:text-foreground"
             whileHover={{ scale: 1.06, y: -2 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -264,7 +264,7 @@ export function Hero() {
       >
         <motion.a
           href="#about"
-          className="flex flex-col items-center gap-2 text-white/40 transition-colors hover:text-white/70"
+          className="flex flex-col items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >

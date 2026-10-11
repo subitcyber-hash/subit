@@ -41,42 +41,42 @@ const socials = [
     handle: "@w0xxi3",
     icon: TikTokIcon,
     href: "https://www.tiktok.com/@w0xxi3",
-    color: "from-cyan-400 to-pink-500",
+    color: "from-[#8CBDE8] to-[#61788D]",
   },
   {
     name: "Facebook",
     handle: "Subit Ash",
     icon: Facebook,
     href: "https://www.facebook.com/w0xx6",
-    color: "from-blue-500 to-blue-600",
+    color: "from-[#8CBDE8] to-[#61788D]",
   },
   {
     name: "Twitter",
     handle: "@Fuegoweb3",
     icon: Twitter,
     href: "https://x.com/Fuegoweb3",
-    color: "from-sky-400 to-blue-500",
+    color: "from-[#8CBDE8] to-[#61788D]",
   },
   {
     name: "Pinterest",
     handle: "@subitfuego",
     icon: PinterestIcon,
     href: "https://pin.it/3WDLn1zBO",
-    color: "from-red-500 to-red-700",
+    color: "from-[#8CBDE8] to-[#61788D]",
   },
   {
     name: "Telegram",
     handle: "@SubitFuego",
     icon: TelegramIcon,
     href: "https://t.me/SubitFuego",
-    color: "from-sky-400 to-cyan-500",
+    color: "from-[#8CBDE8] to-[#61788D]",
   },
   {
     name: "Discord",
     handle: "cooked together",
     icon: DiscordIcon,
     href: "https://discord.gg/DvyaHtx7E",
-    color: "from-indigo-500 to-purple-500",
+    color: "from-[#8CBDE8] to-[#61788D]",
   },
 ]
 
@@ -120,8 +120,8 @@ export function Socials() {
               className="group relative flex items-center gap-4 overflow-hidden rounded-2xl p-6 transition-colors duration-200"
               style={{
                 // Removed backdropFilter blur — biggest perf fix
-                background: "rgba(255, 255, 255, 0.05)",
-                border: "1px solid rgba(255, 255, 255, 0.08)",
+                background: "rgba(220, 231, 242, 0.7)",
+                border: "1px solid #C9D6E3",
                 willChange: "transform",
               }}
             >

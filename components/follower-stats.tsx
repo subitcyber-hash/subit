@@ -67,9 +67,9 @@ function SkeletonCard() {
 
 export function FollowerStats() {
   const [stats, setStats] = useState<PlatformStat[]>([
-    { platform: "Instagram", icon: Instagram, followers: null, color: "#E1306C" },
-    { platform: "TikTok", icon: TikTokIcon, followers: null, color: "#FFFFFF" },
-    { platform: "Facebook", icon: Facebook, followers: null, color: "#1877F2" },
+    { platform: "Instagram", icon: Instagram, followers: null, color: "#8CBDE8" },
+    { platform: "TikTok", icon: TikTokIcon, followers: null, color: "#263849" },
+    { platform: "Facebook", icon: Facebook, followers: null, color: "#61788D" },
   ])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
