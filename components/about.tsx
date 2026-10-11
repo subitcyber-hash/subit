@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Gamepad2, Palette, Trophy, Shield, Video, Smartphone, Layout, Code2, Layers, Instagram } from "lucide-react"
+import { Gamepad2, Palette, Trophy, Shield, Video, Smartphone, Layout, Code2, Layers } from "lucide-react"
 import Image from "next/image"
 import { AgeCounter } from "@/components/age-counter"
 
@@ -166,10 +166,10 @@ export function About() {
                 <span className="text-glow">Chill Guy</span>
               </h2>
               <p className="text-lg leading-relaxed text-muted-foreground">
-                I&apos;m SUBIT — a 17-year-old meme creator and aspiring artist from Barishal, Bangladesh.
-                I make aesthetic, chill content that hits different. What started as posting
-                memes on TikTok and Instagram turned into a whole creative journey I never want to stop.
-                I also build things on the web — this site was built by me from scratch.
+                I&apos;m SUBIT — an 18-year-old meme creator, aspiring artist and web builder from
+                Barishal, Bangladesh. I make aesthetic, chill content that hits different. What started
+                as posting memes on TikTok and Instagram turned into a whole creative journey I never
+                want to stop. I also code my own projects — this site was built by me from scratch.
               </p>
             </div>
 
@@ -225,26 +225,6 @@ export function About() {
                 </div>
               ))}
             </div>
-
-            {/* Collab button */}
-            <a
-              href="https://ig.me/m/hexed.subit"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-between gap-4 rounded-2xl border border-foreground/10 px-5 py-4 transition-all hover:border-foreground/20 hover:bg-foreground/5 cursor-pointer"
-            >
-              <div className="flex items-center gap-3">
-                <div className="relative flex h-3 w-3 shrink-0">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-                  <span className="relative inline-flex h-3 w-3 rounded-full bg-green-400" />
-                </div>
-                <div>
-                  <p className="font-semibold text-foreground text-sm">Looking For Bf</p>
-                  <p className="text-xs text-muted-foreground">Slide into my DMs</p>
-                </div>
-              </div>
-              <Instagram size={18} className="text-muted-foreground shrink-0" />
-            </a>
           </motion.div>
         </div>
       </div>
