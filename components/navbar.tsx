@@ -103,7 +103,7 @@ export function Navbar() {
           </div>
 
           {/* Right — Hamburger (mobile) / empty spacer (desktop) */}
-          <div className="flex justify-end">
+          <div className="flex justify-end -mr-2 md:mr-0">
             <motion.button
               whileTap={{ scale: 0.85 }}
               className="flex h-8 w-8 items-center justify-center rounded-full text-foreground md:hidden"
