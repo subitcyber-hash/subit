@@ -19,6 +19,19 @@ const PLAYLIST = [
   { id: 12, title: "Tek It (Sped Up)",        artist: "Cafuné",              src: "/music/12-Tek It.m4a" },
   { id: 13, title: "Doubt",                   artist: "twenty one pilots",   src: "/music/13-doubt.m4a" },
   { id: 14, title: "Obsessed (Remix)",        artist: "Mariah Carey",        src: "/music/14-obsessed.m4a" },
+  { id: 15, title: "IK U WRITE",                  artist: "dedwrite",          src: "/music/15-ik-u-write.m4a" },
+  { id: 16, title: "7 Weeks & 3 Days",            artist: "yungatita",         src: "/music/16-7-weeks-3-days.mp3" },
+  { id: 17, title: "Me llamaban bambam",          artist: "JuaoMan",           src: "/music/17-me-llamaban-bambam.m4a" },
+  { id: 18, title: "Paparazzi",                   artist: "Lady Gaga",         src: "/music/18-paparazzi.m4a" },
+  { id: 19, title: "Mama's Boy",                  artist: "Dominic Fike",      src: "/music/19-mamas-boy.mp3" },
+  { id: 20, title: "Good Looking",                artist: "Suki Waterhouse",   src: "/music/20-good-looking.m4a" },
+  { id: 21, title: "Join Me In Death",            artist: "HIM",               src: "/music/21-join-me-in-death.m4a" },
+  { id: 22, title: "Kids",                        artist: "Current Joys",      src: "/music/22-kids.mp3" },
+  { id: 23, title: "Total Eclipse of the Heart",  artist: "Bonnie Tyler",      src: "/music/23-total-eclipse.m4a" },
+  { id: 24, title: "Last Christmas",              artist: "Wham!",             src: "/music/24-last-christmas.m4a" },
+  { id: 25, title: "Bad Habit",                   artist: "Steve Lacy",        src: "/music/25-bad-habit.mp3" },
+  { id: 26, title: "Snowman",                     artist: "Sia",               src: "/music/26-snowman.m4a" },
+  { id: 27, title: "Not Allowed",                 artist: "TV Girl",           src: "/music/27-not-allowed.mp3" },
 ]
 
 function formatTime(s: number) {
