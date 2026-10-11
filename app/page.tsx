@@ -7,7 +7,6 @@ import { Projects } from "@/components/projects"
 import { Socials } from "@/components/socials"
 import { Contact } from "@/components/contact"
 import { Footer } from "@/components/footer"
-import { InstagramFeed } from "@/components/instagram-feed"
 
 export default function Home() {
   return (
@@ -16,7 +15,6 @@ export default function Home() {
       <Hero />
       <About />
       <Projects />
-      <InstagramFeed />
       <Socials />
       <Contact />
       <Footer />
