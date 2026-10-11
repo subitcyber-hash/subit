@@ -112,6 +112,11 @@ export function Hero() {
         ))}
       </div>
 
+      {/* Bottom fade — blends the hero into the About section */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-2/5 bg-gradient-to-b from-transparent via-background/70 to-background"
+      />
+
       {/* ── Main Content ── */}
       <div className="relative z-10 mx-auto max-w-7xl px-6 text-center">
 
