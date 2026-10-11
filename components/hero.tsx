@@ -14,8 +14,8 @@ function WhatsAppIcon({ size = 24 }: { size?: number }) {
 }
 
 const igAccounts = [
-  { handle: "@hexed.subit", label: "Main", desc: "Memes · Art · Vibes", href: "https://instagram.com/hexed.subit" },
-  { handle: "@w0xxi3", label: "2nd", desc: "Content · TikTok crosspost", href: "https://instagram.com/w0xxi3" },
+  { handle: "@subynxz", label: "Main", desc: "Memes · Art · Vibes", href: "https://instagram.com/subynxz" },
+  { handle: "@zexqvi", label: "2nd", desc: "Content · TikTok crosspost", href: "https://instagram.com/zexqvi" },
 ]
 
 // Reduced to 6 particles
@@ -167,14 +167,15 @@ export function Hero() {
                   transition={{ duration: 0.2 }}
                   className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-64 rounded-2xl p-3 z-50"
                   style={{
-                    background: "rgba(15,15,15,0.95)",
-                    backdropFilter: "blur(20px)",
-                    border: "1px solid rgba(255,255,255,0.12)",
-                    boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
+                    background: "linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04))",
+                    backdropFilter: "blur(24px) saturate(180%)",
+                    WebkitBackdropFilter: "blur(24px) saturate(180%)",
+                    border: "1px solid rgba(255,255,255,0.22)",
+                    boxShadow: "0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.3)",
                   }}
                 >
                   <div className="flex items-center justify-between mb-3 px-1">
-                    <p className="text-[10px] uppercase tracking-widest text-white/40">Choose account</p>
+                    <p className="text-[10px] uppercase tracking-widest text-white/60">Choose account</p>
                     <button onClick={() => setShowIgPopup(false)} className="text-white/40 hover:text-white/70 transition-colors">
                       <X size={12} />
                     </button>
@@ -186,8 +187,13 @@ export function Hero() {
                         href={acc.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-white/8"
-                        style={{ background: "rgba(255,255,255,0.04)" }}
+                        className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-white/15"
+                        style={{
+                          background: "rgba(255,255,255,0.08)",
+                          border: "1px solid rgba(255,255,255,0.12)",
+                          backdropFilter: "blur(8px)",
+                          WebkitBackdropFilter: "blur(8px)",
+                        }}
                         onClick={() => setShowIgPopup(false)}
                       >
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full" style={{ background: "linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)" }}>
@@ -195,7 +201,7 @@ export function Hero() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-semibold text-white truncate">{acc.handle}</p>
-                          <p className="text-[10px] text-white/40 truncate">{acc.desc}</p>
+                          <p className="text-[10px] text-white/60 truncate">{acc.desc}</p>
                         </div>
                         <span className="text-[10px] font-medium text-white/30 shrink-0 rounded-full border border-white/10 px-2 py-0.5">
                           {acc.label}
