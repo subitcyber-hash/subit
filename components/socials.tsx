@@ -42,7 +42,6 @@ const socials = [
     icon: TikTokIcon,
     href: "https://www.tiktok.com/@w0xxi3",
     color: "from-cyan-400 to-pink-500",
-    description: "Trending content & entertainment",
   },
   {
     name: "Facebook",
@@ -50,7 +49,6 @@ const socials = [
     icon: Facebook,
     href: "https://www.facebook.com/w0xx6",
     color: "from-blue-500 to-blue-600",
-    description: "Community updates & events",
   },
   {
     name: "Twitter",
@@ -58,7 +56,6 @@ const socials = [
     icon: Twitter,
     href: "https://x.com/Fuegoweb3",
     color: "from-sky-400 to-blue-500",
-    description: "Thoughts & updates",
   },
   {
     name: "Pinterest",
@@ -66,7 +63,6 @@ const socials = [
     icon: PinterestIcon,
     href: "https://pin.it/3WDLn1zBO",
     color: "from-red-500 to-red-700",
-    description: "Aesthetic boards & inspiration",
   },
   {
     name: "Telegram",
@@ -74,7 +70,6 @@ const socials = [
     icon: TelegramIcon,
     href: "https://t.me/SubitFuego",
     color: "from-sky-400 to-cyan-500",
-    description: "Direct updates & announcements",
   },
   {
     name: "Discord",
@@ -82,7 +77,6 @@ const socials = [
     icon: DiscordIcon,
     href: "https://discord.gg/DvyaHtx7E",
     color: "from-indigo-500 to-purple-500",
-    description: "Join the community chat",
   },
 ]
 
@@ -148,7 +142,6 @@ export function Socials() {
                   <ExternalLink size={14} className="text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
                 </div>
                 <p className="text-sm text-muted-foreground">{social.handle}</p>
-                <p className="mt-1 text-xs text-muted-foreground/70">{social.description}</p>
               </div>
             </motion.a>
           ))}
