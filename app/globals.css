@@ -164,3 +164,13 @@
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
+
+/* Phones: big blurred glows are expensive to paint — keep them tiny or off */
+@media (max-width: 767px) {
+  .card-glow {
+    box-shadow: none;
+  }
+  .text-glow {
+    text-shadow: 0 0 24px rgba(255, 255, 255, 0.25);
+  }
+}

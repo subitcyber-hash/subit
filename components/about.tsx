@@ -50,22 +50,19 @@ function FlipCard() {
       aria-label="Flip profile card"
       aria-pressed={flipped}
       onClick={() => setFlipped(f => !f)}
-      whileHover={{ y: -4 }}
-      whileTap={{ scale: 0.98 }}
-      transition={{ type: "spring", stiffness: 300, damping: 24 }}
       className="relative block aspect-square w-full cursor-pointer rounded-3xl outline-none focus-visible:ring-2 focus-visible:ring-white/40"
-      style={{ perspective: "1200px", boxShadow: "0 24px 60px -20px rgba(0,0,0,0.7)" }}
+      style={{ perspective: "1200px", WebkitTapHighlightColor: "transparent" }}
     >
       <motion.div
         className="relative h-full w-full"
         animate={{ rotateY: flipped ? 180 : 0 }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        style={{ transformStyle: "preserve-3d" }}
+        style={{ transformStyle: "preserve-3d", willChange: "transform" }}
       >
         {FLIP_FACES.map((face, i) => (
           <div
             key={face.src}
-            className="absolute inset-0 overflow-hidden rounded-3xl border border-white/10"
+            className="absolute inset-0 rounded-3xl ring-1 ring-white/10"
             style={{
               backfaceVisibility: "hidden",
               WebkitBackfaceVisibility: "hidden",
@@ -77,11 +74,11 @@ function FlipCard() {
               alt={face.alt}
               fill
               sizes="(min-width: 1024px) 576px, 100vw"
-              className="object-cover object-center"
+              className="rounded-3xl object-cover object-center"
               priority
               draggable={false}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+            <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-black/40 via-transparent to-transparent" />
             <FlipHint />
           </div>
         ))}

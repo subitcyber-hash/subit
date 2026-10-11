@@ -63,17 +63,15 @@ export function Navbar() {
         className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100vw-32px)] max-w-[860px]"
       >
         <motion.div
-          animate={{
-            boxShadow: scrolled
-              ? "0 12px 40px rgba(0,0,0,0.5), 0 0 0 0.5px rgba(255,255,255,0.3), inset 0 1.5px 1px rgba(255,255,255,0.4), inset 0 -1px 1px rgba(255,255,255,0.08)"
-              : "0 6px 24px rgba(0,0,0,0.35), 0 0 0 0.5px rgba(255,255,255,0.22), inset 0 1.5px 1px rgba(255,255,255,0.3), inset 0 -1px 1px rgba(255,255,255,0.06)",
-          }}
-          transition={{ duration: 0.3 }}
           className="grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-full px-5 py-2.5"
           style={{
             background: "rgba(255,255,255,0.07)",
-            backdropFilter: "blur(32px) saturate(200%) brightness(1.1)",
-            WebkitBackdropFilter: "blur(32px) saturate(200%) brightness(1.1)",
+            backdropFilter: "blur(18px)",
+            WebkitBackdropFilter: "blur(18px)",
+            boxShadow: scrolled
+              ? "0 12px 40px rgba(0,0,0,0.5), 0 0 0 0.5px rgba(255,255,255,0.3), inset 0 1.5px 1px rgba(255,255,255,0.4), inset 0 -1px 1px rgba(255,255,255,0.08)"
+              : "0 6px 24px rgba(0,0,0,0.35), 0 0 0 0.5px rgba(255,255,255,0.22), inset 0 1.5px 1px rgba(255,255,255,0.3), inset 0 -1px 1px rgba(255,255,255,0.06)",
+            transition: "box-shadow 0.3s",
           }}
         >
           {/* Left — Logo */}
@@ -158,22 +156,22 @@ export function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden"
+              className="fixed inset-0 z-40 bg-black/60 md:hidden"
               onClick={closeMenu}
             />
 
             <motion.div
               key="panel"
-              initial={{ opacity: 0, y: -14, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -14, scale: 0.96 }}
-              transition={{ type: "spring", stiffness: 380, damping: 32 }}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
               className="fixed left-4 right-4 top-[84px] z-[45] mx-auto max-w-[860px] overflow-hidden rounded-[32px] p-3 md:hidden"
               style={{
                 transformOrigin: "top center",
                 background: "rgba(255,255,255,0.07)",
-                backdropFilter: "blur(40px) saturate(220%) brightness(1.1)",
-                WebkitBackdropFilter: "blur(40px) saturate(220%) brightness(1.1)",
+                backdropFilter: "blur(16px)",
+                WebkitBackdropFilter: "blur(16px)",
                 boxShadow:
                   "0 24px 60px -12px rgba(0,0,0,0.6), 0 0 0 0.5px rgba(255,255,255,0.28), inset 0 1.5px 1px rgba(255,255,255,0.45), inset 0 -1px 1px rgba(255,255,255,0.1), inset 1px 0 1px rgba(255,255,255,0.15), inset -1px 0 1px rgba(255,255,255,0.15)",
               }}
@@ -185,10 +183,10 @@ export function Navbar() {
                     <motion.a
                       key={item.name}
                       href={item.href}
-                      initial={{ opacity: 0, y: -8 }}
-                      animate={{ opacity: 1, y: 0 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ delay: 0.05 + index * 0.05, duration: 0.25 }}
+                      transition={{ delay: 0.03 + index * 0.03, duration: 0.15 }}
                       onClick={closeMenu}
                       className={`relative flex items-center rounded-2xl px-5 py-3.5 text-lg font-semibold transition-colors active:scale-[0.98] ${
                         active ? "text-foreground" : "text-foreground/60 hover:text-foreground"
