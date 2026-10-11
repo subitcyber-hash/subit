@@ -32,6 +32,8 @@ export function Hero() {
   const [mounted, setMounted] = useState(false)
   const [showIgPopup, setShowIgPopup] = useState(false)
   const popupRef = useRef<HTMLDivElement>(null)
+  // Popup is centered on the button, then clamped so it never runs off the screen edge (mobile)
+  const [popupPos, setPopupPos] = useState<{ left: number; width: number }>({ left: 0, width: 256 })
   const typedText = useTypingAnimation()
 
   useEffect(() => setMounted(true), [])
@@ -43,6 +45,24 @@ export function Hero() {
     }
     document.addEventListener("mousedown", handler)
     return () => document.removeEventListener("mousedown", handler)
+  }, [showIgPopup])
+
+  useEffect(() => {
+    if (!showIgPopup) return
+    const place = () => {
+      const el = popupRef.current
+      if (!el) return
+      const margin = 12
+      const vw = document.documentElement.clientWidth
+      const width = Math.min(256, vw - margin * 2)
+      const r = el.getBoundingClientRect()
+      const centered = r.left + r.width / 2 - width / 2
+      const clamped = Math.min(Math.max(centered, margin), vw - margin - width)
+      setPopupPos({ left: clamped - r.left, width })
+    }
+    place()
+    window.addEventListener("resize", place)
+    return () => window.removeEventListener("resize", place)
   }, [showIgPopup])
 
   useEffect(() => {
@@ -170,8 +190,11 @@ export function Hero() {
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.9, y: 10 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-64 rounded-[28px] p-3 z-50"
+                  className="absolute bottom-full mb-3 rounded-[28px] p-3 z-50 text-left"
                   style={{
+                    left: popupPos.left,
+                    width: popupPos.width,
+                    transformOrigin: "bottom center",
                     // Apple "liquid glass": nearly clear, strong blur + saturation, bright specular edge
                     background: "rgba(255,255,255,0.07)",
                     backdropFilter: "blur(32px) saturate(220%) brightness(1.15)",
