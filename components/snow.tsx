@@ -71,7 +71,7 @@ export function Snow() {
         }
         ctx.beginPath()
         ctx.arc(x, f.y, f.r, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(140,189,232,${f.opacity})`
+        ctx.fillStyle = `rgba(255,255,255,${f.opacity})`
         ctx.fill()
       }
       raf = requestAnimationFrame(frame)

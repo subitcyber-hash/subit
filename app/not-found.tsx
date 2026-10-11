@@ -21,7 +21,7 @@ const GLITCH_TEXTS = ["404", "4Ø4", "𝟜𝟘𝟜", "404", "ᗐᗜᗐ"]
 
 export default function NotFound() {
   return (
-    <div className="relative min-h-screen bg-background flex flex-col items-center justify-center overflow-hidden px-6">
+    <div className="relative min-h-screen bg-black flex flex-col items-center justify-center overflow-hidden px-6">
 
       {/* Grain */}
       <svg className="absolute inset-0 h-full w-full opacity-[0.06] pointer-events-none">
@@ -38,7 +38,7 @@ export default function NotFound() {
         style={{
           width: 500,
           height: 500,
-          background: "radial-gradient(circle, rgba(140,189,232,0.18) 0%, transparent 65%)",
+          background: "radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 65%)",
           left: "50%", top: "50%",
           transform: "translate(-50%,-50%)",
         }}
@@ -50,7 +50,7 @@ export default function NotFound() {
       {PARTICLES.map((p, i) => (
         <motion.div
           key={i}
-          className="absolute rounded-full bg-[#8CBDE8] pointer-events-none"
+          className="absolute rounded-full bg-white pointer-events-none"
           style={{ left: `${p.x}%`, top: `${p.y}%`, width: p.s, height: p.s }}
           animate={{ opacity: [0, 0.35, 0], y: [0, -50] }}
           transition={{ duration: p.d, delay: p.delay, repeat: Infinity, ease: "easeOut" }}
@@ -69,14 +69,14 @@ export default function NotFound() {
         >
           {/* Shadow layers for glitch */}
           <span
-            className="absolute inset-0 text-[clamp(100px,20vw,180px)] font-black text-foreground/5 blur-sm select-none"
+            className="absolute inset-0 text-[clamp(100px,20vw,180px)] font-black text-white/5 blur-sm select-none"
             aria-hidden
             style={{ transform: "translate(-3px, 2px)" }}
           >
             404
           </span>
           <span
-            className="absolute inset-0 text-[clamp(100px,20vw,180px)] font-black text-foreground/5 blur-sm select-none"
+            className="absolute inset-0 text-[clamp(100px,20vw,180px)] font-black text-white/5 blur-sm select-none"
             aria-hidden
             style={{ transform: "translate(3px, -2px)" }}
           >
@@ -85,9 +85,9 @@ export default function NotFound() {
 
           {/* Main 404 with flicker */}
           <motion.span
-            className="relative block text-[clamp(100px,20vw,180px)] font-black text-foreground leading-none"
+            className="relative block text-[clamp(100px,20vw,180px)] font-black text-white leading-none"
             style={{
-              textShadow: "0 0 40px rgba(140,189,232,0.45), 0 0 80px rgba(140,189,232,0.2)",
+              textShadow: "0 0 40px rgba(255,255,255,0.15), 0 0 80px rgba(255,255,255,0.05)",
               fontFamily: "var(--font-geist-sans), sans-serif",
             }}
             animate={{ opacity: [1, 1, 0.85, 1, 1, 0.9, 1] }}
@@ -99,7 +99,7 @@ export default function NotFound() {
 
         {/* Gothic subtitle */}
         <motion.p
-          className="mb-2 text-muted-foreground uppercase tracking-[0.4em] text-xs font-light"
+          className="mb-2 text-white/20 uppercase tracking-[0.4em] text-xs font-light"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.8 }}
@@ -114,9 +114,9 @@ export default function NotFound() {
           animate={{ opacity: 1, scaleX: 1 }}
           transition={{ delay: 0.6, duration: 0.6 }}
         >
-          <div className="h-px w-16 bg-[#C9D6E3]" />
-          <div className="h-1 w-1 rounded-full bg-[#8CBDE8]" />
-          <div className="h-px w-16 bg-[#C9D6E3]" />
+          <div className="h-px w-16 bg-white/10" />
+          <div className="h-1 w-1 rounded-full bg-white/20" />
+          <div className="h-px w-16 bg-white/10" />
         </motion.div>
 
         {/* Funny meme text */}
@@ -126,10 +126,10 @@ export default function NotFound() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.7 }}
         >
-          <h1 className="text-2xl sm:text-3xl font-bold text-foreground leading-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white leading-tight">
             bro where are you even going
           </h1>
-          <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+          <p className="text-white/50 text-sm sm:text-base leading-relaxed">
             this page doesn't exist. never did. you manifested a 404.
             <br />
             very on brand of you honestly.
@@ -138,7 +138,7 @@ export default function NotFound() {
 
         {/* Secondary funny line */}
         <motion.p
-          className="mb-10 text-muted-foreground text-xs italic"
+          className="mb-10 text-white/25 text-xs italic"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.0, duration: 0.8 }}
@@ -157,7 +157,7 @@ export default function NotFound() {
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-2 rounded-full bg-[#8CBDE8] px-6 py-3 text-sm font-semibold text-foreground cursor-pointer transition-all"
+              className="flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black cursor-pointer transition-all"
             >
               <Home size={16} />
               take me home
@@ -168,9 +168,9 @@ export default function NotFound() {
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-2 rounded-full border border-[#C9D6E3] px-6 py-3 text-sm font-medium text-foreground/70 cursor-pointer hover:border-[#8CBDE8] hover:text-foreground transition-all"
+              className="flex items-center gap-2 rounded-full border border-white/15 px-6 py-3 text-sm font-medium text-white/70 cursor-pointer hover:border-white/30 hover:text-white transition-all"
               style={{
-                background: "rgba(220,231,242,0.6)",
+                background: "rgba(255,255,255,0.04)",
                 backdropFilter: "blur(12px)",
               }}
             >
@@ -182,7 +182,7 @@ export default function NotFound() {
 
         {/* Tiny footer note */}
         <motion.p
-          className="mt-12 text-muted-foreground text-[10px] uppercase tracking-[0.3em]"
+          className="mt-12 text-white/15 text-[10px] uppercase tracking-[0.3em]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.4, duration: 0.8 }}

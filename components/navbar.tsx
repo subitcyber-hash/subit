@@ -56,16 +56,16 @@ export function Navbar() {
         <motion.div
           animate={{
             boxShadow: scrolled
-              ? "0 8px 32px rgba(38,56,73,0.15), 0 0 0 1px rgba(201,214,227,1)"
-              : "0 4px 16px rgba(38,56,73,0.08), 0 0 0 1px rgba(201,214,227,0.8)",
+              ? "0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1)"
+              : "0 4px 16px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.06)",
           }}
           transition={{ duration: 0.3 }}
           className="grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-full px-5 py-2.5"
           style={{
-            background: "rgba(255,255,255,0.75)",
+            background: "rgba(20,20,20,0.75)",
             backdropFilter: "blur(40px)",
             WebkitBackdropFilter: "blur(40px)",
-            border: "1px solid #C9D6E3",
+            border: "1px solid rgba(255,255,255,0.12)",
           }}
         >
           {/* Left — Logo */}
@@ -94,7 +94,7 @@ export function Navbar() {
                 {activeSection === item.href.slice(1) && (
                   <motion.div
                     layoutId="activePill"
-                    className="absolute inset-0 rounded-full bg-[#8CBDE8]/35"
+                    className="absolute inset-0 rounded-full bg-white/10"
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   />
                 )}
@@ -108,7 +108,7 @@ export function Navbar() {
             <motion.button
               whileTap={{ scale: 0.85 }}
               className="flex h-8 w-8 items-center justify-center rounded-full text-foreground md:hidden"
-              style={{ background: "rgba(220,231,242,0.9)" }}
+              style={{ background: "rgba(255,255,255,0.08)" }}
               onClick={() => setIsOpen(!isOpen)}
               aria-label="Toggle menu"
             >
@@ -183,7 +183,7 @@ export function Navbar() {
                     {activeSection === item.href.slice(1) && (
                       <motion.div
                         layoutId="activeBar"
-                        className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-full bg-[#8CBDE8]"
+                        className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-full bg-foreground"
                       />
                     )}
                     <span className="pl-3">{item.name}</span>

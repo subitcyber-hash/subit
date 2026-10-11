@@ -19,14 +19,14 @@ export function ScrollProgress() {
   }, [])
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[100] h-[2px] bg-[#C9D6E3]/40">
+    <div className="fixed top-0 left-0 right-0 z-[100] h-[2px] bg-white/5">
       <div
         ref={barRef}
         style={{
           height: "100%",
           width: "0%",
-          background: "linear-gradient(to right, #8CBDE8, #61788D)",
-          boxShadow: "0 0 8px rgba(140,189,232,0.5)",
+          background: "linear-gradient(to right, rgba(255,255,255,0.4), rgba(255,255,255,0.9))",
+          boxShadow: "0 0 8px rgba(255,255,255,0.4)",
           willChange: "width",
         }}
       />
