@@ -12,13 +12,6 @@ const stats = [
   { label: "Class", value: "HSC" },
 ]
 
-const milestones = [
-  { value: "22+", label: "Posts Created" },
-  { value: "157+", label: "Followers" },
-  { value: "2026", label: "Started Creating" },
-  { value: "6+", label: "Platforms" },
-]
-
 const personalSkills = [
   { icon: Gamepad2, label: "Favorite Games", description: "COD • Minecraft • Elden Ring" },
   { icon: Palette, label: "Favorite Colors", description: "Black • White • Blue" },
@@ -134,21 +127,6 @@ export function About() {
                   <div className="text-sm text-muted-foreground">{stat.label}</div>
                 </div>
               ))}
-            </div>
-
-            {/* Milestones */}
-            <div>
-              <p className="mb-3 text-xs font-medium uppercase tracking-widest text-muted-foreground">
-                Milestones
-              </p>
-              <div className="grid grid-cols-4 gap-3">
-                {milestones.map((m) => (
-                  <div key={m.label} className="glass-light rounded-xl p-3 text-center">
-                    <div className="text-lg font-bold text-foreground">{m.value}</div>
-                    <div className="text-[10px] text-muted-foreground leading-tight mt-0.5">{m.label}</div>
-                  </div>
-                ))}
-              </div>
             </div>
           </motion.div>
 
