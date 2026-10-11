@@ -27,13 +27,6 @@ const tools = [
   { icon: Layers,     label: "Next.js",       description: "Web development" },
 ]
 
-const timeline = [
-  { year: "2008", title: "Born in Barishal", desc: "Bangladesh 🇧🇩" },
-  { year: "2024", title: "Started making memes", desc: "Posted first content on Instagram & TikTok" },
-  { year: "2025", title: "Went deeper into art", desc: "Started exploring aesthetic & anime content" },
-  { year: "2026", title: "Built subit.site", desc: "Launched personal portfolio from scratch" },
-]
-
 // ── Flip Card ────────────────────────────────────────────
 const FLIP_FACES = [
   { src: "/luffy.webp", alt: "Luffy" },
@@ -154,23 +147,6 @@ export function About() {
                 as posting memes on TikTok and Instagram turned into a whole creative journey I never
                 want to stop. I also code my own projects — this site was built by me from scratch.
               </p>
-            </div>
-
-            {/* Timeline */}
-            <div>
-              <p className="mb-4 text-xs font-medium uppercase tracking-widest text-muted-foreground">
-                Journey
-              </p>
-              <div className="relative flex flex-col gap-4 border-l border-foreground/10 pl-5">
-                {timeline.map((item) => (
-                  <div key={item.year} className="relative">
-                    <div className="absolute -left-[21px] top-1.5 h-2.5 w-2.5 rounded-full bg-foreground/30 ring-2 ring-background" />
-                    <span className="text-xs font-mono text-muted-foreground/60">{item.year}</span>
-                    <p className="font-semibold text-foreground text-sm">{item.title}</p>
-                    <p className="text-xs text-muted-foreground">{item.desc}</p>
-                  </div>
-                ))}
-              </div>
             </div>
 
             {/* Tools */}
