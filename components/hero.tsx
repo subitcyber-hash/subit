@@ -14,8 +14,8 @@ function WhatsAppIcon({ size = 24 }: { size?: number }) {
 }
 
 const igAccounts = [
-  { handle: "@subynxz", label: "Main", desc: "Memes · Art · Vibes", href: "https://instagram.com/subynxz" },
-  { handle: "@zexqvi", label: "2nd", desc: "Content · TikTok crosspost", href: "https://instagram.com/zexqvi" },
+  { handle: "@subynxz", label: "Main", href: "https://instagram.com/subynxz" },
+  { handle: "@zexqvi", label: "2nd", href: "https://instagram.com/zexqvi" },
 ]
 
 // Reduced to 6 particles
@@ -228,7 +228,6 @@ export function Hero() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-semibold text-white truncate">{acc.handle}</p>
-                          <p className="text-[10px] text-white/70 truncate">{acc.desc}</p>
                         </div>
                         <span className="text-[10px] font-medium text-white/70 shrink-0 rounded-full bg-white/10 px-2 py-0.5">
                           {acc.label}
