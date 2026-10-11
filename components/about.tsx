@@ -35,7 +35,7 @@ const FLIP_FACES = [
 
 function FlipHint() {
   return (
-    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full border border-white/15 bg-black/40 px-3.5 py-1.5 backdrop-blur-md">
+    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full border border-white/15 bg-black/55 px-3.5 py-1.5">
       <span className="text-[10px] uppercase tracking-widest text-white/80">Tap to flip</span>
     </div>
   )

@@ -18,7 +18,16 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
+    let ticking = false
     const handleScroll = () => {
+      if (ticking) return
+      ticking = true
+      requestAnimationFrame(() => {
+        ticking = false
+        update()
+      })
+    }
+    const update = () => {
       setScrolled(window.scrollY > 50)
       const sections = navItems.map((item) => item.href.slice(1))
       const scrollPosition = window.scrollY + 100
@@ -33,7 +42,7 @@ export function Navbar() {
         }
       }
     }
-    window.addEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 

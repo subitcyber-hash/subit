@@ -10,6 +10,9 @@ export function CustomCursor() {
   const [hovering, setHovering] = useState(false)
 
   useEffect(() => {
+    // Touch phones have no cursor: skip the animation loop and DOM observer entirely
+    if (navigator.maxTouchPoints > 0 || window.matchMedia("(pointer: coarse)").matches) return
+
     // Use refs + direct DOM manipulation for max speed — no React re-renders
     let ringX = -100, ringY = -100
     let dotX = -100, dotY = -100

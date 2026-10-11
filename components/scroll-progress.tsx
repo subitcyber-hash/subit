@@ -11,7 +11,7 @@ export function ScrollProgress() {
       const total = scrollHeight - clientHeight
       const progress = total > 0 ? (scrollTop / total) * 100 : 0
       if (barRef.current) {
-        barRef.current.style.width = `${progress}%`
+        barRef.current.style.transform = `scaleX(${progress / 100})`
       }
     }
     window.addEventListener("scroll", update, { passive: true })
@@ -24,10 +24,12 @@ export function ScrollProgress() {
         ref={barRef}
         style={{
           height: "100%",
-          width: "0%",
+          width: "100%",
+          transform: "scaleX(0)",
+          transformOrigin: "left",
           background: "linear-gradient(to right, rgba(255,255,255,0.4), rgba(255,255,255,0.9))",
           boxShadow: "0 0 8px rgba(255,255,255,0.4)",
-          willChange: "width",
+          willChange: "transform",
         }}
       />
     </div>

@@ -52,6 +52,8 @@ export function MusicPlayer() {
   const [showPlaylist, setShowPlaylist] = useState(false)
   const [showUnmuteHint, setShowUnmuteHint] = useState(true)
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const expandedRef = useRef(false)
+  expandedRef.current = expanded
   const playerRef = useRef<HTMLDivElement>(null)
 
   const current = PLAYLIST[currentIndex]
@@ -77,6 +79,7 @@ export function MusicPlayer() {
 
     audio.addEventListener("loadedmetadata", () => setDuration(audio.duration))
     audio.addEventListener("timeupdate", () => {
+      if (!expandedRef.current) return // progress is only visible when the player is open
       setCurrentTime(audio.currentTime)
       setProgress((audio.currentTime / audio.duration) * 100 || 0)
     })
@@ -174,7 +177,7 @@ export function MusicPlayer() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             onClick={() => setExpanded(true)}
-            className="glass-light flex items-center gap-3 rounded-full px-4 py-3 backdrop-blur-md hover:bg-foreground/10 transition-all"
+            className="glass-light flex items-center gap-3 rounded-full px-4 py-3 hover:bg-foreground/10 transition-all"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -207,7 +210,7 @@ export function MusicPlayer() {
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="glass-light w-72 rounded-2xl p-4 backdrop-blur-md shadow-2xl"
+            className="glass-light w-72 rounded-2xl p-4 shadow-2xl"
           >
             {/* Header */}
             <div className="mb-4 flex items-center justify-between">

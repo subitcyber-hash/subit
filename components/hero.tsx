@@ -28,15 +28,28 @@ const PARTICLES = [
   { x: 820, y: 430, drift: -85,  duration: 5.7, size: 3, opacity: 0.2 },
 ]
 
+// Isolated so the 10x/sec typing updates re-render only this span, not the whole hero
+function TypingText() {
+  const typedText = useTypingAnimation()
+  return (
+    <>
+      {typedText}<span className="animate-pulse">|</span>
+    </>
+  )
+}
+
 export function Hero() {
   const [mounted, setMounted] = useState(false)
+  const [isMobile, setIsMobile] = useState(true) // assume phone until measured
   const [showIgPopup, setShowIgPopup] = useState(false)
   const popupRef = useRef<HTMLDivElement>(null)
   // Popup is centered on the button, then clamped so it never runs off the screen edge (mobile)
   const [popupPos, setPopupPos] = useState<{ left: number; width: number }>({ left: 0, width: 256 })
-  const typedText = useTypingAnimation()
 
-  useEffect(() => setMounted(true), [])
+  useEffect(() => {
+    setMounted(true)
+    setIsMobile(window.matchMedia("(max-width: 767px)").matches)
+  }, [])
 
   useEffect(() => {
     if (!showIgPopup) return
@@ -90,6 +103,7 @@ export function Hero() {
         />
 
         {/* Video — no drift animation, just static */}
+        {mounted && !isMobile && (
         <div className="absolute inset-0 hidden sm:block">
           <video
             autoPlay loop muted playsInline preload="none"
@@ -99,6 +113,7 @@ export function Hero() {
             <source src="/hero-bg.mp4" type="video/mp4" />
           </video>
         </div>
+        )}
 
         <div className="absolute inset-0 bg-black/50" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80" />
@@ -116,12 +131,12 @@ export function Hero() {
         <motion.div
           className="absolute left-1/2 top-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
           style={{ background: "radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%)", willChange: "transform, opacity" }}
-          animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.7, 0.3] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          animate={isMobile ? { scale: 1, opacity: 0.5 } : { scale: [1, 1.3, 1], opacity: [0.3, 0.7, 0.3] }}
+          transition={isMobile ? { duration: 0 } : { duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
 
         {/* 6 particles only after mount */}
-        {mounted && PARTICLES.map((p, i) => (
+        {mounted && !isMobile && PARTICLES.map((p, i) => (
           <motion.div
             key={i}
             className="absolute rounded-full bg-white pointer-events-none"
@@ -162,7 +177,7 @@ export function Hero() {
         </motion.h1>
 
         <p className="mb-10 text-lg text-white/50">
-          {typedText}<span className="animate-pulse">|</span>
+          <TypingText />
         </p>
 
         <motion.div
@@ -175,7 +190,7 @@ export function Hero() {
           <div className="relative" ref={popupRef}>
             <motion.button
               onClick={() => setShowIgPopup(p => !p)}
-              className="glass-light flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white/80 backdrop-blur-md transition-colors duration-100 hover:bg-white/10 hover:text-white"
+              className="glass-light flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white/80 transition-colors duration-100 hover:bg-white/10 hover:text-white"
               whileHover={{ scale: 1.06, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -245,7 +260,7 @@ export function Hero() {
             href="https://wa.me/8801732875763"
             target="_blank"
             rel="noopener noreferrer"
-            className="glass-light flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white/80 backdrop-blur-md transition-colors duration-100 hover:bg-white/10 hover:text-white"
+            className="glass-light flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white/80 transition-colors duration-100 hover:bg-white/10 hover:text-white"
             whileHover={{ scale: 1.06, y: -2 }}
             whileTap={{ scale: 0.95 }}
           >

@@ -44,7 +44,7 @@ export function Snow() {
     }
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5)
       w = window.innerWidth
       h = window.innerHeight
       canvas.width = w * dpr
@@ -52,7 +52,7 @@ export function Snow() {
       canvas.style.width = `${w}px`
       canvas.style.height = `${h}px`
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      const count = w < 640 ? 40 : 90
+      const count = w < 640 ? 28 : 90
       flakes = Array.from({ length: count }, () => makeFlake(true))
     }
 
@@ -100,7 +100,7 @@ export function Snow() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-40"
+      className="pointer-events-none fixed inset-0 z-[60]"
     />
   )
 }
