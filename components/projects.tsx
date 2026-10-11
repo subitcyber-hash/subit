@@ -31,7 +31,7 @@ const PROJECTS: Project[] = [
       "Aesthetic, chill meme content posted daily to Instagram and TikTok for a growing community.",
     icon: Instagram,
     tags: ["Memes", "Instagram", "TikTok"],
-    href: "https://instagram.com/hexed.subit",
+    href: "https://instagram.com/subynxz",
     linkLabel: "Visit page",
   },
   {

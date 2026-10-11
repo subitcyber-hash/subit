@@ -44,7 +44,7 @@ function WhatsAppIcon({ size = 24 }: { size?: number }) {
 }
 
 const socialLinks = [
-  { icon: Instagram,   href: "https://www.instagram.com/hexed.subit/",  label: "Instagram" },
+  { icon: Instagram,   href: "https://www.instagram.com/subynxz/",  label: "Instagram" },
   { icon: TikTokIcon,  href: "https://www.tiktok.com/@w0xxi3",          label: "TikTok" },
   { icon: Facebook,    href: "https://www.facebook.com/w0xx6",          label: "Facebook" },
   { icon: Twitter,     href: "https://twitter.com/Fuegoweb3",                label: "Twitter" },

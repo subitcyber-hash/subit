@@ -44,12 +44,12 @@ export function InstagramFeed() {
           <p className="text-muted-foreground">
             Follow{" "}
             <a
-              href="https://instagram.com/hexed.subit"
+              href="https://instagram.com/subynxz"
               target="_blank"
               rel="noopener noreferrer"
               className="text-foreground underline underline-offset-4 hover:opacity-70 transition-opacity"
             >
-              @hexed.subit
+              @subynxz
             </a>{" "}
             for more
           </p>

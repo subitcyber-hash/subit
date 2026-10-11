@@ -35,7 +35,7 @@ export const metadata: Metadata = {
 
   // Keywords (less important for Google now but still useful)
   keywords: [
-    'SUBIT', 'subit', 'hexed.subit', 'meme creator', 'meme lord',
+    'SUBIT', 'subit', 'subynxz', 'meme creator', 'meme lord',
     'aesthetic memes', 'anime memes', 'Bangladesh creator',
     'content creator', 'artist', 'portfolio', 'TikTok', 'Instagram',
   ],
