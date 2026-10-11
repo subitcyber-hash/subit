@@ -63,11 +63,10 @@ function FlipCard() {
           style={{ backfaceVisibility: "hidden" }}
         >
           <Image
-            src="/profile 1.webp"
-            alt="SUBIT"
+            src="/luffy.webp"
+            alt="Luffy"
             fill
             className="object-cover object-top"
-            style={{ mixBlendMode: "luminosity" }}
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
@@ -83,11 +82,10 @@ function FlipCard() {
           style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
         >
           <Image
-            src="/profile 2.webp"
-            alt="SUBIT 2"
+            src="/eren.webp"
+            alt="Eren"
             fill
             className="object-cover object-top"
-            style={{ mixBlendMode: "luminosity" }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 rounded-full bg-black/50 px-3 py-1.5 backdrop-blur-sm">
