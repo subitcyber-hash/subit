@@ -6,6 +6,7 @@ import { MusicPlayer } from '@/components/music-player'
 import { LoadingScreen } from "@/components/loading-screen"
 import { ScrollProgress } from "@/components/scroll-progress"
 import { CustomCursor } from "@/components/custom-cursor"
+import { Snow } from "@/components/snow"
 
 const geist = Geist({ 
   subsets: ["latin"],
@@ -114,6 +115,7 @@ export default function RootLayout({
         <ScrollProgress />
         <CustomCursor />
         <LoadingScreen />
+        <Snow />
         {children}
         <MusicPlayer />
         <Analytics/>
