@@ -56,16 +56,15 @@ export function Navbar() {
         <motion.div
           animate={{
             boxShadow: scrolled
-              ? "0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1)"
-              : "0 4px 16px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.06)",
+              ? "0 12px 40px rgba(0,0,0,0.5), 0 0 0 0.5px rgba(255,255,255,0.3), inset 0 1.5px 1px rgba(255,255,255,0.4), inset 0 -1px 1px rgba(255,255,255,0.08)"
+              : "0 6px 24px rgba(0,0,0,0.35), 0 0 0 0.5px rgba(255,255,255,0.22), inset 0 1.5px 1px rgba(255,255,255,0.3), inset 0 -1px 1px rgba(255,255,255,0.06)",
           }}
           transition={{ duration: 0.3 }}
           className="grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-full px-5 py-2.5"
           style={{
-            background: "rgba(20,20,20,0.75)",
-            backdropFilter: "blur(40px)",
-            WebkitBackdropFilter: "blur(40px)",
-            border: "1px solid rgba(255,255,255,0.12)",
+            background: "rgba(255,255,255,0.07)",
+            backdropFilter: "blur(32px) saturate(200%) brightness(1.1)",
+            WebkitBackdropFilter: "blur(32px) saturate(200%) brightness(1.1)",
           }}
         >
           {/* Left — Logo */}
@@ -108,7 +107,7 @@ export function Navbar() {
             <motion.button
               whileTap={{ scale: 0.85 }}
               className="flex h-8 w-8 items-center justify-center rounded-full text-foreground md:hidden"
-              style={{ background: "rgba(255,255,255,0.08)" }}
+              style={{ background: "rgba(255,255,255,0.12)", boxShadow: "inset 0 1px 0.5px rgba(255,255,255,0.35)" }}
               onClick={() => setIsOpen(!isOpen)}
               aria-label="Toggle menu"
             >
@@ -140,7 +139,7 @@ export function Navbar() {
         </motion.div>
       </motion.nav>
 
-      {/* Mobile menu */}
+      {/* Mobile menu — floating Apple-style glass sheet under the pill */}
       <AnimatePresence>
         {isOpen && (
           <>
@@ -150,60 +149,68 @@ export function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="fixed inset-0 z-40 bg-background/80 backdrop-blur-xl md:hidden"
+              className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden"
               onClick={closeMenu}
             />
 
             <motion.div
               key="panel"
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="fixed right-0 top-0 z-40 h-full w-3/4 max-w-xs bg-background/95 backdrop-blur-2xl border-l border-border md:hidden flex flex-col"
+              initial={{ opacity: 0, y: -14, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -14, scale: 0.96 }}
+              transition={{ type: "spring", stiffness: 380, damping: 32 }}
+              className="fixed left-4 right-4 top-[84px] z-[45] mx-auto max-w-[860px] overflow-hidden rounded-[32px] p-3 md:hidden"
+              style={{
+                transformOrigin: "top center",
+                background: "rgba(255,255,255,0.07)",
+                backdropFilter: "blur(40px) saturate(220%) brightness(1.1)",
+                WebkitBackdropFilter: "blur(40px) saturate(220%) brightness(1.1)",
+                boxShadow:
+                  "0 24px 60px -12px rgba(0,0,0,0.6), 0 0 0 0.5px rgba(255,255,255,0.28), inset 0 1.5px 1px rgba(255,255,255,0.45), inset 0 -1px 1px rgba(255,255,255,0.1), inset 1px 0 1px rgba(255,255,255,0.15), inset -1px 0 1px rgba(255,255,255,0.15)",
+              }}
             >
-              <div className="h-20 flex-shrink-0" />
-
-              <nav className="flex flex-col gap-1 px-6 py-4 flex-1 overflow-y-auto">
-                {navItems.map((item, index) => (
-                  <motion.a
-                    key={item.name}
-                    href={item.href}
-                    initial={{ opacity: 0, x: 40 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 40 }}
-                    transition={{ delay: index * 0.07, type: "spring", stiffness: 300, damping: 25 }}
-                    onClick={closeMenu}
-                    className={`relative flex items-center rounded-xl px-4 py-4 text-xl font-semibold transition-all ${
-                      activeSection === item.href.slice(1)
-                        ? "text-foreground bg-foreground/8"
-                        : "text-muted-foreground hover:text-foreground hover:bg-foreground/5"
-                    }`}
-                  >
-                    {activeSection === item.href.slice(1) && (
-                      <motion.div
-                        layoutId="activeBar"
-                        className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-full bg-foreground"
-                      />
-                    )}
-                    <span className="pl-3">{item.name}</span>
-                    <span className="ml-auto text-xs text-muted-foreground/40 font-mono">
-                      0{index + 1}
-                    </span>
-                  </motion.a>
-                ))}
+              <nav className="flex flex-col gap-1">
+                {navItems.map((item, index) => {
+                  const active = activeSection === item.href.slice(1)
+                  return (
+                    <motion.a
+                      key={item.name}
+                      href={item.href}
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ delay: 0.05 + index * 0.05, duration: 0.25 }}
+                      onClick={closeMenu}
+                      className={`relative flex items-center rounded-2xl px-5 py-3.5 text-lg font-semibold transition-colors active:scale-[0.98] ${
+                        active ? "text-foreground" : "text-foreground/60 hover:text-foreground"
+                      }`}
+                      style={
+                        active
+                          ? {
+                              background: "rgba(255,255,255,0.14)",
+                              boxShadow:
+                                "inset 0 1px 0.5px rgba(255,255,255,0.4), inset 0 -0.5px 0.5px rgba(255,255,255,0.08)",
+                            }
+                          : undefined
+                      }
+                    >
+                      <span>{item.name}</span>
+                      <span className="ml-auto font-mono text-xs text-foreground/35">
+                        0{index + 1}
+                      </span>
+                    </motion.a>
+                  )
+                })}
               </nav>
 
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                className="flex-shrink-0 px-8 py-6 border-t border-border"
+              <div
+                className="mx-3 mt-3 pt-4 pb-2 text-center"
+                style={{ borderTop: "1px solid rgba(255,255,255,0.12)" }}
               >
-                <p className="text-xs text-muted-foreground/50 uppercase tracking-widest">
+                <p className="text-[10px] uppercase tracking-[0.3em] text-foreground/45">
                   Creator · Artist · Meme Lord
                 </p>
-              </motion.div>
+              </div>
             </motion.div>
           </>
         )}
