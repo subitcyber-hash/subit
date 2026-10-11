@@ -6,7 +6,6 @@ import { MusicPlayer } from '@/components/music-player'
 import { LoadingScreen } from "@/components/loading-screen"
 import { ScrollProgress } from "@/components/scroll-progress"
 import { CustomCursor } from "@/components/custom-cursor"
-import { VisitCounter } from "@/components/visit-counter"
 
 const geist = Geist({ 
   subsets: ["latin"],
@@ -117,7 +116,6 @@ export default function RootLayout({
         <LoadingScreen />
         {children}
         <MusicPlayer />
-        <VisitCounter />
         <Analytics/>
       </body>
     </html>

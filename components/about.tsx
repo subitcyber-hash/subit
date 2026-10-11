@@ -42,58 +42,65 @@ const timeline = [
 ]
 
 // ── Flip Card ────────────────────────────────────────────
+const FLIP_FACES = [
+  { src: "/luffy.webp", alt: "Luffy" },
+  { src: "/eren.webp", alt: "Eren" },
+]
+
+function FlipHint() {
+  return (
+    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full border border-white/15 bg-black/40 px-3.5 py-1.5 backdrop-blur-md">
+      <span className="text-[10px] uppercase tracking-widest text-white/80">Tap to flip</span>
+    </div>
+  )
+}
+
 function FlipCard() {
   const [flipped, setFlipped] = useState(false)
 
   return (
-    <div
-      className="relative aspect-square max-w-md w-full cursor-pointer"
-      style={{ perspective: "1000px" }}
+    <motion.button
+      type="button"
+      aria-label="Flip profile card"
+      aria-pressed={flipped}
       onClick={() => setFlipped(f => !f)}
+      whileHover={{ y: -4 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 300, damping: 24 }}
+      className="relative block aspect-square w-full cursor-pointer rounded-3xl outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+      style={{ perspective: "1200px", boxShadow: "0 24px 60px -20px rgba(0,0,0,0.7)" }}
     >
       <motion.div
-        className="relative w-full h-full"
+        className="relative h-full w-full"
         animate={{ rotateY: flipped ? 180 : 0 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         style={{ transformStyle: "preserve-3d" }}
       >
-        {/* Front — profile.jpg */}
-        <div
-          className="absolute inset-0 overflow-hidden rounded-3xl"
-          style={{ backfaceVisibility: "hidden" }}
-        >
-          <Image
-            src="/luffy.webp"
-            alt="Luffy"
-            fill
-            className="object-cover object-top"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
-          {/* Tap hint */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 rounded-full bg-black/50 px-3 py-1.5 backdrop-blur-sm">
-            <span className="text-[10px] text-white/60 uppercase tracking-widest">Tap to flip</span>
+        {FLIP_FACES.map((face, i) => (
+          <div
+            key={face.src}
+            className="absolute inset-0 overflow-hidden rounded-3xl border border-white/10"
+            style={{
+              backfaceVisibility: "hidden",
+              WebkitBackfaceVisibility: "hidden",
+              transform: i === 1 ? "rotateY(180deg)" : undefined,
+            }}
+          >
+            <Image
+              src={face.src}
+              alt={face.alt}
+              fill
+              sizes="(min-width: 1024px) 576px, 100vw"
+              className="object-cover object-center"
+              priority
+              draggable={false}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+            <FlipHint />
           </div>
-        </div>
-
-        {/* Back — profile2.jpg */}
-        <div
-          className="absolute inset-0 overflow-hidden rounded-3xl"
-          style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
-        >
-          <Image
-            src="/eren.webp"
-            alt="Eren"
-            fill
-            className="object-cover object-top"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 rounded-full bg-black/50 px-3 py-1.5 backdrop-blur-sm">
-            <span className="text-[10px] text-white/60 uppercase tracking-widest">Tap to flip</span>
-          </div>
-        </div>
+        ))}
       </motion.div>
-    </div>
+    </motion.button>
   )
 }
 
