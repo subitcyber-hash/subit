@@ -19,7 +19,7 @@ const formatDate = (iso: string) => {
 }
 
 const fieldClass =
-  "w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition-colors duration-200 hover:border-white/20 focus:border-white/35 focus:bg-white/[0.06] disabled:opacity-60"
+  "w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition-colors duration-200 hover:border-white/20 focus:border-white/35 focus:bg-white/[0.06] disabled:opacity-60 [&:-webkit-autofill]:[-webkit-text-fill-color:#fafafa] [&:-webkit-autofill]:shadow-[inset_0_0_0_1000px_#161616] [&:-webkit-autofill]:[caret-color:#fafafa] [&:-webkit-autofill]:[transition:background-color_9999s_ease-in-out_0s]"
 
 type Notice = { type: "success" | "error"; text: string } | null
 
