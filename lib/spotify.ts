@@ -102,6 +102,17 @@ async function callApi(path: string): Promise<Response> {
   return res
 }
 
+// Spotify's own error text (e.g. "User not registered in the Developer Dashboard") — no secrets in it.
+async function why(res: Response): Promise<string> {
+  try {
+    const j = (await res.json()) as { error?: { message?: string } | string; error_description?: string }
+    const m = typeof j.error === "string" ? j.error_description || j.error : j.error?.message
+    return m ? ` (${String(m).slice(0, 160)})` : ""
+  } catch {
+    return ""
+  }
+}
+
 export async function fetchNowPlaying(): Promise<NowPlaying> {
   const cur = await callApi("/me/player/currently-playing?additional_types=track,episode")
   if (cur.status === 200) {
@@ -110,11 +121,11 @@ export async function fetchNowPlaying(): Promise<NowPlaying> {
     if (track && data?.is_playing) return { status: "playing", track }
     if (track) return { status: "last", track } // paused: show it as the last played song
   } else if (cur.status !== 204) {
-    throw new Error(`currently-playing failed: ${cur.status}`)
+    throw new Error(`currently-playing failed: ${cur.status}${await why(cur)}`)
   }
 
   const rec = await callApi("/me/player/recently-played?limit=1")
-  if (!rec.ok) throw new Error(`recently-played failed: ${rec.status}`)
+  if (!rec.ok) throw new Error(`recently-played failed: ${rec.status}${await why(rec)}`)
   const data = (await rec.json().catch(() => null)) as { items?: { track?: SpotifyItem; played_at?: string }[] } | null
   const first = data?.items?.[0]
   const track = toTrack(first?.track)
