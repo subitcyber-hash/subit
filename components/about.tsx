@@ -134,16 +134,28 @@ export function About() {
                 About Me
               </span>
               <h2 className="mb-6 text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-                Memes, Art &
-                <br />
-                <span className="text-glow">Chill Guy</span>
+                <span className="text-glow">Hey, I&apos;m Subit.</span>
               </h2>
-              <p className="text-lg leading-relaxed text-muted-foreground">
-                I&apos;m SUBIT — an 18-year-old meme creator, aspiring artist and web builder from
-                Barishal, Bangladesh. I make aesthetic, chill content that hits different. What started
-                as posting memes on TikTok and Instagram turned into a whole creative journey I never
-                want to stop. I also code my own projects — this site was built by me from scratch.
-              </p>
+              <div className="space-y-4 text-lg leading-relaxed text-muted-foreground">
+                <p>
+                  I&apos;m just a guy trying to figure life out, build cool things, and become someone
+                  I&apos;m proud of. I&apos;m into technology, web design, and exploring what the internet
+                  has to offer. I like creating things that reflect my own taste, whether it&apos;s a
+                  website, a new idea, or something completely random that I decided to try.
+                </p>
+                <p>
+                  Outside of that, I&apos;m usually listening to music, watching anime, or spending hours
+                  exploring things that catch my interest. I can be curious about pretty much anything,
+                  and I enjoy learning things at my own pace.
+                </p>
+                <p>
+                  I don&apos;t have everything figured out yet, and honestly, I don&apos;t think I need to.
+                  I&apos;m just here to grow, create, make memories, and see where life takes me.
+                </p>
+                <p className="font-semibold text-foreground">
+                  Just me, my little world, and a lot left to figure out.
+                </p>
+              </div>
             </div>
 
             {/* Tools */}
