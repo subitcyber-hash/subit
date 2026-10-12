@@ -149,9 +149,10 @@ export function MusicPlayer() {
             transition={{ duration: 0.3 }}
             className="absolute bottom-full right-0 mb-3 flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium text-white whitespace-nowrap"
             style={{
-              background: "rgba(20,20,20,0.9)",
-              backdropFilter: "blur(12px)",
-              border: "1px solid rgba(255,255,255,0.12)",
+              background: "rgba(40,40,42,0.55)",
+              backdropFilter: "blur(20px) saturate(180%)",
+              WebkitBackdropFilter: "blur(20px) saturate(180%)",
+              boxShadow: "0 8px 24px rgba(0,0,0,0.4), 0 0 0 0.5px rgba(255,255,255,0.28), inset 0 1.5px 1px rgba(255,255,255,0.4), inset 0 -1px 1px rgba(255,255,255,0.08)",
             }}
           >
             <VolumeX size={12} className="text-white/60" />
@@ -177,7 +178,13 @@ export function MusicPlayer() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             onClick={() => setExpanded(true)}
-            className="glass-light flex items-center gap-3 rounded-full px-4 py-3 hover:bg-foreground/10 transition-all"
+            className="flex items-center gap-3 rounded-full px-4 py-3 transition-colors hover:bg-white/10"
+            style={{
+              background: "rgba(40,40,42,0.5)",
+              backdropFilter: "blur(20px) saturate(180%)",
+              WebkitBackdropFilter: "blur(20px) saturate(180%)",
+              boxShadow: "0 8px 24px rgba(0,0,0,0.4), 0 0 0 0.5px rgba(255,255,255,0.28), inset 0 1.5px 1px rgba(255,255,255,0.4), inset 0 -1px 1px rgba(255,255,255,0.08)",
+            }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -207,10 +214,19 @@ export function MusicPlayer() {
           /* ── Expanded player ── */
           <motion.div
             key="player"
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="glass-light w-72 rounded-2xl p-4 shadow-2xl"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 12 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="w-72 rounded-[28px] p-4"
+            style={{
+              // Apple-style glass: dark tint keeps text readable over the page, strong blur frosts it
+              background: "rgba(28,28,30,0.55)",
+              backdropFilter: "blur(28px) saturate(180%)",
+              WebkitBackdropFilter: "blur(28px) saturate(180%)",
+              boxShadow:
+                "0 24px 60px -12px rgba(0,0,0,0.6), 0 0 0 0.5px rgba(255,255,255,0.28), inset 0 1.5px 1px rgba(255,255,255,0.4), inset 0 -1px 1px rgba(255,255,255,0.08), inset 1px 0 1px rgba(255,255,255,0.12), inset -1px 0 1px rgba(255,255,255,0.12)",
+            }}
           >
             {/* Header */}
             <div className="mb-4 flex items-center justify-between">
@@ -242,7 +258,7 @@ export function MusicPlayer() {
                   exit={{ height: 0, opacity: 0 }}
                   className="overflow-hidden mb-3"
                 >
-                  <div className="flex items-center justify-between rounded-xl bg-foreground/5 px-3 py-2">
+                  <div className="flex items-center justify-between rounded-2xl px-3 py-2" style={{ background: "rgba(255,255,255,0.08)", boxShadow: "inset 0 1px 0.5px rgba(255,255,255,0.25)" }}>
                     <div className="flex items-center gap-2">
                       <VolumeX size={13} className="text-muted-foreground" />
                       <span className="text-xs text-muted-foreground">Muted</span>
@@ -274,8 +290,8 @@ export function MusicPlayer() {
                       <button
                         key={track.id}
                         onClick={() => { setCurrentIndex(i); setIsPlaying(true) }}
-                        className={`w-full rounded-lg px-3 py-2 text-left transition-all hover:bg-foreground/10 ${
-                          i === currentIndex ? "bg-foreground/10" : ""
+                        className={`w-full rounded-xl px-3 py-2 text-left transition-colors hover:bg-white/10 ${
+                          i === currentIndex ? "bg-white/15" : ""
                         }`}
                       >
                         <p className={`text-xs font-medium truncate ${i === currentIndex ? "text-foreground" : "text-muted-foreground"}`}>
@@ -313,7 +329,7 @@ export function MusicPlayer() {
             {/* Progress bar */}
             <div className="mb-2">
               <div
-                className="h-1.5 w-full cursor-pointer rounded-full bg-foreground/10 overflow-hidden"
+                className="h-1.5 w-full cursor-pointer rounded-full bg-white/20 overflow-hidden"
                 onClick={seek}
               >
                 <motion.div
@@ -349,7 +365,7 @@ export function MusicPlayer() {
                 <motion.button
                   whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                   onClick={() => setIsPlaying(p => !p)}
-                  className="rounded-full bg-foreground p-3 text-background shadow-lg"
+                  className="rounded-full bg-white p-3 text-black shadow-[0_4px_16px_rgba(0,0,0,0.4)]"
                 >
                   {isPlaying ? <Pause size={18} /> : <Play size={18} fill="currentColor" />}
                 </motion.button>
