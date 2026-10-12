@@ -1,4 +1,4 @@
-import { fetchNowPlaying, isConfigured, RateLimited, type NowPlaying } from "@/lib/spotify"
+import { errorReason, fetchNowPlaying, isConfigured, RateLimited, type NowPlaying } from "@/lib/spotify"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
@@ -26,6 +26,6 @@ export async function GET() {
     if (err instanceof RateLimited) blockedUntil = now + err.retryAfter * 1000
     console.error("[spotify] now-playing", err instanceof Error ? err.message : err)
     // Serve the last good answer rather than flashing an error for a transient failure.
-    return Response.json(cache?.data ?? ({ status: "error" } satisfies NowPlaying), { headers: { "Cache-Control": "no-store" } })
+    return Response.json(cache?.data ?? ({ status: "error", reason: errorReason(err) } satisfies NowPlaying), { headers: { "Cache-Control": "no-store" } })
   }
 }

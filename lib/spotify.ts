@@ -4,7 +4,8 @@ export const SPOTIFY_SCOPES = "user-read-currently-playing user-read-recently-pl
 
 export type NowPlaying =
   | { status: "playing" | "last"; track: Track; playedAt?: string }
-  | { status: "empty" | "unconfigured" | "error" }
+  | { status: "empty" | "unconfigured" }
+  | { status: "error"; reason?: string }
 
 export type Track = { title: string; artist: string; album: string; image: string | null; url: string | null }
 
@@ -118,4 +119,14 @@ export async function fetchNowPlaying(): Promise<NowPlaying> {
   const first = data?.items?.[0]
   const track = toTrack(first?.track)
   return track ? { status: "last", track, playedAt: first?.played_at } : { status: "empty" }
+}
+
+// Safe, secret-free hint about why Spotify failed (shown in the JSON so setup problems are diagnosable).
+export function errorReason(err: unknown): string {
+  const m = err instanceof Error ? err.message : ""
+  if (err instanceof RateLimited) return "rate_limited"
+  const code = /: (\d{3})/.exec(m)?.[1]
+  if (m.startsWith("token refresh failed")) return code === "400" || code === "401" ? `token_rejected_${code}` : `token_error_${code ?? "?"}`
+  if (m.startsWith("token refresh returned")) return "token_empty"
+  return code ? `spotify_api_${code}` : "network"
 }
