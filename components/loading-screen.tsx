@@ -35,7 +35,7 @@ export function LoadingScreen() {
 
           <div className="mt-6 h-px w-24 overflow-hidden bg-white/10">
             <motion.div
-              className="h-full bg-white/70"
+              className="h-full bg-site-accent"
               initial={{ width: "0%" }}
               animate={{ width: "100%" }}
               transition={{ duration: SHOW_MS / 1000, ease: "easeInOut" }}

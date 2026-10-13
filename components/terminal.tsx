@@ -23,7 +23,7 @@ const WELCOME: Line[] = [
 ]
 
 const CSS = `
-.tm{--tm-green:#4ade80;--tm-dim:rgba(255,255,255,.5);--tm-err:#f87171;
+.tm{--tm-green:var(--site-accent);--tm-dim:rgba(255,255,255,.5);--tm-err:#f87171;
   font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
   color:#e5e5e5;background:#050505;border:1px solid rgba(255,255,255,.1);border-radius:16px;overflow:hidden;
   box-shadow:0 20px 60px -20px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.04);text-align:left}
@@ -48,7 +48,7 @@ const CSS = `
 .tm-row{display:grid;grid-template-columns:minmax(0,150px) 1fr;gap:12px;animation:tm-in .22s ease-out both}
 .tm-k{color:var(--tm-green)}
 .tm-v{min-width:0;word-break:break-word}
-.tm a{color:#fff;text-decoration:underline;text-decoration-color:rgba(74,222,128,.6);text-underline-offset:3px}
+.tm a{color:#fff;text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--site-accent) 60%,transparent);text-underline-offset:3px}
 .tm a:hover{color:var(--tm-green)}
 .tm-input{display:flex;gap:8px;align-items:center}
 .tm-field{flex:1;min-width:0;font:inherit;font-size:13px;color:#fff;background:transparent;border:0;outline:0;padding:0;caret-color:var(--tm-green)}
@@ -56,7 +56,7 @@ const CSS = `
 .tm-cursor{display:inline-block;width:.6em;height:1.1em;background:var(--tm-green);animation:tm-blink 1.1s steps(1) infinite;flex:none}
 .tm-chips{display:flex;flex-wrap:wrap;gap:8px;padding:12px 16px 14px;border-top:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02)}
 .tm-chip{font:inherit;font-size:12px;color:rgba(255,255,255,.7);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:6px 12px;cursor:pointer;transition:color .15s,border-color .15s,background .15s,transform .15s}
-.tm-chip:hover{color:var(--tm-green);border-color:rgba(74,222,128,.5);background:rgba(74,222,128,.07);transform:translateY(-1px)}
+.tm-chip:hover{color:var(--tm-green);border-color:color-mix(in srgb,var(--site-accent) 50%,transparent);background:color-mix(in srgb,var(--site-accent) 8%,transparent);transform:translateY(-1px)}
 @keyframes tm-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 @keyframes tm-blink{0%,49%{opacity:1}50%,100%{opacity:0}}
 @media (max-width:640px){

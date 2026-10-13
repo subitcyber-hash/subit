@@ -190,7 +190,7 @@ export function Hero() {
           <div className="relative" ref={popupRef}>
             <motion.button
               onClick={() => setShowIgPopup(p => !p)}
-              className="glass-light flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white/80 transition-colors duration-100 hover:bg-white/10 hover:text-white"
+              className="glass-light flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white/80 transition-colors duration-100 hover:bg-white/10 hover:text-site-accent"
               whileHover={{ scale: 1.06, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -260,7 +260,7 @@ export function Hero() {
             href="https://wa.me/8801732875763"
             target="_blank"
             rel="noopener noreferrer"
-            className="glass-light flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white/80 transition-colors duration-100 hover:bg-white/10 hover:text-white"
+            className="glass-light flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white/80 transition-colors duration-100 hover:bg-white/10 hover:text-site-accent"
             whileHover={{ scale: 1.06, y: -2 }}
             whileTap={{ scale: 0.95 }}
           >

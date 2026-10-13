@@ -267,7 +267,7 @@ export function MusicPlayer() {
                       onClick={handleUnmute}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="rounded-full bg-foreground px-3 py-1 text-[10px] font-semibold text-background"
+                      className="rounded-full bg-site-accent px-3 py-1 text-[10px] font-semibold text-site-accent-fg"
                     >
                       Unmute
                     </motion.button>
@@ -333,7 +333,7 @@ export function MusicPlayer() {
                 onClick={seek}
               >
                 <motion.div
-                  className="h-full rounded-full bg-foreground"
+                  className="h-full rounded-full bg-site-accent"
                   style={{ width: `${progress}%` }}
                 />
               </div>
@@ -365,7 +365,7 @@ export function MusicPlayer() {
                 <motion.button
                   whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                   onClick={() => setIsPlaying(p => !p)}
-                  className="rounded-full bg-white p-3 text-black shadow-[0_4px_16px_rgba(0,0,0,0.4)]"
+                  className="rounded-full bg-site-accent p-3 text-site-accent-fg shadow-[0_4px_16px_rgba(0,0,0,0.4)]"
                 >
                   {isPlaying ? <Pause size={18} /> : <Play size={18} fill="currentColor" />}
                 </motion.button>

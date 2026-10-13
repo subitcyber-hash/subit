@@ -95,8 +95,8 @@ export function CustomCursor() {
           height: hovering ? 44 : 32,
           marginLeft: hovering ? -22 : -16,
           marginTop: hovering ? -22 : -16,
-          border: `1px solid rgba(255,255,255,${hovering ? 0.5 : 0.25})`,
-          background: hovering ? "rgba(255,255,255,0.04)" : "transparent",
+          border: `1px solid color-mix(in srgb, var(--site-accent) ${hovering ? 60 : 30}%, transparent)`,
+          background: hovering ? "color-mix(in srgb, var(--site-accent) 6%, transparent)" : "transparent",
           opacity: visible ? 1 : 0,
           transition: "width 0.15s, height 0.15s, margin 0.15s, border-color 0.15s, opacity 0.2s",
           willChange: "transform",
@@ -106,14 +106,14 @@ export function CustomCursor() {
       {/* Inner dot — instant */}
       <div
         ref={dotRef}
-        className="pointer-events-none fixed left-0 top-0 z-[9999] rounded-full bg-white"
+        className="pointer-events-none fixed left-0 top-0 z-[9999] rounded-full bg-site-accent"
         style={{
           width: clicking ? 4 : 5,
           height: clicking ? 4 : 5,
           marginLeft: clicking ? -2 : -2.5,
           marginTop: clicking ? -2 : -2.5,
           opacity: visible ? 1 : 0,
-          boxShadow: "0 0 6px rgba(255,255,255,0.7)",
+          boxShadow: "0 0 6px color-mix(in srgb, var(--site-accent) 70%, transparent)",
           transition: "width 0.1s, height 0.1s, opacity 0.15s",
           willChange: "transform",
         }}

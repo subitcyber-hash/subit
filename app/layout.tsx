@@ -7,6 +7,7 @@ import { LoadingScreen } from "@/components/loading-screen"
 import { ScrollProgress } from "@/components/scroll-progress"
 import { CustomCursor } from "@/components/custom-cursor"
 import { Snow } from "@/components/snow"
+import { ACCENT_INIT_SCRIPT } from "@/lib/accent"
 
 const geist = Geist({ 
   subsets: ["latin"],
@@ -110,7 +111,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${geist.variable} ${geistMono.variable} bg-background`}>
+    <html lang="en" className={`${geist.variable} ${geistMono.variable} bg-background`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: ACCENT_INIT_SCRIPT }} />
+      </head>
       <body className="font-sans antialiased">
         <ScrollProgress />
         <CustomCursor />

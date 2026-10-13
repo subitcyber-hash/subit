@@ -27,8 +27,8 @@ export function ScrollProgress() {
           width: "100%",
           transform: "scaleX(0)",
           transformOrigin: "left",
-          background: "linear-gradient(to right, rgba(255,255,255,0.4), rgba(255,255,255,0.9))",
-          boxShadow: "0 0 8px rgba(255,255,255,0.4)",
+          background: "linear-gradient(to right, color-mix(in srgb, var(--site-accent) 40%, transparent), var(--site-accent))",
+          boxShadow: "0 0 8px color-mix(in srgb, var(--site-accent) 40%, transparent)",
           willChange: "transform",
         }}
       />

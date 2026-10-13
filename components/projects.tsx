@@ -79,12 +79,12 @@ export function Projects() {
               <>
                 <div className="flex items-start justify-between">
                   <div className="rounded-xl bg-foreground/5 p-3 transition-colors group-hover:bg-foreground/10">
-                    <Icon size={22} className="text-foreground" />
+                    <Icon size={22} className="text-site-accent" />
                   </div>
                   {project.href && (
                     <ArrowUpRight
                       size={20}
-                      className="text-muted-foreground transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground"
+                      className="text-muted-foreground transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-site-accent"
                     />
                   )}
                 </div>
@@ -108,7 +108,7 @@ export function Projects() {
                     </span>
                   ))}
                   {project.linkLabel && (
-                    <span className="ml-auto flex items-center gap-1 text-xs font-medium text-foreground/70 group-hover:text-foreground">
+                    <span className="ml-auto flex items-center gap-1 text-xs font-medium text-foreground/70 group-hover:text-site-accent">
                       {project.linkLabel === "View code" && <Github size={12} />}
                       {project.linkLabel}
                     </span>

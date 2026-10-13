@@ -1,5 +1,6 @@
 "use client"
 
+import { AccentSwitcher } from "@/components/accent-switcher"
 import { motion } from "framer-motion"
 import { Instagram, Youtube, Facebook, Twitter } from "lucide-react"
 
@@ -84,6 +85,7 @@ export function Footer() {
               <br />
               Memes, Art & Good Vibes Only.
             </p>
+            <AccentSwitcher />
           </motion.div>
 
           {/* Navigation */}
@@ -102,7 +104,7 @@ export function Footer() {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  className="text-sm text-muted-foreground transition-colors hover:text-site-accent"
                 >
                   {link.name}
                 </a>
@@ -130,7 +132,7 @@ export function Footer() {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.9 }}
-                  className="glass-light rounded-lg p-2.5 text-muted-foreground transition-colors hover:text-foreground"
+                  className="glass-light rounded-lg p-2.5 text-muted-foreground transition-colors hover:text-site-accent"
                   aria-label={social.label}
                 >
                   <social.icon size={18} />

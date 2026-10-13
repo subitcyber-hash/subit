@@ -83,7 +83,7 @@ export function Contact() {
                 className="glass-light flex items-center gap-4 rounded-xl p-4"
               >
                 <div className="rounded-lg bg-foreground/5 p-3">
-                  <Mail size={20} className="text-foreground" />
+                  <Mail size={20} className="text-site-accent" />
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Email</p>
@@ -99,7 +99,7 @@ export function Contact() {
                 className="glass-light flex items-center gap-4 rounded-xl p-4"
               >
                 <div className="rounded-lg bg-foreground/5 p-3">
-                  <MapPin size={20} className="text-foreground" />
+                  <MapPin size={20} className="text-site-accent" />
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Location</p>
@@ -159,7 +159,7 @@ export function Contact() {
                   onFocus={() => setFocused("name")}
                   onBlur={() => setFocused(null)}
                   required
-                  className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-foreground placeholder-muted-foreground/50 transition-all focus:border-foreground/30 focus:outline-none focus:ring-2 focus:ring-foreground/10"
+                  className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-foreground placeholder-muted-foreground/50 transition-all focus:border-site-accent/60 focus:outline-none focus:ring-2 focus:ring-foreground/10"
                   placeholder="Your name"
                 />
               </div>
@@ -182,7 +182,7 @@ export function Contact() {
                   onFocus={() => setFocused("email")}
                   onBlur={() => setFocused(null)}
                   required
-                  className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-foreground placeholder-muted-foreground/50 transition-all focus:border-foreground/30 focus:outline-none focus:ring-2 focus:ring-foreground/10"
+                  className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-foreground placeholder-muted-foreground/50 transition-all focus:border-site-accent/60 focus:outline-none focus:ring-2 focus:ring-foreground/10"
                   placeholder="your@email.com"
                 />
               </div>
@@ -205,7 +205,7 @@ export function Contact() {
                   onFocus={() => setFocused("message")}
                   onBlur={() => setFocused(null)}
                   required
-                  className="w-full resize-none rounded-xl border border-border bg-background/50 px-4 py-3 text-foreground placeholder-muted-foreground/50 transition-all focus:border-foreground/30 focus:outline-none focus:ring-2 focus:ring-foreground/10"
+                  className="w-full resize-none rounded-xl border border-border bg-background/50 px-4 py-3 text-foreground placeholder-muted-foreground/50 transition-all focus:border-site-accent/60 focus:outline-none focus:ring-2 focus:ring-foreground/10"
                   placeholder="Tell me about your project..."
                 />
               </div>
@@ -215,7 +215,7 @@ export function Contact() {
                 disabled={isSubmitting || isSubmitted}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="group relative w-full overflow-hidden rounded-xl bg-foreground py-4 font-semibold text-background transition-all hover:shadow-lg hover:shadow-foreground/20 disabled:cursor-not-allowed disabled:opacity-50"
+                className="group relative w-full overflow-hidden rounded-xl bg-site-accent py-4 font-semibold text-site-accent-fg transition-all hover:shadow-lg hover:shadow-site-accent/25 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <span className="relative z-10 flex items-center justify-center gap-2">
                   {isSubmitting ? (

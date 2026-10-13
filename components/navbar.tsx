@@ -100,7 +100,7 @@ export function Navbar() {
                 {activeSection === item.href.slice(1) && (
                   <motion.div
                     layoutId="activePill"
-                    className="absolute inset-0 rounded-full bg-white/10"
+                    className="absolute inset-0 rounded-full bg-site-accent/15"
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   />
                 )}

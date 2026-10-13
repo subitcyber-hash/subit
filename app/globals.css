@@ -3,6 +3,33 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ── Accent color ─────────────────────────────────────────────
+   One token drives every accent. Default is Ice Blue; the switcher sets
+   <html data-accent="…"> (see lib/accent.ts). Registering it as a <color> lets
+   the browser animate the change smoothly everywhere it's used. */
+@property --site-accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #A5D8FF;
+}
+:root {
+  --site-accent: #A5D8FF;
+  --site-accent-fg: oklch(0.12 0 0); /* text on top of an accent fill */
+}
+html[data-accent='silver'] { --site-accent: #C0C0C0; }
+html[data-accent='violet'] { --site-accent: #B8A1FF; }
+html[data-accent='emerald'] { --site-accent: #6EE7B7; }
+html[data-accent='rose'] { --site-accent: #FDA4AF; }
+html[data-accent='amber'] { --site-accent: #FCD34D; }
+html { transition: --site-accent 0.35s ease; }
+@media (prefers-reduced-motion: reduce) {
+  html { transition: none; }
+}
+::selection {
+  background: color-mix(in srgb, var(--site-accent) 35%, transparent);
+  color: inherit;
+}
+
 :root {
   --background: oklch(0.07 0 0);
   --foreground: oklch(0.98 0 0);
@@ -22,7 +49,7 @@
   --destructive-foreground: oklch(0.577 0.245 27.325);
   --border: oklch(0.2 0 0);
   --input: oklch(0.15 0 0);
-  --ring: oklch(0.4 0 0);
+  --ring: var(--site-accent);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -58,7 +85,7 @@
   --destructive-foreground: oklch(0.637 0.237 25.331);
   --border: oklch(0.2 0 0);
   --input: oklch(0.15 0 0);
-  --ring: oklch(0.4 0 0);
+  --ring: var(--site-accent);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -96,6 +123,8 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-site-accent: var(--site-accent);
+  --color-site-accent-fg: var(--site-accent-fg);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -142,16 +171,16 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: oklch(0.35 0 0);
+  background: color-mix(in srgb, var(--site-accent) 45%, oklch(0.25 0 0));
 }
 
 /* Glow effect utility */
 .text-glow {
-  text-shadow: 0 0 40px rgba(255, 255, 255, 0.3), 0 0 80px rgba(255, 255, 255, 0.1);
+  text-shadow: 0 0 40px color-mix(in srgb, var(--site-accent) 30%, transparent), 0 0 80px color-mix(in srgb, var(--site-accent) 10%, transparent);
 }
 
 .card-glow {
-  box-shadow: 0 0 40px rgba(255, 255, 255, 0.05), 0 0 80px rgba(255, 255, 255, 0.02);
+  box-shadow: 0 0 40px color-mix(in srgb, var(--site-accent) 5%, transparent), 0 0 80px color-mix(in srgb, var(--site-accent) 2%, transparent);
 }
 
 /* Glass effect */
@@ -171,6 +200,6 @@
     box-shadow: none;
   }
   .text-glow {
-    text-shadow: 0 0 24px rgba(255, 255, 255, 0.25);
+    text-shadow: 0 0 24px color-mix(in srgb, var(--site-accent) 25%, transparent);
   }
 }

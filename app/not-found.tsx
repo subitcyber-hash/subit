@@ -157,7 +157,7 @@ export default function NotFound() {
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black cursor-pointer transition-all"
+              className="flex items-center gap-2 rounded-full bg-site-accent px-6 py-3 text-sm font-semibold text-site-accent-fg cursor-pointer transition-all"
             >
               <Home size={16} />
               take me home

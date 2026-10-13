@@ -50,7 +50,7 @@ function FlipCard() {
       aria-label="Flip profile card"
       aria-pressed={flipped}
       onClick={() => setFlipped(f => !f)}
-      className="relative block aspect-square w-full cursor-pointer rounded-3xl outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+      className="relative block aspect-square w-full cursor-pointer rounded-3xl outline-none focus-visible:ring-2 focus-visible:ring-site-accent/60"
       style={{ perspective: "1200px", WebkitTapHighlightColor: "transparent" }}
     >
       <motion.div
@@ -184,7 +184,7 @@ export function About() {
                   className="glass-light group flex items-start gap-4 rounded-xl p-4 transition-transform hover:scale-[1.02]"
                 >
                   <div className="rounded-lg bg-foreground/5 p-2 transition-colors group-hover:bg-foreground/10">
-                    <skill.icon size={20} className="text-foreground" />
+                    <skill.icon size={20} className="text-site-accent" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-foreground">{skill.label}</h3>
