@@ -120,7 +120,7 @@ export function runCommand(input: string, now: Date = new Date()): CommandResult
           text("Find me here:", "accent"),
           row("instagram", "@subynxz (main)", "https://instagram.com/subynxz"),
           row("instagram", "@zexqvi (2nd)", "https://instagram.com/zexqvi"),
-          row("tiktok", "@w0xxi3", "https://www.tiktok.com/@w0xxi3"),
+          row("tiktok", "@subynx", "https://www.tiktok.com/@subynx"),
           row("facebook", "Subit Ash", "https://www.facebook.com/w0xx6"),
           row("twitter / x", "@Fuegoweb3", "https://x.com/Fuegoweb3"),
           row("pinterest", "@subitfuego", "https://pin.it/3WDLn1zBO"),

@@ -38,9 +38,9 @@ function TelegramIcon({ size = 24 }: { size?: number }) {
 const socials = [
   {
     name: "TikTok",
-    handle: "@w0xxi3",
+    handle: "@subynx",
     icon: TikTokIcon,
-    href: "https://www.tiktok.com/@w0xxi3",
+    href: "https://www.tiktok.com/@subynx",
     color: "from-cyan-400 to-pink-500",
   },
   {
