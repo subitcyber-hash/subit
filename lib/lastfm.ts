@@ -49,6 +49,29 @@ export function toTrack(t: LfmTrack | undefined | null): Track | null {
   return { title, artist: artist || "Unknown artist", album: (t.album?.["#text"] || "").trim(), image: pick || null, url }
 }
 
+const cleanTitle = (t: string) => t.replace(/\s+-\s+(remaster(ed)?|.*mix|.*version|.*edit|live).*$/i, "").replace(/\s*[([].*?[)\]]/g, "").trim()
+
+// Last.fm often has no cover for newer/remix tracks. Try its own track.getInfo, then Deezer's public search (no key needed).
+async function findCover(key: string, track: Track): Promise<string | null> {
+  try {
+    const qs = new URLSearchParams({ method: "track.getInfo", artist: track.artist, track: track.title, api_key: key, format: "json", autocorrect: "1" })
+    const r = await fetch(`https://ws.audioscrobbler.com/2.0/?${qs}`, { cache: "no-store", signal: AbortSignal.timeout(4000) })
+    const d = (await r.json()) as { track?: { album?: { image?: LfmImage[] } } }
+    const imgs = d.track?.album?.image ?? []
+    const u = ["extralarge", "large", "medium"].map((s) => imgs.find((i) => i.size === s)?.["#text"]).find((x) => x && x.startsWith("https://") && !x.includes(PLACEHOLDER))
+    if (u) return u
+  } catch {}
+  try {
+    const q = `artist:"${track.artist}" track:"${cleanTitle(track.title)}"`
+    const r = await fetch(`https://api.deezer.com/search?${new URLSearchParams({ q, limit: "1" })}`, { cache: "no-store", signal: AbortSignal.timeout(4000) })
+    const d = (await r.json()) as { data?: { album?: { cover_xl?: string; cover_big?: string } }[] }
+    const a = d.data?.[0]?.album
+    const u = a?.cover_xl || a?.cover_big
+    if (u && u.startsWith("https://")) return u
+  } catch {}
+  return null
+}
+
 export async function fetchNowPlaying(): Promise<NowPlaying> {
   const { key, user } = config()
   const qs = new URLSearchParams({ method: "user.getrecenttracks", user, api_key: key, format: "json", limit: "2" })
@@ -70,6 +93,7 @@ export async function fetchNowPlaying(): Promise<NowPlaying> {
   const first = list[0]
   const track = toTrack(first)
   if (!track) return { status: "empty" }
+  if (!track.image) track.image = await findCover(key, track)
   if (first?.["@attr"]?.nowplaying === "true") return { status: "playing", track }
   return { status: "last", track, playedAt: first?.date?.uts ? new Date(Number(first.date.uts) * 1000).toISOString() : undefined }
 }
