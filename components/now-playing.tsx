@@ -12,10 +12,16 @@ type Data =
 const POLL_MS = 20_000
 
 const CSS = `
-.np-card{display:flex;align-items:center;gap:16px;padding:16px;border-radius:16px;color:inherit;text-decoration:none;
+.np-card{position:relative;overflow:hidden;isolation:isolate;display:flex;align-items:center;gap:16px;padding:16px;border-radius:16px;color:inherit;text-decoration:none;
   background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);transition:transform .2s ease,border-color .2s ease}
 a.np-card:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--site-accent) 45%,transparent)}
 a.np-card:focus-visible{outline:2px solid var(--site-accent);outline-offset:2px}
+/* Blurred album-art backdrop: oversized so the blur never shows hard edges; the veil keeps text readable on any cover. */
+.np-bg{position:absolute;z-index:-2;left:-40px;top:-40px;width:calc(100% + 80px);height:calc(100% + 80px);max-width:none;object-fit:cover;filter:blur(32px) saturate(1.5);opacity:.6;pointer-events:none;animation:np-fade .6s ease both}
+.np-veil{position:absolute;z-index:-1;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(0,0,0,.62),rgba(0,0,0,.42))}
+@keyframes np-fade{from{opacity:0}to{opacity:.6}}
+.np-card.np-has-bg .np-artist,.np-card.np-has-bg .np-label{color:rgba(255,255,255,.72)}
+.np-card.np-has-bg .np-btn{border-color:rgba(255,255,255,.28)}
 .np-cover{position:relative;flex:none;width:64px;height:64px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);display:grid;place-items:center;color:var(--muted-foreground)}
 .np-cover img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s ease}
 a.np-card:hover .np-cover img{transform:scale(1.05)}
@@ -37,7 +43,7 @@ a.np-card:hover .np-btn{color:var(--site-accent);border-color:color-mix(in srgb,
 @keyframes np-pulse{50%{opacity:.55}}
 @media (min-width:640px){.np-cover{width:80px;height:80px}}
 @media (max-width:639px){.np-btn-text{display:none}.np-btn{padding:9px}}
-@media (prefers-reduced-motion:reduce){.np-eq i{animation:none;transform:scaleY(.6)}.np-skel{animation:none}a.np-card,a.np-card:hover{transition:none;transform:none}}
+@media (prefers-reduced-motion:reduce){.np-bg{animation:none}.np-eq i{animation:none;transform:scaleY(.6)}.np-skel{animation:none}a.np-card,a.np-card:hover{transition:none;transform:none}}
 `
 
 function ago(iso?: string) {
@@ -134,7 +140,14 @@ export function NowPlaying() {
             </div>
           </div>
         ) : (
-          <Tag {...linkProps} className="np-card">
+          <Tag {...linkProps} className={`np-card${track?.image && !imgFailed ? " np-has-bg" : ""}`}>
+            {track?.image && !imgFailed && (
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img key={track.image} className="np-bg" src={track.image} alt="" aria-hidden="true" referrerPolicy="no-referrer" draggable={false} onError={() => setImgFailed(true)} />
+                <span className="np-veil" aria-hidden="true" />
+              </>
+            )}
             <div className="np-cover">
               {track?.image && !imgFailed ? (
                 // eslint-disable-next-line @next/next/no-img-element
