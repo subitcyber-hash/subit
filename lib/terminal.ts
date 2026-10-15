@@ -1,5 +1,5 @@
 // Simulated website terminal: a fixed set of commands that return plain data.
-// Nothing here executes user input — unknown text just gets a friendly message.
+// Nothing here executes user input — free text gets an automatic keyword-based reply.
 // All links/handles/facts below mirror what already exists on the site (projects.tsx, socials.tsx,
 // hero.tsx, footer.tsx, contact.tsx, about.tsx).
 
@@ -186,15 +186,44 @@ export function runCommand(input: string, now: Date = new Date()): CommandResult
           ],
         }
       }
-      // Echo as plain text only; React escapes it, and it is never evaluated.
-      return {
-        lines: [
-          text(`command not found: ${name}`, "error"),
-          text("Type 'help' to see available commands.", "dim"),
-        ],
-      }
+      return { lines: chatReply(clean) }
     }
   }
+}
+
+// Free-text auto replies: simple keyword intents built from facts already on the site.
+// Nothing is evaluated or sent anywhere — input is only matched against fixed patterns.
+const run = (cmd: string): Line[] => {
+  const r = runCommand(cmd)
+  return "lines" in r ? r.lines : []
+}
+
+const INTENTS: { test: RegExp; reply: (m: string) => Line[] }[] = [
+  { test: /^(hi|hii+|hello|hey+|yo|sup|hola|salam|assalamu|what'?s up|wassup|good (morning|evening|afternoon|night))\b/, reply: () => [text("Hey! 👋 Welcome to my corner of the internet.", "accent"), text("Ask me anything — who I am, what I build, or how to reach me. Or type 'help'.")] },
+  { test: /how are you|how r u|how('?s| is) it going|hru/, reply: () => [text("Doing great, thanks for asking! How about you?", "accent"), text("Type 'about' if you want to know more about me.", "dim")] },
+  { test: /\b(who|what) (are|r) (you|u)\b|your name|who is subit|who made|about (you|subit|me)|introduce/, reply: () => run("about") },
+  { test: /project|portfolio|built|build|made|website|work\b/, reply: () => run("projects") },
+  { test: /skill|learn|tech|stack|code|coding|develop|program|cyber|hack|design|edit/, reply: () => run("skills") },
+  { test: /interest|hobb|anime|music|song|game|gaming|football|soccer|messi|barca|fun\b|like to do/, reply: () => run("interests") },
+  { test: /social|insta|tiktok|facebook|twitter|\bx\b|pinterest|telegram|discord|whatsapp|follow|find you/, reply: () => run("socials") },
+  { test: /contact|email|mail|reach|hire|message|dm\b|talk to you|collab|business/, reply: () => run("contact") },
+  { test: /age|old are|born|birthday|class|study|student|school|hsc/, reply: () => [text("I was born in 2008 and I'm currently in HSC.", "accent"), text("Type 'about' for the short version of my story.", "dim")] },
+  { test: /where|location|country|live|from\b|bangladesh/, reply: () => [text("I'm based in Bangladesh (UTC+6). 🌏", "accent"), text("The best way to reach me is the contact form or my socials.", "dim")] },
+  { test: /time|date|today|day is/, reply: () => run("date") },
+  { test: /thank|thx|ty\b|appreciate/, reply: () => [text("Anytime! 😊", "accent")] },
+  { test: /\b(bye|goodbye|see you|cya|gn)\b/, reply: () => [text("See you around! Thanks for stopping by. 👋", "accent")] },
+  { test: /love|cool|nice|awesome|great|amazing|good site|well done/, reply: () => [text("Thank you, that means a lot! 💙", "accent"), text("Feel free to follow me — type 'socials'.", "dim")] },
+  { test: /joke|funny|meme/, reply: () => [text("Why do programmers prefer dark mode?", "accent"), text("Because light attracts bugs. 🐛"), text("More memes on my Instagram — type 'socials'.", "dim")] },
+  { test: /help|command|what can|what do|options/, reply: () => run("help") },
+]
+
+function chatReply(clean: string): Line[] {
+  const m = clean.toLowerCase()
+  for (const i of INTENTS) if (i.test.test(m)) return i.reply(m)
+  return [
+    text("Hmm, I'm not sure about that one yet. 🤔", "accent"),
+    text("Try asking about my projects, skills, interests or how to contact me — or type 'help' for commands."),
+  ]
 }
 
 export function linesToPlainText(lines: Line[]): string {

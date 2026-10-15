@@ -19,7 +19,7 @@ const PROMPT = "subit@site:~$"
 
 const WELCOME: Line[] = [
   { kind: "text", text: "Welcome to subit.site — an interactive terminal.", tone: "accent" },
-  { kind: "text", text: "Type 'help' to see commands, or tap one below.", tone: "dim" },
+  { kind: "text", text: "Type 'help' for commands — or just say hi and ask me anything.", tone: "dim" },
 ]
 
 const CSS = `
@@ -277,7 +277,7 @@ export function Terminal() {
                 onFocus={() => setFocused(true)}
                 onBlur={() => setFocused(false)}
                 aria-label="Terminal command input. Type help for commands."
-                placeholder={focused ? "" : "type a command…"}
+                placeholder={focused ? "" : "type a command or just chat…"}
                 autoComplete="off"
                 autoCorrect="off"
                 autoCapitalize="none"
