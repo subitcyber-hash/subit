@@ -1,11 +1,13 @@
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 
-// AI replies for the terminal. The key lives only in the ANTHROPIC_API_KEY env var (server side).
+// AI replies for the terminal. Keys live only in server env vars (GROQ_API_KEY or ANTHROPIC_API_KEY).
 // Cost controls: short inputs, small max_tokens, cheap model, per-visitor + global limits.
 // Without a key this route answers { status: "unconfigured" } and the terminal uses its built-in replies.
 
-const MODEL = process.env.CHAT_MODEL || "claude-haiku-5-5"
+// Provider: Groq (free tier, GROQ_API_KEY) is preferred; Anthropic (paid, ANTHROPIC_API_KEY) is the fallback.
+const GROQ_MODEL = process.env.CHAT_MODEL || "llama-3.1-8b-instant"
+const CLAUDE_MODEL = process.env.CHAT_MODEL || "claude-haiku-5-5"
 const MAX_MSG = 300 // characters per message
 const MAX_TURNS = 6 // messages of context accepted from the browser
 const MAX_TOKENS = 220
@@ -55,8 +57,9 @@ function clean(s: string) {
 }
 
 export async function POST(req: Request) {
-  const key = process.env.ANTHROPIC_API_KEY
-  if (!key) return Response.json({ status: "unconfigured" })
+  const groqKey = process.env.GROQ_API_KEY
+  const claudeKey = process.env.ANTHROPIC_API_KEY
+  if (!groqKey && !claudeKey) return Response.json({ status: "unconfigured" })
 
   let body: { messages?: { role?: string; content?: string }[] } | null = null
   try {
@@ -77,19 +80,33 @@ export async function POST(req: Request) {
   if (lim) return Response.json({ status: "limited", reason: lim }, { status: 429 })
 
   try {
-    const res = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: { "content-type": "application/json", "x-api-key": key, "anthropic-version": "2023-06-01" },
-      body: JSON.stringify({ model: MODEL, max_tokens: MAX_TOKENS, system: SYSTEM, messages: msgs }),
-      signal: AbortSignal.timeout(15_000),
-      cache: "no-store",
-    })
+    const res = groqKey
+      ? await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          method: "POST",
+          headers: { "content-type": "application/json", authorization: `Bearer ${groqKey}` },
+          body: JSON.stringify({ model: GROQ_MODEL, max_tokens: MAX_TOKENS, temperature: 0.6, messages: [{ role: "system", content: SYSTEM }, ...msgs] }),
+          signal: AbortSignal.timeout(15_000),
+          cache: "no-store",
+        })
+      : await fetch("https://api.anthropic.com/v1/messages", {
+          method: "POST",
+          headers: { "content-type": "application/json", "x-api-key": claudeKey!, "anthropic-version": "2023-06-01" },
+          body: JSON.stringify({ model: CLAUDE_MODEL, max_tokens: MAX_TOKENS, system: SYSTEM, messages: msgs }),
+          signal: AbortSignal.timeout(15_000),
+          cache: "no-store",
+        })
     if (!res.ok) {
       console.error("[chat] upstream", res.status) // status only — never the key or user text
       return Response.json({ status: "error", reason: `http_${res.status}` })
     }
-    const data = (await res.json()) as { content?: { type?: string; text?: string }[] }
-    const reply = (data.content ?? []).filter((c) => c.type === "text").map((c) => c.text ?? "").join("").trim().slice(0, 700)
+    const data = (await res.json()) as {
+      content?: { type?: string; text?: string }[]
+      choices?: { message?: { content?: string } }[]
+    }
+    const text = groqKey
+      ? data.choices?.[0]?.message?.content ?? ""
+      : (data.content ?? []).filter((c) => c.type === "text").map((c) => c.text ?? "").join("")
+    const reply = text.trim().slice(0, 700)
     if (!reply) return Response.json({ status: "error", reason: "empty" })
     return Response.json({ status: "ok", reply }, { headers: { "Cache-Control": "no-store" } })
   } catch {

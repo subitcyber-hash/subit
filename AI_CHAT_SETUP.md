@@ -3,13 +3,17 @@
 Free-text messages in the terminal are answered by Claude through `/api/chat`.
 Without a key the terminal keeps using its built-in keyword replies, so nothing breaks.
 
-## Turn it on
-1. Create a key at https://console.anthropic.com (API keys).
-2. **Set a monthly spend limit** in the console (Settings → Limits). This is your real cost cap.
-3. Vercel → Project → Settings → Environment Variables:
-   - `ANTHROPIC_API_KEY` = your key (Production)
-   - optional `CHAT_MODEL` (default `claude-haiku-5-5`) and `CHAT_DAILY_LIMIT` (default 400 messages/day for the whole site)
-4. Redeploy.
+## Turn it on (free, with Groq)
+1. Sign up at https://console.groq.com (free tier, no card) and create an API key.
+2. Vercel → Project → Settings → Environment Variables:
+   - `GROQ_API_KEY` = your key (Production)
+   - optional `CHAT_MODEL` (default `llama-3.1-8b-instant`) and `CHAT_DAILY_LIMIT` (default 400 messages/day for the whole site)
+3. Redeploy.
+
+Free tiers have their own usage caps; if Groq is rate-limited the terminal falls back to its built-in replies.
+
+## Paid alternative (Claude)
+Set `ANTHROPIC_API_KEY` instead (used only when `GROQ_API_KEY` is missing) and set a monthly spend limit in the Anthropic console.
 
 ## Protection built in
 - Key stays on the server; never sent to the browser.
