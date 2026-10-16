@@ -4,7 +4,9 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import {
   COMMANDS,
   MAX_INPUT,
+  chatReply,
   completeCommand,
+  isFreeText,
   linesToPlainText,
   runCommand,
   sanitizeInput,
@@ -121,6 +123,40 @@ export function Terminal() {
 
   const clear = useCallback(() => setEntries([]), [])
 
+  // Free text → /api/chat (AI). If it isn't configured, is rate-limited or fails, fall back to the built-in replies.
+  const convo = useRef<{ role: "user" | "assistant"; content: string }[]>([])
+  const aiBusy = useRef(false)
+  const askAi = useCallback((clean: string) => {
+    const id = nextId.current++
+    const put = (lines: Line[]) =>
+      setEntries((prev) => prev.map((e) => (e.id === id ? { ...e, lines } : e)))
+    setEntries((prev) => [...prev, { id, cmd: clean, lines: [{ kind: "text", text: "thinking…", tone: "dim" }] }].slice(-MAX_ENTRIES))
+    if (aiBusy.current) return put([{ kind: "text", text: "One message at a time, please. 🙏", tone: "dim" }])
+    aiBusy.current = true
+    const messages = [...convo.current, { role: "user" as const, content: clean }].slice(-6)
+    fetch("/api/chat", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ messages }),
+    })
+      .then((r) => r.json().catch(() => null))
+      .then((d: { status?: string; reply?: string } | null) => {
+        if (d?.status === "ok" && d.reply) {
+          convo.current = [...messages, { role: "assistant" as const, content: d.reply }].slice(-6)
+          put(d.reply.split("\n").filter(Boolean).map((t) => ({ kind: "text" as const, text: t })))
+        } else if (d?.status === "limited") {
+          put([
+            { kind: "text", text: "You're chatting a lot — I need a breather. 😅", tone: "accent" },
+            ...chatReply(clean).slice(1),
+          ])
+        } else {
+          put(chatReply(clean))
+        }
+      })
+      .catch(() => put(chatReply(clean)))
+      .finally(() => { aiBusy.current = false })
+  }, [])
+
   const run = useCallback((raw: string) => {
     const clean = sanitizeInput(raw)
     if (clean) {
@@ -134,13 +170,14 @@ export function Terminal() {
       setEntries((prev) => [...prev, { id: nextId.current++, cmd: "", lines: [] }].slice(-MAX_ENTRIES))
       return
     }
+    if (isFreeText(clean)) return askAi(clean)
     const result = runCommand(clean)
     if ("clear" in result) return clear()
     const fx = secretEffect(clean)
     if (fx === "matrix") window.dispatchEvent(new Event("subit:matrix"))
     if (fx === "hire") window.setTimeout(() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }), 900)
     setEntries((prev) => [...prev, { id: nextId.current++, cmd: clean, lines: result.lines }].slice(-MAX_ENTRIES))
-  }, [clear])
+  }, [clear, askAi])
 
   const submit = (cmd: string) => {
     run(cmd)

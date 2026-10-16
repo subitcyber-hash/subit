@@ -237,10 +237,18 @@ const INTENTS: { test: RegExp; reply: (m: string) => Line[] }[] = [
   { test: /\b(bye|goodbye|see you|cya|gn)\b/, reply: () => [text("See you around! Thanks for stopping by. 👋", "accent")] },
   { test: /love|cool|nice|awesome|great|amazing|good site|well done/, reply: () => [text("Thank you, that means a lot! 💙", "accent"), text("Feel free to follow me — type 'socials'.", "dim")] },
   { test: /joke|funny|meme/, reply: () => [text("Why do programmers prefer dark mode?", "accent"), text("Because light attracts bugs. 🐛"), text("More memes on my Instagram — type 'socials'.", "dim")] },
-  { test: /help|command|what can|what do|options/, reply: () => run("help") },
+  { test: /help|command|what can (you|u) do|options/, reply: () => run("help") },
 ]
 
-function chatReply(clean: string): Line[] {
+// True when the input isn't a command, a hidden command or a shell-style command, i.e. it's chat.
+export function isFreeText(input: string): boolean {
+  const clean = sanitizeInput(input)
+  const name = clean.split(" ")[0].toLowerCase()
+  if (!clean || COMMAND_NAMES.includes(name) || SHELL_ISH.has(name) || secretEffect(clean)) return false
+  return true
+}
+
+export function chatReply(clean: string): Line[] {
   const m = clean.toLowerCase()
   for (const i of INTENTS) if (i.test.test(m)) return i.reply(m)
   return [
