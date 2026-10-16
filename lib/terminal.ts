@@ -224,7 +224,7 @@ const run = (cmd: string): Line[] => {
 }
 
 const INTENTS: { test: RegExp; reply: (m: string) => Line[] }[] = [
-  { test: /^(hi|hii+|hello|hey+|yo|sup|hola|salam|assalamu|what'?s up|wassup|good (morning|evening|afternoon|night))\b/, reply: () => [text("Hey! 👋 Welcome to my corner of the internet.", "accent"), text("Ask me anything — who I am, what I build, or how to reach me. Or type 'help'.")] },
+  { test: /^(hi+|hello+|hey+|yo+|sup+|wass+up+|wassup|what'?s ?up|wsp|hola|salam|assalamu|what'?s up|wassup|good (morning|evening|afternoon|night))\b/, reply: () => [text("Hey! 👋 Welcome to my corner of the internet.", "accent"), text("Ask me anything — who I am, what I build, or how to reach me. Or type 'help'.")] },
   { test: /how are you|how r u|how('?s| is) it going|hru/, reply: () => [text("Doing great, thanks for asking! How about you?", "accent"), text("Type 'about' if you want to know more about me.", "dim")] },
   { test: /\b(who|what) (are|r) (you|u)\b|your name|who is subit|who made|about (you|subit|me)|introduce/, reply: () => run("about") },
   { test: /project|portfolio|built|build|made|website|work\b/, reply: () => run("projects") },

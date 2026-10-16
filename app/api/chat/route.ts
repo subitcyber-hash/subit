@@ -114,9 +114,9 @@ export async function POST(req: Request) {
         console.error("[chat] model rejected", res.status, GROQ_MODELS[i - 1])
         res = await callGroq(GROQ_MODELS[i])
       }
-      if (!res.ok && (res.status === 400 || res.status === 404)) {
+      if (!res.ok && [400, 403, 404].includes(res.status)) {
         // Every built-in name was rejected: use whatever this key can really access.
-        for (const id of (await discoverGroqModels(groqKey)).filter((m) => !GROQ_MODELS.includes(m)).slice(0, 3)) {
+        for (const id of (await discoverGroqModels(groqKey)).filter((m) => !GROQ_MODELS.includes(m)).slice(0, 4)) {
           res = await callGroq(id)
           if (res.ok) break
           console.error("[chat] discovered model rejected", res.status, id)
