@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic"
 // Without a key this route answers { status: "unconfigured" } and the terminal uses its built-in replies.
 
 // Provider: Groq (free tier, GROQ_API_KEY) is preferred; Anthropic (paid, ANTHROPIC_API_KEY) is the fallback.
-const GROQ_MODEL = process.env.CHAT_MODEL || "llama-3.1-8b-instant"
+const GROQ_MODELS = [process.env.CHAT_MODEL, "llama-3.1-8b-instant", "llama-3.3-70b-versatile"].filter((m, i, a): m is string => Boolean(m) && a.indexOf(m) === i)
 const CLAUDE_MODEL = process.env.CHAT_MODEL || "claude-haiku-5-5"
 const MAX_MSG = 300 // characters per message
 const MAX_TURNS = 6 // messages of context accepted from the browser
@@ -78,21 +78,31 @@ export async function POST(req: Request) {
   if (lim) return Response.json({ status: "limited", reason: lim }, { status: 429 })
 
   try {
-    const res = groqKey
-      ? await fetch("https://api.groq.com/openai/v1/chat/completions", {
-          method: "POST",
-          headers: { "content-type": "application/json", authorization: `Bearer ${groqKey}` },
-          body: JSON.stringify({ model: GROQ_MODEL, max_tokens: MAX_TOKENS, temperature: 0.85, messages: [{ role: "system", content: SYSTEM }, ...msgs] }),
-          signal: AbortSignal.timeout(15_000),
-          cache: "no-store",
-        })
-      : await fetch("https://api.anthropic.com/v1/messages", {
-          method: "POST",
-          headers: { "content-type": "application/json", "x-api-key": claudeKey!, "anthropic-version": "2023-06-01" },
-          body: JSON.stringify({ model: CLAUDE_MODEL, max_tokens: MAX_TOKENS, system: SYSTEM, messages: msgs }),
-          signal: AbortSignal.timeout(15_000),
-          cache: "no-store",
-        })
+    const callGroq = (model: string) =>
+      fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: { "content-type": "application/json", authorization: `Bearer ${groqKey}` },
+        body: JSON.stringify({ model, max_tokens: MAX_TOKENS, temperature: 0.85, messages: [{ role: "system", content: SYSTEM }, ...msgs] }),
+        signal: AbortSignal.timeout(15_000),
+        cache: "no-store",
+      })
+    let res: Response
+    if (groqKey) {
+      res = await callGroq(GROQ_MODELS[0])
+      // Model removed/renamed (400/404) → try the next one instead of failing.
+      for (let i = 1; !res.ok && (res.status === 400 || res.status === 404) && i < GROQ_MODELS.length; i++) {
+        console.error("[chat] model rejected", res.status, GROQ_MODELS[i - 1])
+        res = await callGroq(GROQ_MODELS[i])
+      }
+    } else {
+      res = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "content-type": "application/json", "x-api-key": claudeKey!, "anthropic-version": "2023-06-01" },
+        body: JSON.stringify({ model: CLAUDE_MODEL, max_tokens: MAX_TOKENS, system: SYSTEM, messages: msgs }),
+        signal: AbortSignal.timeout(15_000),
+        cache: "no-store",
+      })
+    }
     if (!res.ok) {
       console.error("[chat] upstream", res.status) // status only — never the key or user text
       return Response.json({ status: "error", reason: `http_${res.status}` })
@@ -111,4 +121,10 @@ export async function POST(req: Request) {
     console.error("[chat] network")
     return Response.json({ status: "error", reason: "network" })
   }
+}
+
+// Quick health check: open /api/chat in the browser. Never reveals the key.
+export async function GET() {
+  const provider = process.env.GROQ_API_KEY ? "groq" : process.env.ANTHROPIC_API_KEY ? "anthropic" : null
+  return Response.json({ configured: Boolean(provider), provider }, { headers: { "Cache-Control": "no-store" } })
 }
