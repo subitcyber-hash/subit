@@ -160,7 +160,15 @@ export async function GET(req: Request) {
     const ip = (req.headers.get("x-forwarded-for") || "").split(",")[0].trim() || "unknown"
     if (limited(ip)) return Response.json({ ...out, test: "rate_limited_try_later" }, { status: 429 })
     const found = await discoverGroqModels(process.env.GROQ_API_KEY as string)
-    out.available_models = found.slice(0, 12)
+    try {
+      const mr = await fetch("https://api.groq.com/openai/v1/models", { headers: { authorization: `Bearer ${process.env.GROQ_API_KEY}` }, signal: AbortSignal.timeout(8000), cache: "no-store" })
+      const mj = mr.ok ? ((await mr.json()) as { data?: { id?: string }[] }) : null
+      out.models_endpoint = mr.ok ? `ok (${mj?.data?.length ?? 0} models)` : `http_${mr.status}`
+      out.all_models = (mj?.data ?? []).map((m) => m.id).join(", ").slice(0, 400)
+    } catch {
+      out.models_endpoint = "network_error"
+    }
+    out.usable_models = found.slice(0, 12).join(", ") || "none"
     for (const model of [...GROQ_MODELS, ...found.filter((m) => !GROQ_MODELS.includes(m)).slice(0, 2)]) {
       try {
         const r = await fetch("https://api.groq.com/openai/v1/chat/completions", {
