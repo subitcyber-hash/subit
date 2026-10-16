@@ -3,6 +3,8 @@
 // All links/handles/facts below mirror what already exists on the site (projects.tsx, socials.tsx,
 // hero.tsx, footer.tsx, contact.tsx, about.tsx).
 
+import { faqAnswer } from "./brain"
+
 export type Line =
   | { kind: "text"; text: string; tone?: "dim" | "accent" | "error" }
   | { kind: "row"; key: string; value: string; href?: string }
@@ -250,6 +252,8 @@ export function isFreeText(input: string): boolean {
 
 export function chatReply(clean: string): Line[] {
   const m = clean.toLowerCase()
+  const faq = faqAnswer(m)
+  if (faq) return [text(faq, "accent")]
   for (const i of INTENTS) if (i.test.test(m)) return i.reply(m)
   return [
     text("Hmm, I'm not sure about that one yet. 🤔", "accent"),
