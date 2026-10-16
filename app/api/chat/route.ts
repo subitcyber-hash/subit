@@ -123,8 +123,30 @@ export async function POST(req: Request) {
   }
 }
 
-// Quick health check: open /api/chat in the browser. Never reveals the key.
-export async function GET() {
+// Health check: open /api/chat in the browser. Add ?test=1 to make one tiny real call to the provider
+// and see the HTTP status (never reveals the key or any prompt text).
+export async function GET(req: Request) {
   const provider = process.env.GROQ_API_KEY ? "groq" : process.env.ANTHROPIC_API_KEY ? "anthropic" : null
-  return Response.json({ configured: Boolean(provider), provider }, { headers: { "Cache-Control": "no-store" } })
+  const out: Record<string, unknown> = { configured: Boolean(provider), provider }
+  if (provider === "groq" && new URL(req.url).searchParams.get("test") === "1") {
+    const ip = (req.headers.get("x-forwarded-for") || "").split(",")[0].trim() || "unknown"
+    if (limited(ip)) return Response.json({ ...out, test: "rate_limited_try_later" }, { status: 429 })
+    for (const model of GROQ_MODELS) {
+      try {
+        const r = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          method: "POST",
+          headers: { "content-type": "application/json", authorization: `Bearer ${process.env.GROQ_API_KEY}` },
+          body: JSON.stringify({ model, max_tokens: 5, messages: [{ role: "user", content: "say hi" }] }),
+          signal: AbortSignal.timeout(10_000),
+          cache: "no-store",
+        })
+        let msg = ""
+        if (!r.ok) msg = ((await r.json().catch(() => null)) as { error?: { message?: string } } | null)?.error?.message?.slice(0, 160) ?? ""
+        out[model] = r.ok ? "ok" : `http_${r.status}${msg ? ": " + msg : ""}`
+      } catch {
+        out[model] = "network_error"
+      }
+    }
+  }
+  return Response.json(out, { headers: { "Cache-Control": "no-store" } })
 }
