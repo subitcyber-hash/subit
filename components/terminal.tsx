@@ -8,6 +8,7 @@ import {
   linesToPlainText,
   runCommand,
   sanitizeInput,
+  secretEffect,
   type Line,
 } from "@/lib/terminal"
 
@@ -135,6 +136,9 @@ export function Terminal() {
     }
     const result = runCommand(clean)
     if ("clear" in result) return clear()
+    const fx = secretEffect(clean)
+    if (fx === "matrix") window.dispatchEvent(new Event("subit:matrix"))
+    if (fx === "hire") window.setTimeout(() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }), 900)
     setEntries((prev) => [...prev, { id: nextId.current++, cmd: clean, lines: result.lines }].slice(-MAX_ENTRIES))
   }, [clear])
 

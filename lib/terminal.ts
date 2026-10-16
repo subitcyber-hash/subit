@@ -46,9 +46,32 @@ export function sanitizeInput(raw: string): string {
     .slice(0, MAX_INPUT)
 }
 
+// Hidden commands (not listed in help). They only return text; the UI may also trigger a visual effect.
+export type SecretEffect = "matrix" | "hire"
+export function secretEffect(input: string): SecretEffect | null {
+  const c = sanitizeInput(input).toLowerCase()
+  if (c === "matrix") return "matrix"
+  if (/^sudo\s+hire[\s-]?me$/.test(c)) return "hire"
+  return null
+}
+
 export function runCommand(input: string, now: Date = new Date()): CommandResult {
   const clean = sanitizeInput(input)
   const name = clean.split(" ")[0].toLowerCase()
+
+  const secret = secretEffect(clean)
+  if (secret === "matrix") {
+    return { lines: [text("Wake up, visitor...", "accent"), text("The Matrix has you. (press Esc or tap to exit)", "dim")] }
+  }
+  if (secret === "hire") {
+    return {
+      lines: [
+        text("[sudo] password for visitor: ********", "dim"),
+        text("Access granted. Great choice. 🎉", "accent"),
+        text("Taking you to the contact form…"),
+      ],
+    }
+  }
 
   switch (name) {
     case "help":

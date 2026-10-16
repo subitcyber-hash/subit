@@ -7,6 +7,7 @@ import { LoadingScreen } from "@/components/loading-screen"
 import { ScrollProgress } from "@/components/scroll-progress"
 import { CustomCursor } from "@/components/custom-cursor"
 import { Snow } from "@/components/snow"
+import { EasterEgg } from "@/components/easter-egg"
 import { ACCENT_INIT_SCRIPT } from "@/lib/accent"
 
 const geist = Geist({ 
@@ -120,6 +121,7 @@ export default function RootLayout({
         <CustomCursor />
         <LoadingScreen />
         <Snow />
+        <EasterEgg />
         {children}
         <MusicPlayer />
         <Analytics/>
