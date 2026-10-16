@@ -38,6 +38,34 @@ function TypingText() {
   )
 }
 
+// Greets the visitor by THEIR local time. Computed after mount so server/client HTML match;
+// the space is reserved (fixed height) so nothing jumps when it appears.
+function greetingFor(hour: number) {
+  if (hour >= 5 && hour < 12) return { text: "Good morning", emoji: "☀️" }
+  if (hour >= 12 && hour < 17) return { text: "Good afternoon", emoji: "🌤️" }
+  if (hour >= 17 && hour < 21) return { text: "Good evening", emoji: "🌇" }
+  return { text: "Good night", emoji: "🌙" }
+}
+
+function Greeting() {
+  const [g, setG] = useState<{ text: string; emoji: string } | null>(null)
+  useEffect(() => {
+    const update = () => setG(greetingFor(new Date().getHours()))
+    update()
+    const id = window.setInterval(update, 60_000) // keeps up if the tab stays open past a boundary
+    return () => window.clearInterval(id)
+  }, [])
+  return (
+    <div className="mb-2 h-6 text-sm font-medium tracking-wide text-site-accent" aria-live="off">
+      {g && (
+        <motion.span initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }} className="inline-block">
+          {g.text}, welcome <span aria-hidden>{g.emoji}</span>
+        </motion.span>
+      )}
+    </div>
+  )
+}
+
 export function Hero() {
   const [mounted, setMounted] = useState(false)
   const [isMobile, setIsMobile] = useState(true) // assume phone until measured
@@ -176,6 +204,7 @@ export function Hero() {
           𝔖𝔘𝔅ℑ𝔗
         </motion.h1>
 
+        <Greeting />
         <p className="mb-10 text-lg text-white/50">
           <TypingText />
         </p>
