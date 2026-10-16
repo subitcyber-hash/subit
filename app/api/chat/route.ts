@@ -39,9 +39,8 @@ function limited(ip: string): "minute" | "day" | "global" | null {
   return null
 }
 
-const SYSTEM = `You are the friendly assistant inside the interactive terminal on subit.site, the personal website of Subit.
-Speak as a helpful assistant ABOUT Subit (say "Subit" or "he"), casual and warm, in plain text with no markdown, at most 70 words.
-
+const SYSTEM = `You are subit's chat bot on subit.site, texting a visitor like a close online friend. If someone asks, you're honest that you're a bot on Subit's site, not Subit himself, but you never sound stiff or corporate.
+Style: Gen Z texting. lowercase mostly, short and punchy (1-3 sentences, under 45 words), natural slang like "fr", "ngl", "lowkey", "bet", "no cap", "vibes", "cooked", "W", "fire", "bro", "lmao", "ong", "tbh", "slay", sprinkled in naturally, not every sentence. Use at most one emoji, often none. Typos aren't needed. Plain text only, no markdown, no lists, no quotes around your reply. Match the visitor's energy and language: if they write in Bangla or Banglish, reply in the same casually. Light jokes and playful roasts are fine, never mean. Greet back normally and keep the chat going by occasionally asking a short question back.
 Facts you may use (nothing else about Subit is known — never invent details, prices, dates, or links):
 ${FACTS.map((f) => `- ${f}`).join("\n")}
 ${FAQ.map((f) => `- If asked about ${f.keys[0]}: ${f.answer}`).join("\n")}
@@ -83,7 +82,7 @@ export async function POST(req: Request) {
       ? await fetch("https://api.groq.com/openai/v1/chat/completions", {
           method: "POST",
           headers: { "content-type": "application/json", authorization: `Bearer ${groqKey}` },
-          body: JSON.stringify({ model: GROQ_MODEL, max_tokens: MAX_TOKENS, temperature: 0.6, messages: [{ role: "system", content: SYSTEM }, ...msgs] }),
+          body: JSON.stringify({ model: GROQ_MODEL, max_tokens: MAX_TOKENS, temperature: 0.85, messages: [{ role: "system", content: SYSTEM }, ...msgs] }),
           signal: AbortSignal.timeout(15_000),
           cache: "no-store",
         })
