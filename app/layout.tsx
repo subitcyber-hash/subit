@@ -82,10 +82,11 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/profile.jpg',
-        width: 800,
-        height: 800,
-        alt: 'SUBIT - Creator & Meme Lord',
+        url: '/og.jpg',
+        width: 1200,
+        height: 630,
+        type: 'image/jpeg',
+        alt: 'SUBIT - Creator, Artist & Meme Lord. Memes, art and good vibes only.',
       },
     ],
   },
@@ -96,7 +97,7 @@ export const metadata: Metadata = {
     title: 'SUBIT | Creator & Meme Lord',
     description: 'Memes, Art & Good Vibes Only. 17-year-old creator from Bangladesh.',
     creator: '@Fuegoweb3',
-    images: ['/profile.jpg'],
+    images: ['/og.jpg'],
   },
 }
 
