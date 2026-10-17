@@ -1,3 +1,5 @@
+import { ageYears } from "./age"
+
 // The terminal's "brain": everything the chat is allowed to know about Subit.
 // EDIT THIS FILE to teach it new things — no other code changes needed.
 //  • FACTS  → short statements. The AI chat reads these (it never invents beyond them).
@@ -5,7 +7,7 @@
 // Only put things here you're happy for every visitor to read.
 
 export const FACTS: string[] = [
-  "Subit was born in 2008 and is in HSC.",
+  `Subit is ${ageYears()} years old (born 27 May 2008) and is in HSC.`,
   "He's into technology, web design and exploring the internet, and is learning web dev (Next.js, Tailwind, Framer Motion) and cybersecurity.",
   "He makes meme content (Instagram, TikTok), short-form edits (CapCut, Alight Motion), anime/aesthetic art and posters (Canva).",
   "Interests: anime, music, gaming (COD, Minecraft, Elden Ring), football (Argentina, Barcelona).",

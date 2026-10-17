@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react"
 import { motion } from "framer-motion"
 
-const BIRTH_DATE = new Date("2008-05-27T00:00:00")
+import { BIRTH_DATE } from "@/lib/age"
 
 function getAge() {
   const now = new Date()

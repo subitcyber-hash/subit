@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
+import { ageYears } from '@/lib/age'
 import { MusicPlayer } from '@/components/music-player'
 import { LoadingScreen } from "@/components/loading-screen"
 import { ScrollProgress } from "@/components/scroll-progress"
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
   },
 
   // Meta description — shown under title in Google
-  description: 'SUBIT is a 17-year-old meme creator and aspiring artist from Barishal, Bangladesh. Aesthetic, chill content on Instagram and TikTok. Memes, Art & Good Vibes Only.',
+  description: `SUBIT is a ${ageYears()}-year-old meme creator and aspiring artist from Barishal, Bangladesh. Aesthetic, chill content on Instagram and TikTok. Memes, Art & Good Vibes Only.`,
 
   // Keywords (less important for Google now but still useful)
   keywords: [
@@ -75,7 +76,7 @@ export const metadata: Metadata = {
   // Open Graph — how your site looks when shared on Facebook, Discord, WhatsApp
   openGraph: {
     title: 'SUBIT | Creator & Meme Lord',
-    description: 'Memes, Art & Good Vibes Only. 17-year-old creator from Bangladesh.',
+    description: `Memes, Art & Good Vibes Only. ${ageYears()}-year-old creator from Bangladesh.`,
     url: 'https://subit.site',
     siteName: 'SUBIT',
     locale: 'en_US',
@@ -95,7 +96,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'SUBIT | Creator & Meme Lord',
-    description: 'Memes, Art & Good Vibes Only. 17-year-old creator from Bangladesh.',
+    description: `Memes, Art & Good Vibes Only. ${ageYears()}-year-old creator from Bangladesh.`,
     creator: '@Fuegoweb3',
     images: ['/og.jpg'],
   },

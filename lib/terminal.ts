@@ -4,6 +4,7 @@
 // hero.tsx, footer.tsx, contact.tsx, about.tsx).
 
 import { faqAnswer } from "./brain"
+import { ageYears } from "./age"
 
 export type Line =
   | { kind: "text"; text: string; tone?: "dim" | "accent" | "error" }
@@ -93,6 +94,7 @@ export function runCommand(input: string, now: Date = new Date()): CommandResult
           text("Just a guy trying to figure life out, build cool things, and become someone I'm proud of."),
           text("I'm into technology, web design, and exploring what the internet has to offer."),
           blank,
+          row("age", String(ageYears())),
           row("born", "2008"),
           row("class", "HSC"),
           blank,
@@ -232,7 +234,7 @@ const INTENTS: { test: RegExp; reply: (m: string) => Line[] }[] = [
   { test: /interest|hobb|anime|music|song|game|gaming|football|soccer|messi|barca|fun\b|like to do/, reply: () => run("interests") },
   { test: /social|insta|tiktok|facebook|twitter|\bx\b|pinterest|telegram|discord|whatsapp|follow|find you/, reply: () => run("socials") },
   { test: /contact|email|mail|reach|hire|message|dm\b|talk to you|collab|business/, reply: () => run("contact") },
-  { test: /age|old are|born|birthday|class|study|student|school|hsc/, reply: () => [text("I was born in 2008 and I'm currently in HSC.", "accent"), text("Type 'about' for the short version of my story.", "dim")] },
+  { test: /age|old are|born|birthday|class|study|student|school|hsc/, reply: () => [text(`I'm ${ageYears()} (born in 2008) and currently in HSC.`, "accent"), text("Type 'about' for the short version of my story.", "dim")] },
   { test: /where|location|country|live|from\b|bangladesh/, reply: () => [text("I'm based in Bangladesh (UTC+6). 🌏", "accent"), text("The best way to reach me is the contact form or my socials.", "dim")] },
   { test: /time|date|today|day is/, reply: () => run("date") },
   { test: /thank|thx|ty\b|appreciate/, reply: () => [text("Anytime! 😊", "accent")] },
