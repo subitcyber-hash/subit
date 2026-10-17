@@ -7,3 +7,6 @@ export function ageYears(now: Date = new Date()): number {
   if (m < 0 || (m === 0 && now.getDate() < BIRTH_DATE.getDate())) age--
   return age
 }
+
+// "a 17-year-old" / "an 18-year-old"
+export const ageArticle = (age: number = ageYears()) => (/^(8|11|18|8\d)$/.test(String(age)) ? "an" : "a")

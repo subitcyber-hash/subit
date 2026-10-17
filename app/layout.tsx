@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
-import { ageYears } from '@/lib/age'
+import { ageYears, ageArticle } from '@/lib/age'
 import { MusicPlayer } from '@/components/music-player'
 import { LoadingScreen } from "@/components/loading-screen"
 import { ScrollProgress } from "@/components/scroll-progress"
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   },
 
   // Meta description — shown under title in Google
-  description: `SUBIT is a ${ageYears()}-year-old meme creator and aspiring artist from Barishal, Bangladesh. Aesthetic, chill content on Instagram and TikTok. Memes, Art & Good Vibes Only.`,
+  description: `SUBIT is ${ageArticle()} ${ageYears()}-year-old meme creator and aspiring artist from Barishal, Bangladesh. Aesthetic, chill content on Instagram and TikTok. Memes, Art & Good Vibes Only.`,
 
   // Keywords (less important for Google now but still useful)
   keywords: [
