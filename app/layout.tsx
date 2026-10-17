@@ -9,6 +9,7 @@ import { ScrollProgress } from "@/components/scroll-progress"
 import { CustomCursor } from "@/components/custom-cursor"
 import { Snow } from "@/components/snow"
 import { EasterEgg } from "@/components/easter-egg"
+import { SfxListener } from "@/components/sfx"
 import { ACCENT_INIT_SCRIPT } from "@/lib/accent"
 
 const geist = Geist({ 
@@ -124,6 +125,7 @@ export default function RootLayout({
         <LoadingScreen />
         <Snow />
         <EasterEgg />
+        <SfxListener />
         {children}
         <MusicPlayer />
         <Analytics/>

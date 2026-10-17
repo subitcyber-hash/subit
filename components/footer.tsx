@@ -1,6 +1,7 @@
 "use client"
 
 import { AccentSwitcher } from "@/components/accent-switcher"
+import { SfxToggle } from "@/components/sfx"
 import { motion } from "framer-motion"
 import { Instagram, Youtube, Facebook, Twitter } from "lucide-react"
 
@@ -86,6 +87,7 @@ export function Footer() {
               Memes, Art & Good Vibes Only.
             </p>
             <AccentSwitcher />
+            <div className="mt-4"><SfxToggle /></div>
           </motion.div>
 
           {/* Navigation */}

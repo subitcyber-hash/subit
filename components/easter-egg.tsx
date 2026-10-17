@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
+import { play } from "@/lib/sfx"
 
 // Hidden surprise: the Konami code (↑ ↑ ↓ ↓ ← → ← → B A) or the `matrix` terminal command
 // starts a short "digital rain" overlay. Esc / click / tap closes it; it also ends by itself.
@@ -14,7 +15,10 @@ export function EasterEgg() {
   const canvas = useRef<HTMLCanvasElement>(null)
   const progress = useRef(0)
 
-  const start = useCallback(() => setActive(true), [])
+  const start = useCallback(() => {
+    play("matrix")
+    setActive(true)
+  }, [])
   const stop = useCallback(() => setActive(false), [])
 
   useEffect(() => {

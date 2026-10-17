@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
+import { play } from "@/lib/sfx"
 import {
   COMMANDS,
   MAX_INPUT,
@@ -128,8 +129,10 @@ export function Terminal() {
   const aiBusy = useRef(false)
   const askAi = useCallback((clean: string) => {
     const id = nextId.current++
-    const put = (lines: Line[]) =>
+    const put = (lines: Line[], thinking = false) => {
       setEntries((prev) => prev.map((e) => (e.id === id ? { ...e, lines } : e)))
+      if (!thinking) play("reply")
+    }
     setEntries((prev) => [...prev, { id, cmd: clean, lines: [{ kind: "text", text: "thinking…", tone: "dim" }] }].slice(-MAX_ENTRIES))
     if (aiBusy.current) return put([{ kind: "text", text: "One message at a time, please. 🙏", tone: "dim" }])
     aiBusy.current = true
@@ -177,6 +180,7 @@ export function Terminal() {
     if (fx === "matrix") window.dispatchEvent(new Event("subit:matrix"))
     if (fx === "hire") window.setTimeout(() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }), 900)
     setEntries((prev) => [...prev, { id: nextId.current++, cmd: clean, lines: result.lines }].slice(-MAX_ENTRIES))
+    if (!fx) play(result.lines.some((l) => l.kind === "text" && l.tone === "error") ? "error" : "reply")
   }, [clear, askAi])
 
   const submit = (cmd: string) => {
