@@ -150,7 +150,7 @@ export function Hero() {
           className="mb-6 flex justify-center"
         >
           <span className="glass-light rounded-full px-4 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-white/60">
-            Creator · Artist · Meme Lord
+            Coder · Editor · Meme Lord
           </span>
         </motion.div>
 
