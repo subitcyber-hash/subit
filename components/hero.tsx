@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Instagram, ChevronDown, X } from "lucide-react"
+import { useState, useEffect } from "react"
+import { motion } from "framer-motion"
+import { Instagram, ChevronDown } from "lucide-react"
 import { useTypingAnimation } from "@/hooks/use-typing"
 
 function WhatsAppIcon({ size = 24 }: { size?: number }) {
@@ -13,10 +13,7 @@ function WhatsAppIcon({ size = 24 }: { size?: number }) {
   )
 }
 
-const igAccounts = [
-  { handle: "@subynxz", label: "Main", href: "https://instagram.com/subynxz" },
-  { handle: "@zexqvi", label: "2nd", href: "https://instagram.com/zexqvi" },
-]
+const IG_URL = "https://instagram.com/subynxz" // main account
 
 // Reduced to 6 particles
 const PARTICLES = [
@@ -69,47 +66,10 @@ function Greeting() {
 export function Hero() {
   const [mounted, setMounted] = useState(false)
   const [isMobile, setIsMobile] = useState(true) // assume phone until measured
-  const [showIgPopup, setShowIgPopup] = useState(false)
-  const popupRef = useRef<HTMLDivElement>(null)
-  // Popup is centered on the button, then clamped so it never runs off the screen edge (mobile)
-  const [popupPos, setPopupPos] = useState<{ left: number; width: number }>({ left: 0, width: 256 })
 
   useEffect(() => {
     setMounted(true)
     setIsMobile(window.matchMedia("(max-width: 767px)").matches)
-  }, [])
-
-  useEffect(() => {
-    if (!showIgPopup) return
-    const handler = (e: MouseEvent) => {
-      if (popupRef.current && !popupRef.current.contains(e.target as Node)) setShowIgPopup(false)
-    }
-    document.addEventListener("mousedown", handler)
-    return () => document.removeEventListener("mousedown", handler)
-  }, [showIgPopup])
-
-  useEffect(() => {
-    if (!showIgPopup) return
-    const place = () => {
-      const el = popupRef.current
-      if (!el) return
-      const margin = 12
-      const vw = document.documentElement.clientWidth
-      const width = Math.min(256, vw - margin * 2)
-      const r = el.getBoundingClientRect()
-      const centered = r.left + r.width / 2 - width / 2
-      const clamped = Math.min(Math.max(centered, margin), vw - margin - width)
-      setPopupPos({ left: clamped - r.left, width })
-    }
-    place()
-    window.addEventListener("resize", place)
-    return () => window.removeEventListener("resize", place)
-  }, [showIgPopup])
-
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setShowIgPopup(false) }
-    window.addEventListener("keydown", handler)
-    return () => window.removeEventListener("keydown", handler)
   }, [])
 
   return (
@@ -215,74 +175,18 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="flex flex-wrap items-center justify-center gap-4"
         >
-          {/* Instagram popup */}
-          <div className="relative" ref={popupRef}>
-            <motion.button
-              onClick={() => setShowIgPopup(p => !p)}
-              className="glass-light flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white/80 transition-colors duration-100 hover:bg-white/10 hover:text-site-accent"
-              whileHover={{ scale: 1.06, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Instagram size={18} />
-              Instagram
-            </motion.button>
-
-            <AnimatePresence>
-              {showIgPopup && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9, y: 10 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9, y: 10 }}
-                  transition={{ duration: 0.2 }}
-                  className="absolute bottom-full mb-3 rounded-[28px] p-3 z-50 text-left"
-                  style={{
-                    left: popupPos.left,
-                    width: popupPos.width,
-                    transformOrigin: "bottom center",
-                    // Apple "liquid glass": nearly clear, strong blur + saturation, bright specular edge
-                    background: "rgba(255,255,255,0.07)",
-                    backdropFilter: "blur(32px) saturate(220%) brightness(1.15)",
-                    WebkitBackdropFilter: "blur(32px) saturate(220%) brightness(1.15)",
-                    boxShadow:
-                      "0 24px 48px -12px rgba(0,0,0,0.45), 0 0 0 0.5px rgba(255,255,255,0.28), inset 0 1.5px 1px rgba(255,255,255,0.55), inset 0 -1px 1px rgba(255,255,255,0.12), inset 1px 0 1px rgba(255,255,255,0.18), inset -1px 0 1px rgba(255,255,255,0.18)",
-                  }}
-                >
-                  <div className="flex items-center justify-between mb-3 px-1">
-                    <p className="text-[10px] uppercase tracking-widest text-white/70">Choose account</p>
-                    <button onClick={() => setShowIgPopup(false)} className="text-white/40 hover:text-white/70 transition-colors">
-                      <X size={12} />
-                    </button>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    {igAccounts.map((acc) => (
-                      <a
-                        key={acc.handle}
-                        href={acc.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-3 rounded-2xl px-3 py-2.5 transition-all duration-200 hover:bg-white/20 active:scale-[0.98]"
-                        style={{
-                          background: "rgba(255,255,255,0.10)",
-                          boxShadow: "inset 0 1px 0.5px rgba(255,255,255,0.35), inset 0 -0.5px 0.5px rgba(255,255,255,0.08)",
-                        }}
-                        onClick={() => setShowIgPopup(false)}
-                      >
-                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full" style={{ background: "linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)" }}>
-                          <Instagram size={16} className="text-white" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold text-white truncate">{acc.handle}</p>
-                        </div>
-                        <span className="text-[10px] font-medium text-white/70 shrink-0 rounded-full bg-white/10 px-2 py-0.5">
-                          {acc.label}
-                        </span>
-                      </a>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+          {/* Instagram (main account) */}
+          <motion.a
+            href={IG_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="glass-light flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white/80 transition-colors duration-100 hover:bg-white/10 hover:text-site-accent"
+            whileHover={{ scale: 1.06, y: -2 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Instagram size={18} />
+            Instagram
+          </motion.a>
 
           {/* WhatsApp */}
           <motion.a
