@@ -7,16 +7,16 @@ import { useEffect, useRef } from "react"
 // (translateZ), so when it turns you see the true side edges, then the back, then the front again.
 // Everything is a GPU transform, and the spin pauses when the title is off screen.
 // Reduced motion: no spin — it rests at a slight angle so the depth is still visible.
-const LAYERS = 26
-const STEP = 1.4 // px between layers → ~36px of thickness
+const LAYERS = 36
+const STEP = 1 // px between layers → ~36px of thickness (tight, so the side reads as one solid slab)
 const SPIN_SECONDS = 9
 
 const CSS = (() => {
   let rules = ""
   for (let i = 1; i <= LAYERS; i++) {
-    // banded grey "metal" edge with a hint of the accent colour
-    const light = Math.round(44 + 9 * Math.sin(i * 0.6))
-    rules += `.t3d-l${i}{transform:translateZ(${(-i * STEP).toFixed(2)}px);color:color-mix(in srgb,var(--site-accent) 14%,hsl(215 9% ${light}%))}\n`
+    // smooth, band-free metal edge: a single gentle darkening from front to back, hint of accent colour
+    const light = (58 - (i / LAYERS) * 26).toFixed(1)
+    rules += `.t3d-l${i}{transform:translateZ(${(-i * STEP).toFixed(2)}px);color:color-mix(in srgb,var(--site-accent) 14%,hsl(215 8% ${light}%))}\n`
   }
   return `
 .t3d-wrap{position:relative;display:inline-block;perspective:1100px;padding:0 .12em}
