@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Instagram, ChevronDown } from "lucide-react"
 import { useTypingAnimation } from "@/hooks/use-typing"
-import { Title3D } from "@/components/title-3d"
 
 function WhatsAppIcon({ size = 24 }: { size?: number }) {
   return (
@@ -159,10 +158,10 @@ export function Hero() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-10 text-7xl font-bold tracking-tighter text-foreground sm:text-8xl md:text-9xl"
-          aria-label="SUBIT"
+          className="mb-6 text-7xl font-bold tracking-tighter text-foreground sm:text-8xl md:text-9xl"
+          style={{ textShadow: "0 0 60px rgba(255,255,255,0.25)" }}
         >
-          <Title3D>𝔖𝔘𝔅ℑ𝔗</Title3D>
+          𝔖𝔘𝔅ℑ𝔗
         </motion.h1>
 
         <Greeting />
