@@ -2,83 +2,64 @@
 
 import { useEffect, useRef } from "react"
 
-// A 3D "extruded" title. The depth is a stack of text-shadows whose direction follows the pointer
-// (plus a small tilt), tinted from the site accent colour down to black. On touch devices, or when
-// the mouse is idle, it sways gently by itself. With reduced motion it stays still.
-const LAYERS = 14
+// A chrome, solid-looking 3D title that spins like a turntable.
+// The thickness is LAYERS stacked copies of the text placed one behind the other in real 3D space
+// (translateZ), so when it turns you see the true side edges, then the back, then the front again.
+// Everything is a GPU transform, and the spin pauses when the title is off screen.
+// Reduced motion: no spin — it rests at a slight angle so the depth is still visible.
+const LAYERS = 26
+const STEP = 1.4 // px between layers → ~36px of thickness
+const SPIN_SECONDS = 9
 
-// The depth is LAYERS stacked copies of the text, each shifted a bit further along (--sx, --sy) and tinted
-// from the accent colour down to black. Moving copies is a GPU transform (no repainting the glyphs), so it
-// stays smooth even on phones.
 const CSS = (() => {
   let rules = ""
   for (let i = 1; i <= LAYERS; i++) {
-    const mix = Math.round(46 - (i / LAYERS) * 40) // accent %: brighter near the face, near-black at the back
-    rules += `.t3d-l${i}{transform:translate3d(calc(var(--sx) * ${i}px),calc(var(--sy) * ${i}px),0);color:color-mix(in srgb,var(--site-accent) ${mix}%,#000)}\n`
+    // banded grey "metal" edge with a hint of the accent colour
+    const light = Math.round(44 + 9 * Math.sin(i * 0.6))
+    rules += `.t3d-l${i}{transform:translateZ(${(-i * STEP).toFixed(2)}px);color:color-mix(in srgb,var(--site-accent) 14%,hsl(215 9% ${light}%))}\n`
   }
   return `
-.t3d-wrap{display:inline-block;perspective:900px}
-.t3d{position:relative;display:inline-block;--sx:0.6;--sy:1;--rx:0deg;--ry:0deg;transform:rotateX(var(--rx)) rotateY(var(--ry));transform-style:preserve-3d;will-change:transform}
-.t3d-l{position:absolute;left:0;top:0;white-space:nowrap;user-select:none;pointer-events:none;will-change:transform}
-.t3d-face{position:relative;display:block;color:#fff;text-shadow:0 -1px 0 rgba(255,255,255,.5),0 0 70px color-mix(in srgb,var(--site-accent) 30%,transparent)}
-${rules}`
+.t3d-wrap{position:relative;display:inline-block;perspective:1100px;padding:0 .12em}
+.t3d-wrap::before{content:"";position:absolute;inset:-30% -10%;pointer-events:none;background:radial-gradient(closest-side,color-mix(in srgb,var(--site-accent) 20%,transparent),transparent 72%)}
+.t3d-tilt{position:relative;display:inline-block;transform:rotateX(var(--rx,-6deg));transform-style:preserve-3d;transition:transform .35s ease-out}
+.t3d{position:relative;display:inline-block;transform-style:preserve-3d;animation:t3d-spin ${SPIN_SECONDS}s linear infinite}
+.t3d.paused{animation-play-state:paused}
+@keyframes t3d-spin{from{transform:rotateY(0deg)}to{transform:rotateY(360deg)}}
+.t3d-l{position:absolute;left:0;top:0;white-space:nowrap;user-select:none;pointer-events:none}
+.t3d-face,.t3d-back{display:block;color:transparent;
+  background:linear-gradient(180deg,#fff 0%,color-mix(in srgb,var(--site-accent) 22%,#d6dade) 30%,#5d636b 49%,#f1f3f5 53%,#a3a9b1 76%,#fff 100%);
+  -webkit-background-clip:text;background-clip:text}
+.t3d-face{position:relative}
+.t3d-back{position:absolute;left:0;top:0;white-space:nowrap;user-select:none;pointer-events:none;transform:translateZ(${(-(LAYERS + 1) * STEP).toFixed(2)}px)}
+${rules}
+@media (prefers-reduced-motion:reduce){.t3d{animation:none;transform:rotateY(-30deg)}}
+`
 })()
 
 export function Title3D({ children }: { children: string }) {
-  const el = useRef<HTMLSpanElement>(null)
+  const tilt = useRef<HTMLSpanElement>(null)
+  const spin = useRef<HTMLSpanElement>(null)
 
   useEffect(() => {
-    const node = el.current
-    if (!node) return
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return // static depth only
+    const t = tilt.current
+    const s = spin.current
+    if (!t || !s) return
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return
 
-    let tx = 0 // target, -1..1
-    let ty = 0
-    let cx = 0 // current
-    let cy = 0
-    let lastMove = 0
-    let visible = true
-    let raf = 0
-
+    // mouse height nudges the tilt a little (up/down look)
     const onMove = (e: PointerEvent) => {
       if (e.pointerType === "touch") return
-      tx = (e.clientX / window.innerWidth) * 2 - 1
-      ty = (e.clientY / window.innerHeight) * 2 - 1
-      lastMove = performance.now()
+      const y = (e.clientY / window.innerHeight) * 2 - 1
+      t.style.setProperty("--rx", `${(-6 - y * 10).toFixed(1)}deg`)
     }
     window.addEventListener("pointermove", onMove, { passive: true })
 
-    const io = new IntersectionObserver(([en]) => {
-      visible = en.isIntersecting
-      if (visible && !raf) raf = requestAnimationFrame(tick)
-    })
-    io.observe(node)
-
-    const tick = (now: number) => {
-      raf = 0
-      if (!visible || document.hidden) return // resumes via the observer / visibilitychange
-      // idle (or touch): drift slowly in a figure-eight
-      if (now - lastMove > 2500) {
-        tx = Math.sin(now / 1900) * 0.7
-        ty = Math.cos(now / 2600) * 0.45
-      }
-      cx += (tx - cx) * 0.08
-      cy += (ty - cy) * 0.08
-      // light comes from the pointer side → the extrusion falls the opposite way
-      node.style.setProperty("--sx", (-cx * 1.25).toFixed(3))
-      node.style.setProperty("--sy", (0.55 - cy * 0.9).toFixed(3))
-      node.style.setProperty("--rx", `${(-cy * 9).toFixed(2)}deg`)
-      node.style.setProperty("--ry", `${(cx * 13).toFixed(2)}deg`)
-      raf = requestAnimationFrame(tick)
-    }
-    raf = requestAnimationFrame(tick)
-    const onVis = () => {
-      if (!document.hidden && !raf) raf = requestAnimationFrame(tick)
-    }
+    const io = new IntersectionObserver(([en]) => s.classList.toggle("paused", !en.isIntersecting))
+    io.observe(s)
+    const onVis = () => s.classList.toggle("paused", document.hidden)
     document.addEventListener("visibilitychange", onVis)
 
     return () => {
-      cancelAnimationFrame(raf)
       io.disconnect()
       window.removeEventListener("pointermove", onMove)
       document.removeEventListener("visibilitychange", onVis)
@@ -89,13 +70,16 @@ export function Title3D({ children }: { children: string }) {
     <>
       <style>{CSS}</style>
       <span className="t3d-wrap">
-        <span ref={el} className="t3d" aria-hidden>
-          {Array.from({ length: LAYERS }, (_, k) => LAYERS - k).map((i) => (
-            <span key={i} className={`t3d-l t3d-l${i}`}>
-              {children}
-            </span>
-          ))}
-          <span className="t3d-face">{children}</span>
+        <span ref={tilt} className="t3d-tilt" aria-hidden>
+          <span ref={spin} className="t3d">
+            {Array.from({ length: LAYERS }, (_, k) => LAYERS - k).map((i) => (
+              <span key={i} className={`t3d-l t3d-l${i}`}>
+                {children}
+              </span>
+            ))}
+            <span className="t3d-back">{children}</span>
+            <span className="t3d-face">{children}</span>
+          </span>
         </span>
       </span>
     </>
